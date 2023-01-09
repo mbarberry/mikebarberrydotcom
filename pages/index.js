@@ -6,17 +6,19 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default function Home() {
-  const ref = useRef();
+  const refContainer = useRef();
   const [loading, setLoading] = useState(true);
-  const [renderer, setRenderer] = useState(null);
+  const [renderer, setRenderer] = useState();
+  let mixer;
   useEffect(() => {
-    let req = null;
+    const { current: container } = refContainer;
+    console.log(container);
     const createRenderer = async () => {
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.outputEncoding = THREE.sRGBEncoding;
-      ref.current.appendChild(renderer.domElement);
+      container.appendChild(renderer.domElement);
       setRenderer(renderer);
 
       const scene = new THREE.Scene();
@@ -46,8 +48,7 @@ export default function Home() {
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
-      let mixer;
-
+      let req = null;
       const animate = () => {
         req = requestAnimationFrame(animate);
         const delta = new THREE.Clock().getDelta();
@@ -87,15 +88,15 @@ export default function Home() {
       };
     };
 
-    if (ref.current && !renderer) {
+    if (container && !renderer) {
       createRenderer();
     }
-  }, [renderer]);
+  }, []);
 
   return (
     <div
       style={{ height: '100vh', width: '100vw', position: 'relative' }}
-      ref={ref}>
+      ref={refContainer}>
       {loading && (
         <span style={{ position: 'absolute', left: '50%', top: '50%' }}>
           Loading...

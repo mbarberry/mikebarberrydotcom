@@ -46,8 +46,9 @@ export default function Home() {
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
-      const animate = (mixer) => {
-        console.log(mixer);
+      let mixer;
+
+      const animate = () => {
         req = requestAnimationFrame(animate);
         const delta = new THREE.Clock().getDelta();
         mixer.update(delta);
@@ -64,10 +65,10 @@ export default function Home() {
         model.scale.set(0.01, 0.01, 0.01);
         scene.add(model);
 
-        const mixer = new THREE.AnimationMixer(model);
+        mixer = new THREE.AnimationMixer(model);
         mixer.clipAction(gltf.animations[0]).play();
 
-        animate(mixer);
+        animate();
       } catch (err) {
         console.log(`Error loading the model: ${err}`);
       }
@@ -82,21 +83,25 @@ export default function Home() {
 
       return () => {
         cancelAnimationFrame(req);
+        renderer.dispose();
       };
     };
 
-    createRenderer();
-  }, []);
+    if (ref.current && !renderer) {
+      createRenderer();
+    }
+  }, [renderer]);
 
   return (
     <div
-      style={{ height: '540px', width: '540px', position: 'relative' }}
+      style={{ height: '100vh', width: '100vw', position: 'relative' }}
       ref={ref}>
       {loading && (
         <span style={{ position: 'absolute', left: '50%', top: '50%' }}>
           Loading...
         </span>
       )}
+      <h1>Hello, Three.js!</h1>
     </div>
   );
 }

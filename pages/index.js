@@ -6,13 +6,17 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default function Home() {
-  const refContainer = useRef();
+  const refContainer = useRef(null);
+  const mixerRef = useRef(null);
+  const clockRef = useRef(new THREE.Clock());
+
   const [loading, setLoading] = useState(true);
-  const [renderer, setRenderer] = useState();
-  let mixer;
+  const [renderer, setRenderer] = useState(null);
+
   useEffect(() => {
+    let req = null;
     const { current: container } = refContainer;
-    console.log(container);
+
     const createRenderer = async () => {
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -38,27 +42,27 @@ export default function Home() {
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.target.set(0, 0.5, 0);
-      controls.update();
       controls.enablePan = false;
       controls.enableDamping = true;
       controls.enableZoom = false;
       controls.minPolarAngle = 0.5;
       controls.maxPolarAngle = 1.5;
+      controls.update();
 
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
-      let req = null;
       const animate = () => {
         req = requestAnimationFrame(animate);
-        const delta = new THREE.Clock().getDelta();
-        mixer.update(delta);
+        const delta = clockRef.current.getDelta();
+        mixerRef.current.update(delta);
         controls.update();
         renderer.render(scene, camera);
       };
 
       const loader = new GLTFLoader();
       loader.setDRACOLoader(dracoLoader);
+
       try {
         const gltf = await loader.loadAsync('/LittlestTokyo.glb');
         const model = gltf.scene;
@@ -66,10 +70,11 @@ export default function Home() {
         model.scale.set(0.01, 0.01, 0.01);
         scene.add(model);
 
-        mixer = new THREE.AnimationMixer(model);
-        mixer.clipAction(gltf.animations[0]).play();
+        mixerRef.current = new THREE.AnimationMixer(model);
+        mixerRef.current.clipAction(gltf.animations[0]).play();
 
         animate();
+        setLoading(false);
       } catch (err) {
         console.log(`Error loading the model: ${err}`);
       }
@@ -79,8 +84,6 @@ export default function Home() {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       };
-
-      setLoading(false);
 
       return () => {
         cancelAnimationFrame(req);

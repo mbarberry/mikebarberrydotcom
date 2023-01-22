@@ -101,10 +101,8 @@ export default function Animation() {
   return (
     <div
       style={{ height: '100vh', width: '100vw', position: 'relative' }}
-      ref={refContainer}
-    >
+      ref={refContainer}>
       {loading && <Loading />}
-      <h1>Hello, Three.js!</h1>
     </div>
   );
 }

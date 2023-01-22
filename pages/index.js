@@ -5,7 +5,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-export default function Home() {
+import Loading from '../components/Loading';
+
+export default function Animation() {
   const refContainer = useRef(null);
   const mixerRef = useRef(null);
   const clockRef = useRef(new THREE.Clock());
@@ -99,12 +101,9 @@ export default function Home() {
   return (
     <div
       style={{ height: '100vh', width: '100vw', position: 'relative' }}
-      ref={refContainer}>
-      {loading && (
-        <span style={{ position: 'absolute', left: '50%', top: '50%' }}>
-          Loading...
-        </span>
-      )}
+      ref={refContainer}
+    >
+      {loading && <Loading />}
       <h1>Hello, Three.js!</h1>
     </div>
   );

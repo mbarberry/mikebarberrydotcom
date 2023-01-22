@@ -1,0 +1,10 @@
+#about:hover,
+#contact:hover {
+  cursor: pointer;
+}
+
+.header:hover,
+.active {
+  background-color: var(--hover-color);
+  border-radius: 10px;
+}

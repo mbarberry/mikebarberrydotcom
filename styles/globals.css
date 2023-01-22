@@ -74,9 +74,8 @@
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  font-family: Whitney SSm A, Whitney SSm B, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
 }
 
 html,

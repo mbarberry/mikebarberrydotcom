@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import Animation from '../components/Animation';
 import Message from '../components/Message';
 
-export default function Root() {
+export default function Index() {
   const refContainer = useRef(null);
   const [loading, setLoading] = useState(true);
   const [showMessage, setShowMessage] = useState(false);

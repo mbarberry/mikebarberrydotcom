@@ -1,19 +1,17 @@
-import styles from '../styles/Message.module.css';
+import { Alert, AlertIcon } from '@chakra-ui/react';
 
 export default function Message() {
   return (
-    <div className={styles.outerContainer}>
-      <div className={styles.innerContainer}>
-        <svg id='svg'>
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0'
-          />
-        </svg>
-        <p id='p'>Hi, thanks for stopping by!</p>
-      </div>
-    </div>
+    <Alert
+      status='success'
+      variant='left-accent'
+      pos='absolute'
+      top='-10vh'
+      left='50%'
+      transform='translate(-50%)'
+      w='auto'>
+      <AlertIcon />
+      Hi, thanks for stopping by!
+    </Alert>
   );
 }

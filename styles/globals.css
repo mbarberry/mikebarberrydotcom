@@ -8,32 +8,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Loading Spinner */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-#loadingContainer {
-  position: relative;
-  box-shadow: 0 4px 10px 0 rgba(33, 33, 33, 0.15);
-  border-radius: 4px;
-  height: calc(100vh - 200px);
-}
-#loader {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #bfe3dd;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
 /* Header */
 #about:hover,
 #contact:hover {

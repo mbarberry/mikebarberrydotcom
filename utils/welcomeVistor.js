@@ -1,7 +1,9 @@
-const triggerFireworks = async () => {
-  await fetch(
+import confetti from 'canvas-confetti';
+
+const triggerFireworks = () => {
+  /* await fetch(
     'https://n7ar1nz8xj.execute-api.us-west-2.amazonaws.com/main/logVisit'
-  );
+  ); */
   setTimeout(() => {
     var duration = 5 * 1000;
     var animationEnd = Date.now() + duration;
@@ -46,11 +48,4 @@ const triggerFireworks = async () => {
   }, 5000);
 };
 
-const oneDay = 86400000;
-const now = Date.now();
-const lastFireworkDisplay = window.localStorage.getItem('fireworks');
-
-if (lastFireworkDisplay === null || lastFireworkDisplay < now - oneDay) {
-  triggerFireworks();
-  window.localStorage.setItem('fireworks', now);
-}
+export { triggerFireworks };

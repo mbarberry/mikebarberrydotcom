@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 function HeaderItem({ color, id, active, children }) {
@@ -37,19 +37,19 @@ function HeaderList() {
     <nav>
       <ul style={{ display: 'flex' }}>
         <HeaderItem
-          color='#f0ffff'
+          color='#E7E2CA'
           id='home'
           active={activeTab === 'home'}>
           Home
         </HeaderItem>
         <HeaderItem
-          color='#fff0f0'
+          color='#CADEE7'
           id='about'
           active={activeTab === 'about'}>
           About
         </HeaderItem>
         <HeaderItem
-          color='#f0f7ff'
+          color='#CAE7D4'
           id='resume'>
           <a
             href='/Mike_Barberry_Resume_Current.pdf'
@@ -59,13 +59,13 @@ function HeaderList() {
         </HeaderItem>
         <div onClick={contactClick}>
           <HeaderItem
-            color='#f0fff7'
+            color='#E7CADE'
             id='contact'>
             Contact
           </HeaderItem>
         </div>
         <HeaderItem
-          color='#fff6f0'
+          color='#E7D4CA'
           id='blog'>
           <a
             href='https://mikebarberry.medium.com/'

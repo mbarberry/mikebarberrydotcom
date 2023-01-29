@@ -1,7 +1,18 @@
+import { chakra, Spinner } from '@chakra-ui/react';
+
 export default function Loading() {
   return (
-    <div id='loadingContainer'>
-      <p id='loader'></p>
-    </div>
+    <chakra.div justify='center'>
+      <Spinner
+        pos='absolute'
+        top='40%'
+        left='50%'
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.100'
+        color='green.300'
+        size='xl'
+      />
+    </chakra.div>
   );
 }

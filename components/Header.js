@@ -83,13 +83,13 @@ export default function Header() {
   return (
     <header>
       <div className='headerContainer'>
-        <h1 className='name'>Mike Barberry</h1>
+        <h1 id='name'>Mike Barberry</h1>
         <a
           href='https://github.com/MikeBarberry'
           target='_blank'
           rel='noreferrer'>
           <svg
-            className='github'
+            id='github'
             xmlns='http://www.w3.org/2000/svg'
             role='img'
             viewBox='0 0 438.549 438.549'>

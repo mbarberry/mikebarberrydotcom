@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import Animation from '../components/Animation';
 import Message from '../components/Message';
 
-import { triggerFireworks } from '../utils/welcomeVistor';
+import { triggerFireworks, lambdaURL } from '../utils';
 
 export default function Index() {
   const refContainer = useRef(null);
@@ -16,22 +16,25 @@ export default function Index() {
     const now = Date.now();
     const lastFireworkDisplay = window.localStorage.getItem('fireworks');
 
-    if (!lastFireworkDisplay || lastFireworkDisplay < now - oneDay) {
-      triggerFireworks();
-      window.localStorage.setItem('fireworks', now);
-      setShowMessage(true);
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 5000);
+    if (!loading) {
+      if (!lastFireworkDisplay || lastFireworkDisplay < now - oneDay) {
+        triggerFireworks();
+        window.localStorage.setItem('fireworks', now);
+        fetch(lambdaURL);
+        setShowMessage(true);
+        setTimeout(() => {
+          setShowMessage(false);
+        }, 5000);
+      }
     }
-  }, []);
+  }, [loading]);
 
   return (
     <div
       style={{ height: '100vh', width: '100vw', position: 'relative' }}
       ref={refContainer}>
       {loading && <Loading />}
-      {!loading && showMessage ? <Message /> : null}
+      {showMessage && <Message />}
       <Animation
         setLoading={setLoading}
         refContainer={refContainer}

@@ -90,6 +90,7 @@ function ProjectHighlights() {
       bottom='100px'
       pl='70px'>
       <chakra.div
+        _before={{}}
         mt='1rem'
         flex='0 0 200px'
         mr='1rem'

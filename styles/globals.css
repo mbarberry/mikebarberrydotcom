@@ -6,30 +6,3 @@ body {
   padding: 0;
   margin: 0;
 }
-
-/* Header */
-#about:hover,
-#contact:hover {
-  cursor: pointer;
-}
-.header:hover,
-.active {
-  background-color: var(--hover-color);
-  border-radius: 10px;
-}
-.headerContainer {
-  display: block;
-  margin-top: 5px;
-}
-#name {
-  display: inline !important;
-  padding-left: 30px !important;
-  font-size: 30px;
-}
-#github {
-  width: 18px;
-  height: 18px;
-  display: inline;
-  padding-left: 60px;
-  box-sizing: content-box;
-}

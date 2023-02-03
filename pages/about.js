@@ -7,63 +7,60 @@ const cardData = [
     desc: 'MySQL, Express.js, React.js, Node.js',
     pic: '/peerrx.png',
     proj: 'PeerRX',
-    margin: -130,
-    zIndex: 1,
   },
   {
     color: 'green.500',
     desc: 'MongoDB, Express.js, React.js, Node.js',
     pic: '/connexrx.png',
     proj: 'ConnexRX',
-    margin: -130,
-    zIndex: 1,
   },
   {
     color: 'orange.500',
     desc: 'MySQL, Laravel, Vue.JS, PHP',
     pic: '/net.png',
     proj: 'Network Engagement Tracker',
-    margin: 0,
-    zIndex: 1,
   },
 ];
 
-function Card({ color, desc, pic, proj, initMargin, zIndex }) {
-  const [margin, setMargin] = useState(initMargin);
+function Card({ color, desc, pic, proj, isLast }) {
+  const [margin, setMargin] = useState(isLast ? 0 : -130);
   const handleMouseEnter = () => {
     setMargin(5);
   };
   const handleMouseLeave = () => {
+    if (isLast) return;
     setMargin((margin) => margin - 135);
   };
   return (
-    <chakra.div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
+    <chakra.div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <chakra.article
         _hover={{ transform: 'rotate(0.01turn)' }}
         sx={{ transition: '0.2s' }}
         p='1.5rem'
+        pos='relative'
         borderRadius='16px'
         background='linear-gradient(85deg, #ffffff, #d6d6d6)'
         display='flex'
         flexDir='column'
-        transition='0.2s'
+        transition='all 0.2s ease 0s'
         m='0'
         mr={margin}
         minW='300px'
         minH='350px'
         shadow='-2rem 0 3rem -2rem #000'
-        zIndex={zIndex}>
+        zIndex='1'
+      >
         <chakra.img
           src={pic}
           display='block'
           maxH='400px'
-          maxW='400px'></chakra.img>
+          maxW='400px'
+        ></chakra.img>
         <chakra.p
           pt='20px'
           fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                  Helvetica, Arial, sans-serif'>
+                  Helvetica, Arial, sans-serif'
+        >
           {proj}
         </chakra.p>
         <chakra.p
@@ -72,7 +69,8 @@ function Card({ color, desc, pic, proj, initMargin, zIndex }) {
           fontSize='0.66rem'
           textTransform='uppercase'
           fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                  Helvetica, Arial, sans-serif'>
+                  Helvetica, Arial, sans-serif'
+        >
           {desc}
         </chakra.p>
       </chakra.article>
@@ -80,42 +78,7 @@ function Card({ color, desc, pic, proj, initMargin, zIndex }) {
   );
 }
 
-function ProjectHighlights() {
-  return (
-    <chakra.div
-      boxSizing='border-box'
-      display='flex'
-      m='0 0 1rem'
-      pos='absolute'
-      bottom='100px'
-      pl='70px'>
-      <chakra.div
-        _before={{}}
-        mt='1rem'
-        flex='0 0 200px'
-        mr='1rem'
-        pos='relative'
-        display='flex'
-        flexDir='column'
-        justifyContent='flex-end'
-        p='1.5rem'
-        transform='translateY(-10px)'>
-        <chakra.h2
-          zIndex='3'
-          color='black.500'
-          fontWeight='lighter'
-          fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                Helvetica, Arial, sans-serif'>
-          Recent
-          <br />
-          Projects
-        </chakra.h2>
-      </chakra.div>
-    </chakra.div>
-  );
-}
-
-export default function About() {
+function Cards() {
   return (
     <chakra.div
       p='1rem 0 1rem 2rem'
@@ -125,9 +88,10 @@ export default function About() {
       pos='relative'
       gridTemplateColumns='repeat(auto-fill, minmax(250px, 1fr))'
       gap='1rem'
-      mh='450px'>
+      mh='450px'
+    >
       {cardData.map((ele, idx) => {
-        const margin = idx !== cardData.length - 1 ? '-130px' : '0px';
+        const isLast = idx === cardData.length - 1;
         return (
           <Card
             key={ele.proj}
@@ -135,11 +99,76 @@ export default function About() {
             desc={ele.desc}
             pic={ele.pic}
             proj={ele.proj}
-            initMargin={margin}
-            zIndex={ele.zIndex}
+            isLast={isLast}
           />
         );
       })}
+    </chakra.div>
+  );
+}
+
+function RecentProjects() {
+  return (
+    <chakra.div
+      _before={{
+        content: '""',
+        bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 76.05%)',
+        opacity: '0.6',
+        position: 'absolute',
+        top: '-5px',
+        left: '-5px',
+        width: 'calc(100% + 10px)',
+        height: 'calc(100% + 10px)',
+        zIndex: '1',
+        borderRadius: '12px',
+      }}
+      _after={{
+        content: '""',
+        bg: 'white',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        zIndex: '2',
+        borderRadius: '8px',
+      }}
+      mt='1rem'
+      flex='0 0 200px'
+      mr='1rem'
+      pos='relative'
+      display='flex'
+      flexDir='column'
+      justifyContent='flex-end'
+      p='1.5rem'
+      transform='translateY(-10px)'
+    >
+      <chakra.h2
+        zIndex='3'
+        color='black.500'
+        fontWeight='lighter'
+        fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
+                Helvetica, Arial, sans-serif'
+      >
+        Recent
+        <br />
+        Projects
+      </chakra.h2>
+    </chakra.div>
+  );
+}
+
+export default function About() {
+  return (
+    <chakra.div
+      boxSizing='border-box'
+      display='flex'
+      m='0 0 1rem'
+      pos='relative'
+      pl='70px'
+    >
+      <RecentProjects />
+      <Cards></Cards>
     </chakra.div>
   );
 }

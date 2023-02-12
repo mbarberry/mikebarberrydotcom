@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, useMediaQuery } from '@chakra-ui/react';
+
+import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
 
 const cardData = [
   {
     color: 'purple.500',
-    desc: 'MySQL, Express.js, React.js, Node.js',
+    desc: 'React.js, Node.js, Express.js, MySQL',
     pic: '/peerrx.png',
     proj: 'PeerRX',
   },
   {
     color: 'green.500',
-    desc: 'MongoDB, Express.js, React.js, Node.js',
+    desc: 'React.js, Node.js, Express.js, MongoDB',
     pic: '/connexrx.png',
     proj: 'ConnexRX',
   },
   {
     color: 'orange.500',
-    desc: 'MySQL, Laravel, Vue.JS, PHP',
+    desc: 'Vue.js, PHP 7, Laravel, MySQL',
     pic: '/net.png',
     proj: 'Network Engagement Tracker',
   },
@@ -32,7 +34,9 @@ function Card({ color, desc, pic, proj, isLast }) {
     setMargin((margin) => margin - 135);
   };
   return (
-    <chakra.div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <chakra.div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}>
       <chakra.article
         _hover={{ transform: 'rotate(0.01turn)' }}
         sx={{ transition: '0.2s' }}
@@ -43,34 +47,26 @@ function Card({ color, desc, pic, proj, isLast }) {
         display='flex'
         flexDir='column'
         transition='all 0.2s ease 0s'
-        m='0'
         mr={margin}
         minW='300px'
         minH='350px'
-        shadow='-2rem 0 3rem -2rem #000'
-        zIndex='1'
-      >
+        shadow='-2rem 0 3rem -2rem #000'>
         <chakra.img
           src={pic}
           display='block'
           maxH='400px'
           maxW='400px'
-        ></chakra.img>
+        />
         <chakra.p
           pt='20px'
-          fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                  Helvetica, Arial, sans-serif'
-        >
+          fontFamily='Poppins'>
           {proj}
         </chakra.p>
         <chakra.p
           color={color}
           pt='20px'
           fontSize='0.66rem'
-          textTransform='uppercase'
-          fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                  Helvetica, Arial, sans-serif'
-        >
+          textTransform='uppercase'>
           {desc}
         </chakra.p>
       </chakra.article>
@@ -78,27 +74,24 @@ function Card({ color, desc, pic, proj, isLast }) {
   );
 }
 
-function Cards() {
+function Cards({ adaptiveDisplay, mobile }) {
   return (
     <chakra.div
-      p='1rem 0 1rem 2rem'
-      m='0'
-      display='flex'
-      overflowX='scroll'
+      p={mobile ? undefined : '1rem 0 1rem 2rem'}
+      overflowX={mobile ? 'hidden' : 'scroll'}
       pos='relative'
-      gridTemplateColumns='repeat(auto-fill, minmax(250px, 1fr))'
       gap='1rem'
-      mh='450px'
-    >
+      sx={{ ...adaptiveDisplay }}>
       {cardData.map((ele, idx) => {
+        const { proj, color, desc, pic } = ele;
         const isLast = idx === cardData.length - 1;
         return (
           <Card
-            key={ele.proj}
-            color={ele.color}
-            desc={ele.desc}
-            pic={ele.pic}
-            proj={ele.proj}
+            key={proj}
+            color={color}
+            desc={desc}
+            pic={pic}
+            proj={proj}
             isLast={isLast}
           />
         );
@@ -107,7 +100,7 @@ function Cards() {
   );
 }
 
-function RecentProjects() {
+function RecentProjects({ mobile }) {
   return (
     <chakra.div
       _before={{
@@ -135,21 +128,17 @@ function RecentProjects() {
       }}
       mt='1rem'
       flex='0 0 200px'
-      mr='1rem'
+      mr={mobile ? '' : '1rem'}
       pos='relative'
       display='flex'
       flexDir='column'
       justifyContent='flex-end'
       p='1.5rem'
-      transform='translateY(-10px)'
-    >
+      transform='translateY(-10px)'>
       <chakra.h2
         zIndex='3'
         color='black.500'
-        fontWeight='lighter'
-        fontFamily='Whitney SSm A, Whitney SSm B, Helvetica Neue,
-                Helvetica, Arial, sans-serif'
-      >
+        fontWeight='lighter'>
         Recent
         <br />
         Projects
@@ -158,17 +147,47 @@ function RecentProjects() {
   );
 }
 
+function DotBackground() {
+  return (
+    <chakra.div
+      bg={`url('/dots.svg') repeat-x center top`}
+      color='rgba(35, 33, 41, 0.8)'
+      border='3px #dbf0ff'
+      borderStyle='solid hidden hidden solid'
+      pos='relative'
+      maxW='100vw'>
+      <chakra.div
+        _after={{
+          content: '""',
+          display: 'block',
+          h: '195px',
+          w: '1px',
+          pos: 'relative',
+          top: '15px',
+          left: 'calc(50% - 2px)',
+        }}
+        mb='10px'></chakra.div>
+    </chakra.div>
+  );
+}
+
 export default function About() {
+  const [mobile] = useMediaQuery('(max-width: 800px)');
+  const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
   return (
     <chakra.div
       boxSizing='border-box'
-      display='flex'
+      display='grid'
       m='0 0 1rem'
-      pos='relative'
-      pl='70px'
-    >
-      <RecentProjects />
-      <Cards></Cards>
+      pl={mobile ? undefined : '30px'}>
+      {!mobile && <DotBackground />}
+      <chakra.div sx={{ ...adaptiveDisplay }}>
+        <RecentProjects mobile={mobile} />
+        <Cards
+          mobile={mobile}
+          adaptiveDisplay={adaptiveDisplay}
+        />
+      </chakra.div>
     </chakra.div>
   );
 }

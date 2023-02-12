@@ -1,7 +1,17 @@
-/* may be used for media queries */
-
 import { extendTheme } from '@chakra-ui/react';
 
-const breakpoints = {};
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        fontFamily: 'Poppins',
+        minH: '100vh',
+        display: 'flex',
+        flexDir: 'column',
+        justifyContent: 'space-between',
+      },
+    },
+  },
+});
 
-const theme = extendTheme({ breakpoints });
+export default theme;

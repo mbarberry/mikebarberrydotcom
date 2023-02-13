@@ -27,11 +27,11 @@ function HeaderItem({ color, children, mobile, path = null }) {
 
   return (
     <chakra.li
+      _hover={{ cursor: 'pointer', bgColor: color }}
       bgColor={active ? color : undefined}
       borderRadius='10px'
-      _hover={{ cursor: 'pointer', bgColor: color }}
-      onClick={handleClick}
       p='15px 30px 15px 30px'
+      onClick={handleClick}
       sx={{ ...getMobileStyles() }}>
       {children}
     </chakra.li>
@@ -43,10 +43,10 @@ function HeaderList({ mobile }) {
   return (
     <chakra.ul
       sx={{
-        ...adaptiveDisplay,
+        marginTop: mobile ? '5px' : undefined,
         justifyContent: mobile ? 'center' : undefined,
         listStyle: 'none',
-        marginTop: mobile ? '5px' : undefined,
+        ...adaptiveDisplay,
       }}>
       <HeaderItem
         color='#E7E2CA'
@@ -95,18 +95,18 @@ export default function Header() {
     <header>
       <chakra.div
         alignItems={mobile ? 'center' : undefined}
-        display='flex'
         flexDir={mobile ? 'column' : undefined}
         justifyContent={mobile ? 'center' : undefined}
+        display='flex'
         mt='5px'>
         <chakra.h1
-          fontSize='30px'
-          pl={mobile ? undefined : '30px'}>
+          pl={mobile ? undefined : '30px'}
+          fontSize='30px'>
           Mike Barberry
         </chakra.h1>
         <chakra.div
-          display='flex'
           pl={mobile ? undefined : '30px'}
+          display='flex'
           alignItems='center'
           justifyContent='center'>
           <chakra.a

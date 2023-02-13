@@ -24,87 +24,25 @@ const cardData = [
   },
 ];
 
-function Card({ color, desc, isLast, mobile, pic, proj }) {
-  const getMargin = () => {
-    if (mobile || isLast) return 0;
-    return -130;
-  };
-  const [margin, setMargin] = useState(getMargin());
-
-  const handleMouseEnter = () => {
-    if (mobile) return;
-    setMargin(5);
-  };
-  const handleMouseLeave = () => {
-    if (mobile || isLast) return;
-    setMargin((margin) => margin - 135);
-  };
+function DotBackground() {
   return (
     <chakra.div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
-      <chakra.article
-        _hover={{ transform: 'rotate(0.01turn)' }}
-        sx={{ transition: '0.2s' }}
-        p='1.5rem'
-        pos='relative'
-        borderRadius='16px'
-        background='linear-gradient(85deg, #ffffff, #d6d6d6)'
-        display='flex'
-        flexDir='column'
-        transition='all 0.2s ease 0s'
-        mr={margin}
-        minW='300px'
-        minH='350px'
-        shadow='-2rem 0 3rem -2rem #000'>
-        <chakra.img
-          src={pic}
-          display='block'
-          w='400px'
-          h='225px'
-          maxH='400px'
-          maxW='400px'
-        />
-        <chakra.p
-          pt='20px'
-          fontFamily='Poppins'>
-          {proj}
-        </chakra.p>
-        <chakra.p
-          color={color}
-          pt='20px'
-          fontSize='0.66rem'
-          textTransform='uppercase'>
-          {desc}
-        </chakra.p>
-      </chakra.article>
-    </chakra.div>
-  );
-}
-
-function Cards({ adaptiveDisplay, mobile }) {
-  return (
-    <chakra.div
-      gap='1rem'
-      overflowX={mobile ? 'hidden' : 'scroll'}
-      p={mobile ? undefined : '1rem 0 1rem 2rem'}
-      pos='relative'
-      sx={{ ...adaptiveDisplay }}>
-      {cardData.map((ele, idx) => {
-        const { proj, color, desc, pic } = ele;
-        const isLast = idx === cardData.length - 1;
-        return (
-          <Card
-            key={proj}
-            color={color}
-            desc={desc}
-            mobile={mobile}
-            pic={pic}
-            proj={proj}
-            isLast={isLast}
-          />
-        );
-      })}
+      bg={`url('/dots.svg') repeat-x center top`}
+      color='rgba(35, 33, 41, 0.8)'
+      border='3px #5992b9'
+      overflow='hidden'
+      borderStyle='solid hidden hidden solid'>
+      <chakra.div
+        _after={{
+          content: '""',
+          display: 'block',
+          h: '195px',
+          w: '1px',
+          pos: 'relative',
+          top: '15px',
+          left: 'calc(50% - 2px)',
+        }}
+        mb='10px'></chakra.div>
     </chakra.div>
   );
 }
@@ -147,7 +85,6 @@ function RecentProjects({ mobile }) {
       mt='1rem'
       mr={mobile ? '' : '1rem'}
       p='1.5rem'
-      pos='relative'
       transform='translateY(-10px)'>
       <chakra.h2
         zIndex='3'
@@ -161,26 +98,86 @@ function RecentProjects({ mobile }) {
   );
 }
 
-function DotBackground() {
+function Card({ color, desc, isLast, mobile, initialMargin, pic, proj }) {
+  const [margin, setMargin] = useState(initialMargin);
+
+  const handleMouseEnter = () => {
+    if (mobile) return;
+    setMargin(5);
+  };
+  const handleMouseLeave = () => {
+    if (mobile || isLast) return;
+    setMargin(margin - 135);
+  };
   return (
     <chakra.div
-      bg={`url('/dots.svg') repeat-x center top`}
-      color='rgba(35, 33, 41, 0.8)'
-      border='3px #5992b9'
-      overflow='hidden'
-      borderStyle='solid hidden hidden solid'
-      pos='relative'>
-      <chakra.div
-        _after={{
-          content: '""',
-          display: 'block',
-          h: '195px',
-          w: '1px',
-          pos: 'relative',
-          top: '15px',
-          left: 'calc(50% - 2px)',
-        }}
-        mb='10px'></chakra.div>
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      maxW={mobile ? '450px' : undefined}>
+      <chakra.article
+        _hover={{ transform: 'rotate(0.01turn)' }}
+        sx={{ transition: 'margin 0.2s' }}
+        p='1.5rem'
+        borderRadius='16px'
+        background='linear-gradient(85deg, #ffffff, #d6d6d6)'
+        display='flex'
+        flexDir='column'
+        mr={mobile ? 0 : margin}
+        minW='300px'
+        minH='350px'
+        shadow='-2rem 0 3rem -2rem #000'>
+        <chakra.img
+          src={pic}
+          display='block'
+          w='400px'
+          h='225px'
+          maxH='400px'
+          maxW='400px'
+        />
+        <chakra.p
+          pt='20px'
+          fontFamily='Poppins'>
+          {proj}
+        </chakra.p>
+        <chakra.p
+          color={color}
+          pt='20px'
+          fontSize='0.66rem'
+          textTransform='uppercase'>
+          {desc}
+        </chakra.p>
+      </chakra.article>
+    </chakra.div>
+  );
+}
+
+function Cards({ mobile }) {
+  return (
+    <chakra.div
+      alignItems={mobile ? 'center' : undefined}
+      flexDir={mobile ? 'column' : undefined}
+      justifyContent={mobile ? 'center' : undefined}
+      p={mobile ? undefined : '1rem 0 1rem 2rem'}
+      overflowX={mobile ? 'hidden' : 'scroll'}
+      display={'flex'}
+      gap='1rem'>
+      {cardData.map((ele, idx) => {
+        const { proj, color, desc, pic } = ele;
+        const isLast = idx === cardData.length - 1;
+        return (
+          <Card
+            mobile={mobile}
+            margin={mobile || isLast ? 0 : -130}
+            key={proj}
+            color={color}
+            desc={desc}
+            pic={pic}
+            proj={proj}
+            isLast={isLast}
+            zIndex={idx}
+          />
+        );
+      })}
     </chakra.div>
   );
 }
@@ -195,7 +192,9 @@ export default function About() {
       m='0 0 1rem'
       pl={mobile ? undefined : '30px'}>
       {!mobile && <DotBackground />}
-      <chakra.div sx={{ ...adaptiveDisplay }}>
+      <chakra.div
+        display='flex'
+        flexDir={mobile ? 'column' : undefined}>
         <RecentProjects mobile={mobile} />
         <Cards
           mobile={mobile}

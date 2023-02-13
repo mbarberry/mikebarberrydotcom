@@ -1,21 +1,18 @@
 import { useRouter } from 'next/router';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
-import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
-
 export default function Footer() {
+  const [mobile] = useMediaQuery('(max-width: 750px)');
   const router = useRouter();
-  const [mobile] = useMediaQuery('(max-width: 750x)');
-  const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
   return (
     <chakra.footer
       alignItems={mobile ? 'center' : undefined}
       bgColor='#eeeeee'
       bottom='0'
+      display='flex'
       h='100px'
       justifyContent={mobile ? 'center' : 'space-between'}
       pos='absolute'
-      sx={{ ...adaptiveDisplay }}
       w='100%'>
       <chakra.p
         fontSize='small'

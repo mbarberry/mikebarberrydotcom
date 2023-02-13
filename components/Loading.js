@@ -10,7 +10,7 @@ export default function Loading() {
         thickness='4px'
         speed='0.65s'
         emptyColor='gray.100'
-        color='green.300'
+        color='color.300'
         size='xl'
       />
     </chakra.div>

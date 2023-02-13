@@ -24,13 +24,19 @@ const cardData = [
   },
 ];
 
-function Card({ color, desc, pic, proj, isLast }) {
-  const [margin, setMargin] = useState(isLast ? 0 : -130);
+function Card({ color, desc, isLast, mobile, pic, proj }) {
+  const getMargin = () => {
+    if (mobile || isLast) return 0;
+    return -130;
+  };
+  const [margin, setMargin] = useState(getMargin());
+
   const handleMouseEnter = () => {
+    if (mobile) return;
     setMargin(5);
   };
   const handleMouseLeave = () => {
-    if (isLast) return;
+    if (mobile || isLast) return;
     setMargin((margin) => margin - 135);
   };
   return (
@@ -54,6 +60,8 @@ function Card({ color, desc, pic, proj, isLast }) {
         <chakra.img
           src={pic}
           display='block'
+          w='400px'
+          h='225px'
           maxH='400px'
           maxW='400px'
         />
@@ -77,10 +85,10 @@ function Card({ color, desc, pic, proj, isLast }) {
 function Cards({ adaptiveDisplay, mobile }) {
   return (
     <chakra.div
-      p={mobile ? undefined : '1rem 0 1rem 2rem'}
-      overflowX={mobile ? 'hidden' : 'scroll'}
-      pos='relative'
       gap='1rem'
+      overflowX={mobile ? 'hidden' : 'scroll'}
+      p={mobile ? undefined : '1rem 0 1rem 2rem'}
+      pos='relative'
       sx={{ ...adaptiveDisplay }}>
       {cardData.map((ele, idx) => {
         const { proj, color, desc, pic } = ele;
@@ -90,6 +98,7 @@ function Cards({ adaptiveDisplay, mobile }) {
             key={proj}
             color={color}
             desc={desc}
+            mobile={mobile}
             pic={pic}
             proj={proj}
             isLast={isLast}
@@ -101,8 +110,23 @@ function Cards({ adaptiveDisplay, mobile }) {
 }
 
 function RecentProjects({ mobile }) {
+  const getAfterStyles = () => {
+    if (mobile) return {};
+    return {
+      content: '""',
+      bg: 'white',
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      zIndex: '2',
+      borderRadius: '8px',
+    };
+  };
   return (
     <chakra.div
+      _after={{ ...getAfterStyles() }}
       _before={{
         content: '""',
         bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 76.05%)',
@@ -115,29 +139,19 @@ function RecentProjects({ mobile }) {
         zIndex: '1',
         borderRadius: '12px',
       }}
-      _after={{
-        content: '""',
-        bg: 'white',
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: '100%',
-        zIndex: '2',
-        borderRadius: '8px',
-      }}
-      mt='1rem'
-      flex='0 0 200px'
-      mr={mobile ? '' : '1rem'}
-      pos='relative'
+      alignItems={mobile ? 'center' : undefined}
       display='flex'
+      flex='0 0 200px'
       flexDir='column'
-      justifyContent='flex-end'
+      justifyContent={mobile ? 'center' : 'flex-end'}
+      mt='1rem'
+      mr={mobile ? '' : '1rem'}
       p='1.5rem'
+      pos='relative'
       transform='translateY(-10px)'>
       <chakra.h2
         zIndex='3'
-        color='black.500'
+        color={'black.500'}
         fontWeight='lighter'>
         Recent
         <br />
@@ -152,10 +166,10 @@ function DotBackground() {
     <chakra.div
       bg={`url('/dots.svg') repeat-x center top`}
       color='rgba(35, 33, 41, 0.8)'
-      border='3px #dbf0ff'
+      border='3px #5992b9'
+      overflow='hidden'
       borderStyle='solid hidden hidden solid'
-      pos='relative'
-      maxW='100vw'>
+      pos='relative'>
       <chakra.div
         _after={{
           content: '""',
@@ -172,12 +186,12 @@ function DotBackground() {
 }
 
 export default function About() {
-  const [mobile] = useMediaQuery('(max-width: 800px)');
+  const [mobile] = useMediaQuery('(max-width: 750px)');
   const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
   return (
     <chakra.div
-      boxSizing='border-box'
-      display='grid'
+      display='flex'
+      flexDir='column'
       m='0 0 1rem'
       pl={mobile ? undefined : '30px'}>
       {!mobile && <DotBackground />}

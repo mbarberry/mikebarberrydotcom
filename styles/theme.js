@@ -5,11 +5,12 @@ const theme = extendTheme({
     global: {
       body: {
         fontFamily: 'Poppins',
-        minH: '100vh',
-        display: 'flex',
-        flexDir: 'column',
-        justifyContent: 'space-between',
       },
+    },
+  },
+  colors: {
+    jaggedIce: {
+      300: '#BFE3DD',
     },
   },
 });

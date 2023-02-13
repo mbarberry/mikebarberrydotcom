@@ -1,32 +1,39 @@
+import { useRouter } from 'next/router';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
 import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
 
 export default function Footer() {
-  const [mobile] = useMediaQuery('(max-width: 800px)');
+  const router = useRouter();
+  const [mobile] = useMediaQuery('(max-width: 750x)');
   const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
   return (
     <chakra.footer
-      h={mobile ? '80px' : '100px'}
+      alignItems={mobile ? 'center' : undefined}
       bgColor='#eeeeee'
       bottom='0'
-      pos='absolute'
-      w='100%'
+      h='100px'
       justifyContent={mobile ? 'center' : 'space-between'}
-      alignItems={mobile ? 'center' : undefined}
-      sx={{ ...adaptiveDisplay }}>
-      <chakra.span
-        p={mobile ? undefined : '10px 0px 0px 30px'}
+      pos='absolute'
+      sx={{ ...adaptiveDisplay }}
+      w='100%'>
+      <chakra.p
+        fontSize='small'
         letterSpacing='0.1rem'
-        fontSize='small'>
-        CC Attribution Littlest Tokyo by Glen Fox
-      </chakra.span>
-      <chakra.span
-        p={mobile ? undefined : '10px 30px 0px 0px'}
+        p={mobile ? undefined : '10px 0px 0px 30px'}>
+        {router.pathname === '/'
+          ? 'CC Attribution Littlest Tokyo by Glen Fox '
+          : ' '}
+      </chakra.p>
+      <chakra.div
+        display='flex'
+        justifyContent={mobile ? 'space-around' : undefined}
+        fontWeight='500'
         letterSpacing='0.1rem'
-        fontWeight='500'>
-        2023 &nbsp; &nbsp; mikebarberry.com
-      </chakra.span>
+        p={mobile ? undefined : '10px 30px 0px 0px'}>
+        <chakra.p>2023</chakra.p>
+        <chakra.p pl='10px'>mikebarberry.com</chakra.p>
+      </chakra.div>
     </chakra.footer>
   );
 }

@@ -6,7 +6,7 @@ export default function Message() {
       status='success'
       variant='left-accent'
       pos='absolute'
-      top='-10vh'
+      top='-5vh'
       left='50%'
       transform='translate(-50%)'
       w='auto'>

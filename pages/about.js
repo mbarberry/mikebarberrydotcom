@@ -56,7 +56,7 @@ function RecentProjects({ mobile }) {
       position: 'absolute',
       top: '0',
       left: '0',
-      width: '100%',
+      width: '95%',
       height: '100%',
       zIndex: '2',
       borderRadius: '8px',
@@ -72,10 +72,11 @@ function RecentProjects({ mobile }) {
         position: 'absolute',
         top: '-5px',
         left: '-5px',
-        width: 'calc(100% + 10px)',
+        width: '100%',
         height: 'calc(100% + 10px)',
         zIndex: '1',
         borderRadius: '12px',
+        maxWidth: '100%',
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'
@@ -83,7 +84,7 @@ function RecentProjects({ mobile }) {
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}
       mt='1rem'
-      mr={mobile ? '' : '1rem'}
+      mr={mobile ? '' : '.5rem'}
       p='1.5rem'
       transform='translateY(-10px)'>
       <chakra.h2
@@ -115,8 +116,8 @@ function Card({ color, desc, isLast, mobile, initialMargin, pic, proj }) {
       onMouseLeave={handleMouseLeave}
       maxW={mobile ? '450px' : undefined}>
       <chakra.article
-        _hover={{ transform: 'rotate(0.01turn)' }}
-        sx={{ transition: 'margin 0.2s' }}
+        _hover={{ transform: mobile ? 'scale(1.05)' : 'rotate(0.01turn)' }}
+        sx={{ transition: mobile ? undefined : 'margin 0.2s' }}
         p='1.5rem'
         borderRadius='16px'
         background='linear-gradient(85deg, #ffffff, #d6d6d6)'
@@ -174,7 +175,6 @@ function Cards({ mobile }) {
             pic={pic}
             proj={proj}
             isLast={isLast}
-            zIndex={idx}
           />
         );
       })}
@@ -194,7 +194,8 @@ export default function About() {
       {!mobile && <DotBackground />}
       <chakra.div
         display='flex'
-        flexDir={mobile ? 'column' : undefined}>
+        flexDir={mobile ? 'column' : undefined}
+        maxWidth={'100vw'}>
         <RecentProjects mobile={mobile} />
         <Cards
           mobile={mobile}

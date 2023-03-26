@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+
+let mixer;
 
 export default function Home() {
   const refContainer = useRef(null);
@@ -12,12 +15,13 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
   const [renderer, setRenderer] = useState(null);
-
   useEffect(() => {
     let req = null;
     const { current: container } = refContainer;
 
     const createRenderer = async () => {
+      const clock = new THREE.Clock();
+
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -52,10 +56,12 @@ export default function Home() {
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
+      let req = null;
+
       const animate = () => {
         req = requestAnimationFrame(animate);
-        const delta = clockRef.current.getDelta();
-        mixerRef.current.update(delta);
+        const delta = clock.getDelta();
+        mixer.update(delta - delta * 0.3);
         controls.update();
         renderer.render(scene, camera);
       };
@@ -70,13 +76,13 @@ export default function Home() {
         model.scale.set(0.01, 0.01, 0.01);
         scene.add(model);
 
-        mixerRef.current = new THREE.AnimationMixer(model);
-        mixerRef.current.clipAction(gltf.animations[0]).play();
+        mixer = new THREE.AnimationMixer(model);
+        mixer.clipAction(gltf.animations[0]).play().setEffectiveTimeScale(0.7);
 
         animate();
         setLoading(false);
       } catch (err) {
-        console.log(`Error loading the model: ${err}`);
+        console.error(`Error loading the model: ${err}`);
       }
 
       window.onresize = () => {
@@ -90,7 +96,6 @@ export default function Home() {
         renderer.dispose();
       };
     };
-
     if (container && !renderer) {
       createRenderer();
     }

@@ -1,0 +1,40 @@
+<svg width="1105" height="219" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity=".5" clip-path="url(#clip0)">
+    <circle cx="216" cy="78.002" fill="#90CDF9" r="16"/>
+    <circle cx="296" cy="-2" transform="rotate(-180 296 -2)" fill="#DBF0FF" r="16"/>
+    <circle cx="176" cy="-1.996" r="16" fill="#DBF0FF"/>
+    <circle cx="176" cy="118.002" fill="#DBF0FF" r="16"/>
+    <circle cx="336" cy="-2" transform="rotate(-180 336 -2)" fill="#DBF0FF" r="16"/>
+    <circle cx="416" cy="118.004" fill="#DBF0FF" r="16"/>
+    <circle cx="96" cy="-2" transform="rotate(-180 96 -2)" fill="#fff" r="16"/>
+    <circle cx="336" cy="78.004" fill="#fff" r="16"/>
+    <circle cx="56" cy="-2" transform="rotate(-180 56 -2)" fill="#DBF0FF" r="16"/>
+    <circle cx="376" cy="78.004" fill="#90CDF9" r="16"/>
+    <circle cx="376" cy="118.004" fill="#DBF0FF" r="16"/>
+    <circle cx="136" cy="118.002" fill="#90CDF9" r="16"/>
+    <circle cx="96" cy="77" fill="#DBF0FF" r="16"/>
+    <circle cx="56" cy="77.004" fill="#DBF0FF" r="16"/>
+  </g>
+  <g opacity=".5">
+    <circle cx="844" cy="-3" transform="rotate(-180 844 -3)" fill="#fff" r="16"/>
+    <circle cx="804" cy="78.002" fill="#fff" r="16"/>
+    <circle cx="884" cy="-2" transform="rotate(-180 884 -2)" fill="#DBF0FF" r="16"/>
+    <circle cx="764" cy="37.004" r="16" fill="#DBF0FF"/>
+    <circle cx="764" cy="118.002" fill="#DBF0FF" r="16"/>
+    <circle cx="884" cy="37" transform="rotate(-180 884 37)" fill="#fff" r="16"/>
+    <circle cx="724" cy="37" fill="#90CDF9" r="16"/>
+    <circle cx="644" cy="37" transform="rotate(-180 644 37)" fill="#DBF0FF" r="16"/>
+    <circle cx="1004" cy="77" fill="#DBF0FF" r="16"/>
+    <circle cx="684" cy="-2" transform="rotate(-180 684 -2)" fill="#fff" r="16"/>
+    <circle cx="924" cy="37" fill="#DBF0FF" r="16"/>
+    <circle cx="964" cy="-3" fill="#90CDF9" r="16"/>
+    <circle cx="964" cy="157" fill="#DBF0FF" r="16"/>
+    <circle cx="724" cy="118.002" fill="#fff" r="16"/>
+    <circle cx="644" cy="77" fill="#DBF0FF" r="16"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <path fill="#fff" transform="translate(0 -139)" d="M0 0h517v358H0z"/>
+    </clipPath>
+  </defs>
+</svg>

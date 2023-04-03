@@ -95,6 +95,7 @@ export default function Animation({ setLoading, refContainer }) {
         renderer.dispose();
         window.rendererCreated = false;
       }
+      window.onresize = null;
     };
   }, []);
 

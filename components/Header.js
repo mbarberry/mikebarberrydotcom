@@ -44,6 +44,7 @@ function HeaderList({ mobile }) {
     <chakra.ul
       sx={{
         marginTop: mobile ? '5px' : undefined,
+        paddingLeft: '30px',
         justifyContent: mobile ? 'center' : undefined,
         listStyle: 'none',
         ...adaptiveDisplay,

@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for MikeBarberry.com
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 128
+
+Parameters:
+  CertificateArn:
+    Type: String
+    Default: '{{resolve:ssm:CertificateArn:1}}'
+  HostedZoneId:
+    Type: String
+    Default: '{{resolve:ssm:HostedZoneId:1}}'
+
+Resources:
+  MikeBarberryAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: Mike-Barberry-Dot-Com
+      Description: Personal Website
+      StageName: main
+      EndpointConfiguration: REGIONAL
+      BinaryMediaTypes:
+        - '*'
+      Domain:
+        DomainName: mikebarberry.com
+        CertificateArn:
+          Ref: CertificateArn
+        EndpointConfiguration: REGIONAL
+        Route53:
+          HostedZoneId:
+            Ref: HostedZoneId
+
+  MarvelCharactersNextFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      DockerTag: nodejs18.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
+    Properties:
+      Environment:
+        Variables:
+          NODE_ENV: production
+      PackageType: Image
+      Architectures:
+        - x86_64
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MikeBarberryAPI
+            Path: /
+            Method: ANY
+        ProxyPlus:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MikeBarberryAPI
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  MarvelCharactersNextApi:
+    Description: 'API Gateway endpoint URL'
+    Value: 'https://mikebarberry.com'

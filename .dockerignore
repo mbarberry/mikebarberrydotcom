@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+.aws-sam
+.next
+Dockerfile
+Dockerfile.local
+events
+.dockerignore
+.eslintrc.json
+.gitignore
+.git 
+README.md
+samconfig.toml
+template.yaml
+config.js

@@ -5,6 +5,12 @@ import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
 
 const cardData = [
   {
+    color: 'blue.500',
+    desc: 'Next.js, Node.js, AWS CloudFormation / ECS, Docker',
+    pic: '/fluhub.png',
+    proj: 'FluHub',
+  },
+  {
     color: 'purple.500',
     desc: 'React.js, Node.js, Express.js, MySQL',
     pic: '/peerrx.png',
@@ -168,7 +174,7 @@ function Cards({ mobile }) {
         return (
           <Card
             mobile={mobile}
-            margin={mobile || isLast ? 0 : -130}
+            initialMargin={mobile || isLast ? 0 : -130}
             key={proj}
             color={color}
             desc={desc}

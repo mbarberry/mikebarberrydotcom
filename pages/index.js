@@ -8,6 +8,7 @@ import { triggerFireworks, lambdaURL } from '../utils';
 
 export default function Index() {
   const refContainer = useRef(null);
+
   const [loading, setLoading] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
 
@@ -31,7 +32,7 @@ export default function Index() {
 
   return (
     <div
-      style={{ height: '100vh', width: '100vw', position: 'relative' }}
+      style={{ height: '100vh', width: '100%', position: 'relative' }}
       ref={refContainer}>
       {loading && <Loading />}
       {showMessage && <Message />}

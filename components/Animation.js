@@ -5,24 +5,28 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
+function getRects(container) {
+  return [
+    container.getClientRects()[0].width,
+    container.getClientRects()[0].height,
+  ];
+}
+
 export default function Animation({ setLoading, refContainer }) {
   const mixerRef = useRef(null);
   const clockRef = useRef(new THREE.Clock());
-
-  const [renderer, setRenderer] = useState(null);
+  const reqRef = useRef(null);
 
   useEffect(() => {
-    let req = null;
     const { current: container } = refContainer;
 
     const createRenderer = async () => {
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(getRects(container)[0], getRects(container)[1]);
       renderer.outputEncoding = THREE.sRGBEncoding;
       container.appendChild(renderer.domElement);
-      setRenderer(renderer);
-      window.rendererCreated = true;
+      window.renderer = renderer;
 
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xbfe3dd);
@@ -52,7 +56,7 @@ export default function Animation({ setLoading, refContainer }) {
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
       const animate = () => {
-        req = requestAnimationFrame(animate);
+        reqRef.current = requestAnimationFrame(animate);
         const delta = clockRef.current.getDelta();
         mixerRef.current.update(delta);
         controls.update();
@@ -81,19 +85,18 @@ export default function Animation({ setLoading, refContainer }) {
       window.onresize = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(getRects(container)[0], getRects(container)[1]);
       };
     };
 
-    if (!window.rendererCreated) {
+    if (!window.renderer) {
       createRenderer();
     }
 
     return () => {
-      if (renderer) {
-        cancelAnimationFrame(req);
-        renderer.dispose();
-        window.rendererCreated = false;
+      if (reqRef.current) {
+        cancelAnimationFrame(reqRef.current);
+        window.renderer = null;
       }
       window.onresize = null;
     };

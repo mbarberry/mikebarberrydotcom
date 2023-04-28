@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for Marvel Characters Next Project
+Description: SAM Template for MikeBarberry.com
 
 Globals:
   Function:
@@ -16,17 +16,17 @@ Parameters:
     Default: '{{resolve:ssm:HostedZoneId:1}}'
 
 Resources:
-  MarvelCharactersNextApi:
+  MikeBarberryAPI:
     Type: AWS::Serverless::Api
     Properties:
-      Name: Marvel-Characters-Api
-      Description: API for Marvel Characters
+      Name: Mike-Barberry-Dot-Com
+      Description: Personal Website
       StageName: main
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
         - '*'
       Domain:
-        DomainName: marvel-characters.link
+        DomainName: mikebarberry.com
         CertificateArn:
           Ref: CertificateArn
         EndpointConfiguration: REGIONAL
@@ -52,18 +52,18 @@ Resources:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MarvelCharactersNextApi
+              Ref: MikeBarberryAPI
             Path: /
             Method: ANY
         ProxyPlus:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MarvelCharactersNextApi
+              Ref: MikeBarberryAPI
             Path: /{proxy+}
             Method: ANY
 
 Outputs:
   MarvelCharactersNextApi:
     Description: 'API Gateway endpoint URL'
-    Value: 'https://marvel-characters.link'
+    Value: 'https://mikebarberry.com'

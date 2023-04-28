@@ -3,7 +3,6 @@ FROM amazon/aws-lambda-nodejs:18 AS builder
 WORKDIR /var/task
 
 COPY ./package*.json ./
-COPY ./utils ./utils
 
 RUN npm install --omit=dev
 RUN npm install sharp

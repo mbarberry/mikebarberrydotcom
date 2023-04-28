@@ -168,7 +168,7 @@ function Cards({ mobile }) {
         return (
           <Card
             mobile={mobile}
-            margin={mobile || isLast ? 0 : -130}
+            initialMargin={mobile || isLast ? 0 : -130}
             key={proj}
             color={color}
             desc={desc}

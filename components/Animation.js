@@ -1,24 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef, useState } from 'react';
+import { chakra } from '@chakra-ui/react';
+
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-function getRects(container) {
-  return [
-    container.getClientRects()[0].width,
-    container.getClientRects()[0].height,
-  ];
-}
+import Loading from '../components/Loading';
+import { getRects } from '../utils';
 
-export default function Animation({ setLoading, refContainer }) {
-  const mixerRef = useRef(null);
+const Animation = forwardRef(function Animation({ loading, setLoading }, ref) {
   const clockRef = useRef(new THREE.Clock());
-  const reqRef = useRef(null);
+  const mixerRef = useRef(null);
+  const frameRef = useRef(null);
 
   useEffect(() => {
-    const { current: container } = refContainer;
+    const { current: container } = ref;
 
     const createRenderer = async () => {
       const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -56,7 +54,7 @@ export default function Animation({ setLoading, refContainer }) {
       dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 
       const animate = () => {
-        reqRef.current = requestAnimationFrame(animate);
+        frameRef.current = requestAnimationFrame(animate);
         const delta = clockRef.current.getDelta();
         mixerRef.current.update(delta);
         controls.update();
@@ -94,13 +92,23 @@ export default function Animation({ setLoading, refContainer }) {
     }
 
     return () => {
-      if (reqRef.current) {
-        cancelAnimationFrame(reqRef.current);
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
         window.renderer = null;
       }
       window.onresize = null;
     };
   }, []);
 
-  return;
-}
+  return (
+    <chakra.div
+      h='100%'
+      w='100%'
+      pos='relative'
+      ref={ref}>
+      {loading && <Loading />}
+    </chakra.div>
+  );
+});
+
+export default Animation;

@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from 'react';
+import { chakra } from '@chakra-ui/react';
 
-import Loading from '../components/Loading';
 import Animation from '../components/Animation';
 import Message from '../components/Message';
 
 import { triggerFireworks, lambdaURL } from '../utils';
 
 export default function Index() {
-  const refContainer = useRef(null);
+  const ref = useRef(null);
 
   const [loading, setLoading] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
@@ -31,15 +31,13 @@ export default function Index() {
   }, [loading]);
 
   return (
-    <div
-      style={{ height: '100vh', width: '100%', position: 'relative' }}
-      ref={refContainer}>
-      {loading && <Loading />}
+    <chakra.div h='100vh'>
       {showMessage && <Message />}
       <Animation
+        loading={loading}
         setLoading={setLoading}
-        refContainer={refContainer}
+        ref={ref}
       />
-    </div>
+    </chakra.div>
   );
 }

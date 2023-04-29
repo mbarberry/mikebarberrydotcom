@@ -8,9 +8,11 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import Loading from '../components/Loading';
-import { getRects } from '../utils';
 
-const Animation = forwardRef(function Animation({ loading, setLoading }, ref) {
+const Animation = forwardRef(function Animation(
+  { loading, setLoading, calcDimensions },
+  ref
+) {
   const clockRef = useRef(new THREE.Clock());
   const mixerRef = useRef(null);
   const frameRef = useRef(null);
@@ -19,9 +21,10 @@ const Animation = forwardRef(function Animation({ loading, setLoading }, ref) {
     const { current: container } = ref;
 
     const createRenderer = async () => {
+      const { width, height } = calcDimensions();
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(getRects(container)[0], getRects(container)[1]);
+      renderer.setSize(width, height);
       renderer.outputEncoding = THREE.sRGBEncoding;
       container.appendChild(renderer.domElement);
       window.renderer = renderer;
@@ -81,9 +84,10 @@ const Animation = forwardRef(function Animation({ loading, setLoading }, ref) {
       }
 
       window.onresize = () => {
+        const { width, height } = calcDimensions();
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(getRects(container)[0], getRects(container)[1]);
+        renderer.setSize(width, height);
       };
     };
 

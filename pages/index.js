@@ -4,10 +4,15 @@ import { chakra } from '@chakra-ui/react';
 import Animation from '../components/Animation';
 import Message from '../components/Message';
 
-import { triggerFireworks, lambdaURL } from '../utils';
+import { triggerFireworks, lambdaURL, getRects } from '../utils';
 
 export default function Index() {
   const ref = useRef(null);
+
+  const calcDimensions = () => {
+    const [width, height] = getRects(ref.current);
+    return { width, height };
+  };
 
   const [loading, setLoading] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
@@ -36,6 +41,7 @@ export default function Index() {
       <Animation
         loading={loading}
         setLoading={setLoading}
+        calcDimensions={calcDimensions}
         ref={ref}
       />
     </chakra.div>

@@ -1,12 +1,16 @@
 {
   "name": "mikebarberry.com-three",
-  "version": "0.1.0",
+  "author": "Mike Barberry",
+  "version": "2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "engines": {
+    "node": "^18"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.4.9",
@@ -16,6 +20,7 @@
     "@next/font": "13.1.1",
     "@types/three": "^0.148.0",
     "canvas-confetti": "^1.4.0",
+    "darkreader": "^4.9.58",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "framer-motion": "^8.5.2",

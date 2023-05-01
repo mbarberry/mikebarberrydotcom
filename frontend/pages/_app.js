@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import Head from 'next/head';
 
@@ -10,6 +11,11 @@ import '@fontsource/poppins/500.css';
 import 'normalize.css/normalize.css';
 
 export default function App({ Component, pageProps }) {
+  useEffect(() => {
+    import('darkreader').then((dr) =>
+      dr.enable({ brightness: 100, contrast: 90, sepia: 10 })
+    );
+  }, []);
   return (
     <ChakraProvider theme={theme}>
       <Head>

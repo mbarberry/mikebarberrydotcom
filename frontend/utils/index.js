@@ -1,5 +1,4 @@
-export const lambdaURL =
-  'https://n7ar1nz8xj.execute-api.us-west-2.amazonaws.com/main/logVisit';
+export const lambdaURL = 'https://api.mikebarberry.com/';
 
 export const getRects = (container) => {
   return [

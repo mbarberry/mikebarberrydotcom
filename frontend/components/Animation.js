@@ -7,7 +7,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import Loading from '../components/Loading';
+import Loading from './Loading';
 
 const Animation = forwardRef(function Animation(
   { loading, setLoading, calcDimensions },

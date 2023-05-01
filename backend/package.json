@@ -1,0 +1,23 @@
+{
+  "version": "2.0",
+  "name": "mikebarberrydotcom-lambda",
+  "author": "Mike Barberry",
+  "private": true,
+  "engines": {
+    "node": "^18"
+  },
+  "scripts": {
+    "buildprod": "CONFIG_ENV=prod npm run fullbuild",
+    "fullbuild": "npm run docker:login && npm run docker:build && npm run docker:push && npm run sam",
+    "docker:login": "set-env -e -- 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ECR_ID.dkr.ecr.us-west-2.amazonaws.com'",
+    "docker:build": "set-env -e -u -- 'docker build -t $ECR_ID.dkr.ecr.us-west-2.amazonaws.com/mikebarberrydotcom:$BUILD_ID .'",
+    "docker:push": "set-env -e -i -- 'docker push $ECR_ID.dkr.ecr.us-west-2.amazonaws.com/mikebarberrydotcom:$BUILD_ID'",
+    "sam": "sam build && sam deploy --config-env=prod"
+  },
+  "dependencies": {
+    "mongodb": "^5.3.0"
+  },
+  "devDependencies": {
+    "set-env": "file:utils/set-env-1.3.tgz"
+  }
+}

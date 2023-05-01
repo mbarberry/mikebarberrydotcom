@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for MikeBarberry.com
+Description: MikeBarberryDotCom SAM Template
 
 Globals:
   Function:
@@ -8,62 +8,75 @@ Globals:
     MemorySize: 128
 
 Parameters:
-  CertificateArn:
+  CertificateARN:
     Type: String
-    Default: '{{resolve:ssm:CertificateArn:1}}'
-  HostedZoneId:
+  HostedZoneID:
     Type: String
-    Default: '{{resolve:ssm:HostedZoneId:1}}'
+  ImageRepo:
+    Type: String
+  MongoURI:
+    Type: String
+  APIKey:
+    Type: String
+  BuildID:
+    Type: String
 
 Resources:
-  MikeBarberryAPI:
+  MikeBarberryDotComAPI:
     Type: AWS::Serverless::Api
     Properties:
-      Name: Mike-Barberry-Dot-Com
-      Description: Personal Website
+      Name: MikeBarberryDotCom
+      Description: Log Visits
       StageName: main
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
         - '*'
       Domain:
-        DomainName: mikebarberry.com
+        DomainName: api.mikebarberry.com
         CertificateArn:
-          Ref: CertificateArn
+          Ref: CertificateARN
         EndpointConfiguration: REGIONAL
         Route53:
           HostedZoneId:
-            Ref: HostedZoneId
+            Ref: HostedZoneID
 
-  MarvelCharactersNextFunction:
+  MikeBarberryDotComLambda:
     Type: AWS::Serverless::Function
     Metadata:
       DockerTag: nodejs18.x-v1
       DockerContext: .
       Dockerfile: Dockerfile
     Properties:
+      FunctionName: MikeBarberryDotCom
       Environment:
         Variables:
           NODE_ENV: production
+          MONGO_URI:
+            Ref: MongoURI
+          API_KEY:
+            Ref: APIKey
       PackageType: Image
       Architectures:
         - x86_64
+      ImageUri:
+        Fn::Sub: ${ImageRepo}:${BuildID}
       Events:
         Root:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MikeBarberryAPI
+              Ref: MikeBarberryDotComAPI
             Path: /
             Method: ANY
         ProxyPlus:
           Type: Api
           Properties:
             RestApiId:
-              Ref: MikeBarberryAPI
+              Ref: MikeBarberryDotComAPI
             Path: /{proxy+}
             Method: ANY
 
 Outputs:
-  MarvelCharactersNextApi:
-    Description: 'API Gateway endpoint URL'
-    Value: 'https://mikebarberry.com'
+  MikeBarberryDotComLambda:
+    Description: 'API root URL'
+    Value: 'https://api.mikebarberry.com/'

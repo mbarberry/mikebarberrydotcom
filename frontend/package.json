@@ -19,16 +19,18 @@
     "@emotion/styled": "^11.10.5",
     "@fontsource/poppins": "^4.5.10",
     "@next/font": "13.1.1",
-    "@types/three": "^0.148.0",
     "canvas-confetti": "^1.4.0",
     "darkreader": "^4.9.58",
-    "eslint": "8.31.0",
-    "eslint-config-next": "13.1.1",
     "framer-motion": "^8.5.2",
     "next": "13.1.1",
     "normalize.css": "^8.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "three": "^0.134.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.152.0",
+    "eslint": "^8.40.0",
+    "eslint-config-next": "^13.4.1"
   }
 }

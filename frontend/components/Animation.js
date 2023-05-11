@@ -1,4 +1,4 @@
-import { useEffect, useRef, forwardRef, useState } from 'react';
+import { useEffect, useRef, forwardRef } from 'react';
 import { chakra } from '@chakra-ui/react';
 
 import * as THREE from 'three';
@@ -102,6 +102,7 @@ const Animation = forwardRef(function Animation(
       }
       window.onresize = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

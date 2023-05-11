@@ -23,7 +23,7 @@ function HeaderItem({ color, children, mobile, path = null }) {
 
   useEffect(() => {
     setActive(router.pathname === path);
-  }, [router.pathname]);
+  }, [router.pathname, path]);
 
   return (
     <chakra.li

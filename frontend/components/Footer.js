@@ -10,6 +10,7 @@ export default function Footer() {
       bgColor='#eeeeee'
       bottom='0'
       display='flex'
+      gap={mobile ? '30px' : undefined}
       h='100px'
       justifyContent={mobile ? 'center' : 'space-between'}
       pos='absolute'

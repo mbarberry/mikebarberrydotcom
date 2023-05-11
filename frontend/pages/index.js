@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { chakra } from '@chakra-ui/react';
 
-import Animation from '../components/Animation';
-import Message from '../components/Message';
+import Animation from '#/components/Animation';
+import Message from '#/components/Message';
 
-import { triggerFireworks, lambdaURL, getRects } from '../utils';
+import { triggerFireworks, lambdaURL, getRects } from '#/utils';
 
 export default function Index() {
   const ref = useRef(null);

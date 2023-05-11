@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
-import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
+import { sharedAdaptiveDisplay } from '#/styles/sharedStyles';
 
 function HeaderItem({ color, children, mobile, path = null }) {
   const [active, setActive] = useState(false);
@@ -44,7 +44,7 @@ function HeaderList({ mobile }) {
     <chakra.ul
       sx={{
         marginTop: mobile ? '5px' : undefined,
-        paddingLeft: '30px',
+        paddingLeft: mobile ? undefined : '30px',
         justifyContent: mobile ? 'center' : undefined,
         listStyle: 'none',
         ...adaptiveDisplay,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
-import { sharedAdaptiveDisplay } from '../styles/sharedStyles';
+import { sharedAdaptiveDisplay } from '#/styles/sharedStyles';
 
 const cardData = [
   {
@@ -76,10 +76,10 @@ function RecentProjects({ mobile }) {
         bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 76.05%)',
         opacity: '0.6',
         position: 'absolute',
-        top: '-5px',
+        top: mobile ? '40px' : '-5px',
         left: '-5px',
         width: '100%',
-        height: 'calc(100% + 10px)',
+        height: mobile ? '100px' : 'calc(100% + 10px)',
         zIndex: '1',
         borderRadius: '12px',
         maxWidth: '100%',
@@ -90,9 +90,9 @@ function RecentProjects({ mobile }) {
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}
       mt='1rem'
-      mr={mobile ? '' : '.5rem'}
+      mr={mobile ? undefined : '.5rem'}
       p='1.5rem'
-      transform='translateY(-10px)'>
+      transform={mobile ? 'translateY(-40px)' : 'translateY(-10px)'}>
       <chakra.h2
         zIndex='3'
         color={'black.500'}
@@ -201,7 +201,7 @@ export default function About() {
       <chakra.div
         display='flex'
         flexDir={mobile ? 'column' : undefined}
-        maxWidth={'100vw'}>
+        maxWidth={'100%'}>
         <RecentProjects mobile={mobile} />
         <Cards
           mobile={mobile}

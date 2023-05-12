@@ -1,10 +1,10 @@
 export const lambdaURL = 'https://api.mikebarberry.com/';
 
 export const getRects = (container) => {
-  return [
-    container.getClientRects()[0].width,
-    container.getClientRects()[0].height,
-  ];
+  return {
+    width: container.getClientRects()[0].width,
+    height: container.getClientRects()[0].height,
+  };
 };
 
 export const randomInRange = (min, max) => {

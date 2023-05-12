@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
-
-import { sharedAdaptiveDisplay } from '#/styles/sharedStyles';
 
 const cardData = [
   {
@@ -190,7 +188,6 @@ function Cards({ mobile }) {
 
 export default function About() {
   const [mobile] = useMediaQuery('(max-width: 750px)');
-  const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
   return (
     <chakra.div
       display='flex'
@@ -203,10 +200,7 @@ export default function About() {
         flexDir={mobile ? 'column' : undefined}
         maxWidth={'100%'}>
         <RecentProjects mobile={mobile} />
-        <Cards
-          mobile={mobile}
-          adaptiveDisplay={adaptiveDisplay}
-        />
+        <Cards mobile={mobile} />
       </chakra.div>
     </chakra.div>
   );

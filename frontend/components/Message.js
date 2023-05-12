@@ -7,6 +7,7 @@ export default function Message() {
       variant='left-accent'
       pos='absolute'
       top='7'
+      opacity='90%'
       left='50%'
       transform='translate(-50%)'
       w='auto'>

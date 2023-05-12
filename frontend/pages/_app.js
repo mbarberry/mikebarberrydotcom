@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
 import Head from 'next/head';
 
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }) {
       dr.enable({ brightness: 100, contrast: 90, sepia: 10 })
     );
   }, []);
+
   return (
     <ChakraProvider theme={theme}>
       <Head>

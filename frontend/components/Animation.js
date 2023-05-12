@@ -1,5 +1,5 @@
 import { useEffect, useRef, forwardRef } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, useTheme } from '@chakra-ui/react';
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
@@ -17,6 +17,9 @@ const Animation = forwardRef(function Animation(
   const mixerRef = useRef(null);
   const frameRef = useRef(null);
 
+  const theme = useTheme();
+  const themeColor = theme.colors.jaggedIce[300];
+
   useEffect(() => {
     const { current: container } = ref;
 
@@ -30,7 +33,7 @@ const Animation = forwardRef(function Animation(
       window.renderer = renderer;
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xbfe3dd);
+      scene.background = new THREE.Color(themeColor);
       scene.environment = new THREE.PMREMGenerator(renderer).fromScene(
         new RoomEnvironment(),
         0.04

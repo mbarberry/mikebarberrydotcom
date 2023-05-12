@@ -1,69 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
-import { sharedAdaptiveDisplay } from '#/styles/sharedStyles';
-
-function HeaderItem({ color, children, mobile, path = null }) {
-  const [active, setActive] = useState(false);
-  const router = useRouter();
-
-  const handleClick = () => {
-    if (path) router.push(path);
-  };
-  const getMobileStyles = () => {
-    const styles = {};
-    if (mobile) {
-      styles.display = 'flex';
-      styles.justifyContent = 'center';
-      styles.alignItems = 'center';
-    }
-    return styles;
-  };
-
-  useEffect(() => {
-    setActive(router.pathname === path);
-  }, [router.pathname, path]);
-
+function HeaderItem({ color, active, handleClick, children }) {
+  const [mobile] = useMediaQuery('(max-width: 750px)');
   return (
     <chakra.li
       _hover={{ cursor: 'pointer', bgColor: color }}
       bgColor={active ? color : undefined}
       borderRadius='10px'
       p='15px 30px 15px 30px'
-      onClick={handleClick}
-      sx={{ ...getMobileStyles() }}>
+      onClick={handleClick && handleClick}
+      sx={
+        mobile
+          ? { display: 'flex', justifyContent: 'center', alignItems: 'center' }
+          : {}
+      }>
       {children}
     </chakra.li>
   );
 }
 
 function HeaderList({ mobile }) {
-  const adaptiveDisplay = sharedAdaptiveDisplay(mobile);
+  const [active, setActive] = useState(0);
+  const router = useRouter();
   return (
     <chakra.ul
       sx={{
         marginTop: mobile ? '5px' : undefined,
         paddingLeft: mobile ? undefined : '30px',
         justifyContent: mobile ? 'center' : undefined,
+        display: mobile ? 'grid' : 'flex',
         listStyle: 'none',
-        ...adaptiveDisplay,
       }}>
       <HeaderItem
         color='#E7E2CA'
-        mobile={mobile}
-        path='/'>
+        active={active === 0}
+        handleClick={() => {
+          setActive(0);
+          router.push('/');
+        }}>
         Home
       </HeaderItem>
       <HeaderItem
         color='#CADEE7'
-        mobile={mobile}
-        path='/about'>
+        active={active === 1}
+        handleClick={() => {
+          setActive(1);
+          router.push('/about');
+        }}>
         About
       </HeaderItem>
-      <HeaderItem
-        color='#CAE7D4'
-        mobile={mobile}>
+      <HeaderItem color='#CAE7D4'>
         <a
           href='/Mike_Barberry_Resume_Current.pdf'
           target='_blank'>
@@ -72,13 +60,10 @@ function HeaderList({ mobile }) {
       </HeaderItem>
       <HeaderItem
         color='#E7CADE'
-        mobile={mobile}
-        path='mailto:mikebarberry@protonmail.com'>
+        handleClick={() => router.push('mailto:mikebarberry@protonmail.com')}>
         Contact
       </HeaderItem>
-      <HeaderItem
-        color='#E7D4CA'
-        mobile={mobile}>
+      <HeaderItem color='#E7D4CA'>
         <a
           href='https://mikebarberry.medium.com/'
           target='_blank'

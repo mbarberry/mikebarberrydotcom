@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, useDisclosure } from '@chakra-ui/react';
 
 import Animation from '#/components/Animation';
 import Message from '#/components/Message';
@@ -9,13 +9,14 @@ import { triggerFireworks, lambdaURL, getRects } from '#/utils';
 export default function Index() {
   const ref = useRef(null);
 
-  const calcDimensions = () => {
-    const [width, height] = getRects(ref.current);
-    return { width, height };
-  };
-
   const [loading, setLoading] = useState(true);
-  const [showMessage, setShowMessage] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onOpen: () => {
+      setTimeout(() => {
+        onClose();
+      }, 5000);
+    },
+  });
 
   useEffect(() => {
     const oneDay = 86400000;
@@ -27,21 +28,19 @@ export default function Index() {
         triggerFireworks();
         window.localStorage.setItem('fireworks', now);
         fetch(lambdaURL);
-        setShowMessage(true);
-        setTimeout(() => {
-          setShowMessage(false);
-        }, 5000);
+        onOpen();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (
     <chakra.div h='100vh'>
-      {showMessage && <Message />}
+      {isOpen && <Message />}
       <Animation
         loading={loading}
         setLoading={setLoading}
-        calcDimensions={calcDimensions}
+        calcDimensions={() => getRects(ref.current)}
         ref={ref}
       />
     </chakra.div>

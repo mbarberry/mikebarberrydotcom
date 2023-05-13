@@ -1,7 +1,7 @@
 import confetti from 'canvas-confetti';
 import { randomInRange } from '.';
 
-export default function triggerFireworks() {
+export default function fireworkDisplay() {
   const duration = 5 * 1000;
   const animationEnd = Date.now() + duration;
   const defaults = {

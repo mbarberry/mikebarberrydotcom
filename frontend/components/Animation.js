@@ -7,10 +7,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import Loading from './Loading';
-
 const Animation = forwardRef(function Animation(
-  { loading, setLoading, calcDimensions },
+  { setLoading, calcDimensions },
   ref
 ) {
   const clockRef = useRef(new THREE.Clock());
@@ -56,19 +54,10 @@ const Animation = forwardRef(function Animation(
       controls.maxPolarAngle = 1.5;
       controls.update();
 
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
-
-      const animate = () => {
-        frameRef.current = requestAnimationFrame(animate);
-        const delta = clockRef.current.getDelta();
-        mixerRef.current.update(delta);
-        controls.update();
-        renderer.render(scene, camera);
-      };
-
-      const loader = new GLTFLoader();
-      loader.setDRACOLoader(dracoLoader);
+      const dracoLoader = new DRACOLoader().setDecoderPath(
+        'https://www.gstatic.com/draco/v1/decoders/'
+      );
+      const loader = new GLTFLoader().setDRACOLoader(dracoLoader);
 
       try {
         const gltf = await loader.loadAsync('/LittlestTokyo.glb');
@@ -79,6 +68,14 @@ const Animation = forwardRef(function Animation(
 
         mixerRef.current = new THREE.AnimationMixer(model);
         mixerRef.current.clipAction(gltf.animations[0]).play();
+
+        const animate = () => {
+          frameRef.current = requestAnimationFrame(animate);
+          const delta = clockRef.current.getDelta();
+          mixerRef.current.update(delta);
+          controls.update();
+          renderer.render(scene, camera);
+        };
 
         animate();
         setLoading(false);
@@ -105,7 +102,6 @@ const Animation = forwardRef(function Animation(
       }
       window.onresize = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -113,9 +109,7 @@ const Animation = forwardRef(function Animation(
       h='100%'
       w='100%'
       pos='relative'
-      ref={ref}>
-      {loading && <Loading />}
-    </chakra.div>
+      ref={ref}></chakra.div>
   );
 });
 

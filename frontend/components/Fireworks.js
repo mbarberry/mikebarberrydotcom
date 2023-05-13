@@ -1,0 +1,26 @@
+import { useEffect } from 'react';
+import { useDisclosure } from '@chakra-ui/react';
+import Message from './Message';
+import { triggerFireworks, shouldShowFireworks, lambdaURL } from '#/utils';
+
+export default function Fireworks({ ready }) {
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onOpen: () => {
+      setTimeout(() => {
+        onClose();
+      }, 5000);
+    },
+  });
+
+  useEffect(() => {
+    const lastFireworkDisplay = window.localStorage.getItem('fireworks');
+    if (ready && shouldShowFireworks({ lastFireworkDisplay })) {
+      window.localStorage.setItem('fireworks', Date.now());
+      onOpen();
+      triggerFireworks();
+      fetch(lambdaURL);
+    }
+  }, [ready]);
+
+  return isOpen && <Message />;
+}

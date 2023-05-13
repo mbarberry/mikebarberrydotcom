@@ -1,3 +1,5 @@
+export { default as triggerFireworks } from './triggerFireworks';
+
 export const lambdaURL = 'https://api.mikebarberry.com/';
 
 export const getRects = (container) => {
@@ -11,4 +13,7 @@ export const randomInRange = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-export { default as triggerFireworks } from './triggerFireworks';
+export const shouldShowFireworks = ({ lastFireworkDisplay }) => {
+  const oneDay = 86400000;
+  return !lastFireworkDisplay || lastFireworkDisplay < Date.now() - oneDay;
+};

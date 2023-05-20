@@ -15,9 +15,9 @@ export default function Fireworks({ ready }) {
   useEffect(() => {
     const lastFireworkDisplay = window.localStorage.getItem('fireworks');
     if (ready && shouldShowFireworks({ lastFireworkDisplay })) {
-      window.localStorage.setItem('fireworks', Date.now());
-      onOpen();
       triggerFireworks();
+      onOpen();
+      window.localStorage.setItem('fireworks', Date.now());
       fetch(lambdaURL);
     }
   }, [ready]);

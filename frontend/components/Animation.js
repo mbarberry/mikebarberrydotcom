@@ -22,9 +22,9 @@ const Animation = forwardRef(function Animation(
     const { current: container } = ref;
 
     const createRenderer = async () => {
-      const { width, height } = calcDimensions();
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
+      const { width, height } = calcDimensions();
       renderer.setSize(width, height);
       renderer.outputEncoding = THREE.sRGBEncoding;
       container.appendChild(renderer.domElement);
@@ -109,7 +109,8 @@ const Animation = forwardRef(function Animation(
       h='100%'
       w='100%'
       pos='relative'
-      ref={ref}></chakra.div>
+      ref={ref}
+    />
   );
 });
 

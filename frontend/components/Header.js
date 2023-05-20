@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { chakra, useMediaQuery } from '@chakra-ui/react';
 
+import headerData from '#/data/headerData';
+
 function HeaderItem({ color, active, handleClick, children }) {
   const [mobile] = useMediaQuery('(max-width: 750px)');
   return (
@@ -10,7 +12,7 @@ function HeaderItem({ color, active, handleClick, children }) {
       bgColor={active ? color : undefined}
       borderRadius='10px'
       p='15px 30px 15px 30px'
-      onClick={handleClick && handleClick}
+      onClick={handleClick}
       sx={
         mobile
           ? { display: 'flex', justifyContent: 'center', alignItems: 'center' }
@@ -21,9 +23,10 @@ function HeaderItem({ color, active, handleClick, children }) {
   );
 }
 
-function HeaderList({ mobile }) {
-  const [active, setActive] = useState(0);
+function HeaderList({ renderItem }) {
+  const [mobile] = useMediaQuery('(max-width: 750px)');
   const router = useRouter();
+  const [active, setActive] = useState(0);
   return (
     <chakra.ul
       sx={{
@@ -33,44 +36,25 @@ function HeaderList({ mobile }) {
         display: mobile ? 'grid' : 'flex',
         listStyle: 'none',
       }}>
-      <HeaderItem
-        color='#E7E2CA'
-        active={active === 0}
-        handleClick={() => {
-          setActive(0);
-          router.push('/');
-        }}>
-        Home
-      </HeaderItem>
-      <HeaderItem
-        color='#CADEE7'
-        active={active === 1}
-        handleClick={() => {
-          setActive(1);
-          router.push('/about');
-        }}>
-        About
-      </HeaderItem>
-      <HeaderItem color='#CAE7D4'>
-        <a
-          href='/Mike_Barberry_Resume_Current.pdf'
-          target='_blank'>
-          Résumé
-        </a>
-      </HeaderItem>
-      <HeaderItem
-        color='#E7CADE'
-        handleClick={() => router.push('mailto:mikebarberry@protonmail.com')}>
-        Contact
-      </HeaderItem>
-      <HeaderItem color='#E7D4CA'>
-        <a
-          href='https://mikebarberry.medium.com/'
-          target='_blank'
-          rel='noreferrer'>
-          Blog
-        </a>
-      </HeaderItem>
+      {headerData.map((ele) => {
+        const { color, route, text, anchor, id } = ele;
+
+        const handleClick = anchor
+          ? null
+          : () => {
+              router.push(route);
+              ['Home', 'About'].includes(text) && setActive(id);
+            };
+
+        return renderItem({
+          active: active === id,
+          color,
+          route,
+          text,
+          anchor,
+          handleClick,
+        });
+      })}
     </chakra.ul>
   );
 }
@@ -111,7 +95,24 @@ export default function Header() {
           </chakra.a>
         </chakra.div>
       </chakra.div>
-      <HeaderList mobile={mobile} />
+      <HeaderList
+        renderItem={({ active, color, route, text, anchor, handleClick }) => (
+          <HeaderItem
+            active={active}
+            color={color}
+            handleClick={handleClick}>
+            {anchor ? (
+              <a
+                href={route}
+                target='_blank'>
+                {text}
+              </a>
+            ) : (
+              <>{text}</>
+            )}
+          </HeaderItem>
+        )}
+      />
     </header>
   );
 }

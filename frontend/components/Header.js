@@ -40,7 +40,7 @@ function HeaderList({ renderItem }) {
         const { color, route, text, anchor, id } = ele;
 
         const handleClick = anchor
-          ? null
+          ? () => window.open(route, '_blank')
           : () => {
               router.push(route);
               ['Home', 'About'].includes(text) && setActive(id);
@@ -49,9 +49,7 @@ function HeaderList({ renderItem }) {
         return renderItem({
           active: active === id,
           color,
-          route,
           text,
-          anchor,
           handleClick,
         });
       })}
@@ -96,20 +94,13 @@ export default function Header() {
         </chakra.div>
       </chakra.div>
       <HeaderList
-        renderItem={({ active, color, route, text, anchor, handleClick }) => (
+        renderItem={({ active, color, text, handleClick }) => (
           <HeaderItem
+            key={text}
             active={active}
             color={color}
             handleClick={handleClick}>
-            {anchor ? (
-              <a
-                href={route}
-                target='_blank'>
-                {text}
-              </a>
-            ) : (
-              <>{text}</>
-            )}
+            <>{text}</>
           </HeaderItem>
         )}
       />

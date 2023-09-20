@@ -15,7 +15,7 @@ const headerData = [
   },
   {
     color: '#CAE7D4',
-    route: '/Mike_Barberry_Resume_Current.pdf',
+    route: '/MikeBarberry_Resume.pdf',
     text: 'Résumé',
     anchor: true,
     id: 2,

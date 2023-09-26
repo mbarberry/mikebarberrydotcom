@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { chakra, useMediaQuery } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 
-import headerData from '#/data/headerData';
+import { MobileContext } from './context/MobileContext';
+import { headerData } from '#/data/data';
 
 function HeaderItem({ color, active, handleClick, children }) {
-  const [mobile] = useMediaQuery('(max-width: 750px)');
+  const mobile = useContext(MobileContext);
   return (
     <chakra.li
       _hover={{ cursor: 'pointer', bgColor: color }}
@@ -24,9 +25,17 @@ function HeaderItem({ color, active, handleClick, children }) {
 }
 
 function HeaderList({ renderItem }) {
-  const [mobile] = useMediaQuery('(max-width: 750px)');
+  const mobile = useContext(MobileContext);
   const router = useRouter();
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const pages = {
+      '/': 0,
+      '/about': 1,
+    };
+    setActive(pages[router.pathname]);
+  }, []);
   return (
     <chakra.ul
       sx={{
@@ -58,7 +67,7 @@ function HeaderList({ renderItem }) {
 }
 
 export default function Header() {
-  const [mobile] = useMediaQuery('(max-width: 750px)');
+  const mobile = useContext(MobileContext);
   return (
     <header>
       <chakra.div

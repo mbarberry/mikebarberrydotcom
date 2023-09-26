@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import { chakra } from '@chakra-ui/react';
 
-import Animation from '#/components/Animation';
-import Loading from '#/components/Loading';
-import Fireworks from '#/components/Fireworks';
+import Animation from '#/components/index/Animation';
+import Loading from '#/components/index/Loading';
+import Fireworks from '#/components/index/Fireworks';
 import { getRects } from '#/utils';
 
 export default function Index() {

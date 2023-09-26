@@ -27,7 +27,7 @@ export default function RecentProjects() {
         bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 76.05%)',
         opacity: '0.6',
         position: 'absolute',
-        top: mobile ? '40px' : '-5px',
+        top: mobile ? '20px' : '-5px',
         left: '-5px',
         width: '100%',
         height: mobile ? '100px' : 'calc(100% + 10px)',
@@ -37,10 +37,10 @@ export default function RecentProjects() {
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'
-      flex={mobile ? '0 1 150px' : '0 0 200px'}
+      flex={mobile ? '0 1 0px' : '0 0 200px'}
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}
-      mt='1rem'
+      mt={mobile ? '2rem' : '1rem'}
       mr={mobile ? undefined : '.5rem'}
       p={mobile ? '40px' : '1.5rem'}
       transform={mobile ? 'translateY(-40px)' : 'translateY(-10px)'}>

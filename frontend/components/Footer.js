@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { chakra, useMediaQuery } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
+
+import { MobileContext } from './context/MobileContext';
 
 export default function Footer() {
-  const [mobile] = useMediaQuery('(max-width: 750px)');
+  const mobile = useContext(MobileContext);
   const router = useRouter();
   return (
     <chakra.footer
@@ -10,7 +13,8 @@ export default function Footer() {
       bgColor='#eeeeee'
       bottom='0'
       display='flex'
-      gap={mobile ? '30px' : undefined}
+      flexDir={mobile ? 'column' : 'row'}
+      gap={mobile ? '10px' : undefined}
       h='100px'
       justifyContent={mobile ? 'center' : 'space-between'}
       pos='absolute'

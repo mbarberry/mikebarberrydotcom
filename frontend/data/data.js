@@ -41,7 +41,7 @@ export const cardData = [
     color: 'blue.500',
     desc: 'Next.js, Node.js, AWS CloudFormation / ECS, Docker',
     pic: '/fluhub.png',
-    proj: 'FluHub',
+    proj: 'Flu Hub',
   },
   {
     color: 'purple.500',

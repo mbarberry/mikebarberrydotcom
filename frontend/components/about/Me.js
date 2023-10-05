@@ -8,6 +8,7 @@ export default function Me() {
   const mobile = useContext(MobileContext);
   return (
     <chakra.div
+      flexShrink={0}
       display='flex'
       flexDirection='column'
       paddingRight={mobile ? undefined : '50px'}

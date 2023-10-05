@@ -38,6 +38,30 @@ export const headerData = [
 
 export const cardData = [
   {
+    color: 'pink.500',
+    desc: 'Python, NLP, Scikit-learn, HTML/JS, AWS',
+    proj: 'Impact Analysis Scatter Plots',
+    pic: '/scatterplots.png',
+  },
+  {
+    color: 'teal.500',
+    desc: 'Node.js, Puppeteer',
+    proj: 'ANDI Automation Tool',
+    pic: '/andi.png',
+  },
+  {
+    color: 'red.500',
+    desc: 'Node.js, React.js, HiPlot, AWS S3',
+    proj: 'Impact Analysis Parallel Coordinates',
+    pic: '/parall-coords.png',
+  },
+  {
+    color: 'yellow.500',
+    desc: 'React.js, JavaScript, HTML/CSS',
+    proj: 'CEIRR Data Search',
+    pic: '/ceirr.png',
+  },
+  {
     color: 'blue.500',
     desc: 'Next.js, Node.js, AWS CloudFormation / ECS, Docker',
     pic: '/fluhub.png',

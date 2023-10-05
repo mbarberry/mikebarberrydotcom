@@ -24,7 +24,9 @@ export default function Me() {
         src='/Me.jpg'
         alt='A picture of me.'
       />
-      <p>Hi, I&lsquo;m a software engineer based out of Astoria, Oregon.</p>
+      <chakra.p textAlign='center'>
+        Hi, I&lsquo;m a software engineer based out of Astoria, Oregon.
+      </chakra.p>
     </chakra.div>
   );
 }

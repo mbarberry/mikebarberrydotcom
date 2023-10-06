@@ -59,7 +59,7 @@ export const cardData = [
     color: 'yellow.500',
     desc: 'React.js, JavaScript, HTML/CSS',
     proj: 'CEIRR Data Search',
-    pic: '/ceirr.png',
+    pic: '/ceirr.jpg',
   },
   {
     color: 'blue.500',

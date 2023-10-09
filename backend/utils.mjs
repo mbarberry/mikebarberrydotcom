@@ -21,19 +21,3 @@ export function getIpInfo(ipAddress) {
     );
   });
 }
-
-export function checkCaptcha(token) {
-  const formData = `response=${token}&secret=${process.env.HCAPTCHA_SECRET}`;
-  return new Promise((resolve, reject) => {
-    fetch('https://api.hcaptcha.com/siteverify', {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      method: 'POST',
-      data: formData,
-    })
-      .then((res) => res.json)
-      .then((data) => resolve(data))
-      .catch((err) => console.log(err));
-  });
-}

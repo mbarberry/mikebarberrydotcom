@@ -15,6 +15,7 @@
     "sam": "sam build && sam deploy --config-env=prod"
   },
   "dependencies": {
+    "isomorphic-dompurify": "^1.9.0",
     "mongodb": "^5.3.0"
   },
   "devDependencies": {

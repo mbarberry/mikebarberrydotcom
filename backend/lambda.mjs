@@ -1,5 +1,6 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import DOMPurify from 'isomorphic-dompurify';
 import { getIpInfo } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
@@ -45,7 +46,7 @@ const logVisit = async (event) => {
       }),
     };
   } catch (err) {
-    console.log(`Error logging visit: ${err}`);
+    console.log(`Error logging visit:\n${err}`);
     return {
       statusCode: 500,
       headers: {
@@ -105,6 +106,18 @@ const verifyHcaptcha = async (event) => {
 
 const sendContactEmail = async (event) => {
   const body = JSON.parse(event.body);
+
+  // Remove HTML.
+  for (const [key, value] of Object.entries(body)) {
+    if (['name', 'email', 'message'].includes(key)) {
+      const purified = DOMPurify.sanitize(value, {
+        ALLOWED_TAGS: [],
+        KEEP_CONTENT: false,
+      });
+      body[key] = purified || 'Probably XSS attempt';
+    }
+  }
+
   const { name, email, message } = body;
 
   const toAddress = 'mbarberry15@gmail.com';
@@ -147,7 +160,7 @@ const sendContactEmail = async (event) => {
       }),
     };
   } catch (e) {
-    console.error(`Failed to send email: ${e}`);
+    console.error(`Failed to send email:\n${e}`);
     return {
       statusCode: 500,
       headers: {

@@ -1,15 +1,17 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { getIpInfo } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
 
 const client = new MongoClient(process.env.MONGO_URI, {
-  sslKey: credentials,
-  sslCert: credentials,
+  tlsCertificateKeyFile: credentials,
   serverApi: ServerApiVersion.v1,
 });
 
-export async function handler(event) {
+const sesClient = new SESClient({ region: 'us-west-2' });
+
+const logVisit = async (event) => {
   const ipAddress = event.requestContext.identity.sourceIp;
   const db = client.db('main');
   const collection = db.collection('visitors');
@@ -54,5 +56,134 @@ export async function handler(event) {
         err,
       }),
     };
+  }
+};
+
+const verifyHcaptcha = async (event) => {
+  const body = JSON.parse(event.body);
+
+  const formData = new URLSearchParams([
+    ['response', body.token],
+    ['secret', process.env.HCAPTCHA_SECRET],
+  ]);
+
+  try {
+    const response = await fetch('https://api.hcaptcha.com/siteverify', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      method: 'POST',
+      body: formData,
+    });
+    const json = await response.json();
+    const success = json.success || false;
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success,
+      }),
+    };
+  } catch (err) {
+    console.log(`Error verifying hcaptcha:\n${err}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: false,
+        error: 'Error verifying hcaptcha.',
+      }),
+    };
+  }
+};
+
+const sendContactEmail = async (event) => {
+  const body = JSON.parse(event.body);
+  const { name, email, message } = body;
+
+  const toAddress = 'mbarberry15@gmail.com';
+  const fromAddress = 'mail@mikebarberry.com';
+
+  const command = {
+    Destination: {
+      ToAddresses: [toAddress],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: 'UTF-8',
+          Data: `<div><p>Contact name from: ${name}</p><p>Return email: ${email}</p><p>Message: ${message}</p></div>`,
+        },
+        Text: {
+          Charset: 'UTF-8',
+          Data: `Contact name from: ${name}\nReturn email: ${email}\nMessage: ${message}`,
+        },
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: `**MikeBarberry.com Contact**`,
+      },
+    },
+    Source: fromAddress,
+  };
+
+  try {
+    const sendEmailCommand = new SendEmailCommand(command);
+    const awsResponse = await sesClient.send(sendEmailCommand);
+    console.log('awsResponse', awsResponse);
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: true,
+      }),
+    };
+  } catch (e) {
+    console.error(`Failed to send email: ${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: false,
+        error: 'Error sending contact email.',
+      }),
+    };
+  }
+};
+
+export async function handler(event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'access-control-allow-headers':
+          'content-type,x-amz-date,authorization,x-api-key,x-amz-security-token,origin,accept',
+        'access-control-allow-methods': 'options,post,get,put,delete',
+        'access-control-allow-origin': '*',
+      },
+    };
+  } else if (event.httpMethod === 'POST') {
+    switch (event.path) {
+      case '/verify': {
+        return verifyHcaptcha(event);
+      }
+      case '/contact': {
+        return sendContactEmail(event);
+      }
+    }
+  } else if (event.httpMethod === 'GET' && event.path === '/visitor') {
+    return logVisit(event);
   }
 }

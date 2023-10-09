@@ -22,7 +22,7 @@ export const headerData = [
   },
   {
     color: '#E7CADE',
-    route: 'mailto:mikebarberry@protonmail.com',
+    route: '/contact',
     text: 'Contact',
     anchor: false,
     id: 3,
@@ -52,7 +52,7 @@ export const cardData = [
   {
     color: 'red.500',
     desc: 'Node.js, React.js, HiPlot, AWS S3',
-    proj: 'Impact Analysis Parallel Coordinates',
+    proj: 'Impact Analysis\nParallel Coordinates',
     pic: '/parall-coords.png',
   },
   {

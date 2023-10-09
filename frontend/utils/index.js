@@ -1,6 +1,6 @@
 export { default as triggerFireworks } from './triggerFireworks';
 
-export const lambdaURL = 'https://api.mikebarberry.com/';
+export const lambdaURL = 'https://api.mikebarberry.com';
 
 export const getRects = (container) => {
   return {

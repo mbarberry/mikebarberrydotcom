@@ -10,6 +10,7 @@ export default function Me() {
     <chakra.div
       flexShrink={0}
       display='flex'
+      padding={mobile ? '10px 0px' : undefined}
       flexDirection='column'
       paddingRight={mobile ? undefined : '50px'}
       justifyContent={mobile ? 'center' : undefined}
@@ -20,8 +21,8 @@ export default function Me() {
           borderRadius: '200px',
           objectFit: 'contain',
         }}
-        height={300}
-        width={350}
+        height={mobile ? 150 : 300}
+        width={mobile ? 175 : 350}
         src='/Me.jpg'
         alt='A picture of me.'
       />

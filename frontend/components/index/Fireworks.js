@@ -18,9 +18,9 @@ export default function Fireworks({ ready }) {
       triggerFireworks();
       onOpen();
       window.localStorage.setItem('fireworks', Date.now());
-      fetch(lambdaURL);
+      fetch(`${lambdaURL}/visitor`);
     }
   }, [ready]);
 
-  return isOpen && <Message />;
+  return isOpen && <Message words='Hi, thanks for stopping by!' />;
 }

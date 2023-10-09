@@ -1,6 +1,6 @@
 import { Alert, AlertIcon } from '@chakra-ui/react';
 
-export default function Message() {
+export default function Message({ words }) {
   return (
     <Alert
       status='success'
@@ -12,7 +12,7 @@ export default function Message() {
       transform='translate(-50%)'
       w='auto'>
       <AlertIcon />
-      Hi, thanks for stopping by!
+      {words}
     </Alert>
   );
 }

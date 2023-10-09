@@ -51,7 +51,8 @@ export function Card({ color, desc, isLast, initialMargin, pic, proj }) {
         />
         <chakra.p
           pt='20px'
-          fontFamily='Poppins'>
+          fontFamily='Poppins'
+          whiteSpace='break-spaces'>
           {proj}
         </chakra.p>
         <chakra.p

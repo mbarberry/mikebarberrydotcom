@@ -146,7 +146,7 @@ export default function Contact() {
         fontFamily='Poppins'
         gap='30px'>
         <chakra.h1
-          paddingTop={mobile ? '35px' : '30px'}
+          paddingTop={mobile ? '20px' : '30px'}
           fontSize={mobile ? '20px' : '24px'}>
           I&lsquo;d &#10084; to get to know you!
         </chakra.h1>
@@ -156,6 +156,7 @@ export default function Contact() {
             alignItems='center'
             flexDirection='column'
             justifyContent='center'
+            textAlign='start'
             fontFamily='Poppins'
             gap='15px'>
             <chakra.div>
@@ -182,10 +183,12 @@ export default function Contact() {
                 size='lg'
               />
             </chakra.div>
-            <chakra.div marginBottom='30px'>
+            <chakra.div>
               <FormLabel>How can we work together?</FormLabel>
               <Textarea
                 rows='10'
+                resize='none'
+                autoCorrect='on'
                 isRequired={true}
                 value={state.message}
                 type='text'
@@ -196,6 +199,7 @@ export default function Contact() {
               />
             </chakra.div>
             <HCaptcha
+              onExpire={() => dispatch({ type: 'verify', verified: false })}
               theme='dark'
               sitekey='ca6ff6ad-f857-4ead-b213-df8bef9e769f'
               onVerify={(token) => handleVerification(token)}

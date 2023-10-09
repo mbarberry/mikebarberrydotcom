@@ -75,7 +75,7 @@ export default function Header() {
         alignItems={mobile ? 'center' : undefined}
         flexDir={mobile ? 'column' : undefined}
         justifyContent={mobile ? 'center' : undefined}
-        paddingBottom={mobile ? '30px' : undefined}
+        paddingBottom={mobile ? '20px' : undefined}
         display='flex'
         mt='5px'>
         <chakra.h1

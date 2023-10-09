@@ -22,5 +22,12 @@ export default function Fireworks({ ready }) {
     }
   }, [ready]);
 
-  return isOpen && <Message words='Hi, thanks for stopping by!' />;
+  return (
+    isOpen && (
+      <Message
+        type='success'
+        words='Hi, thanks for stopping by!'
+      />
+    )
+  );
 }

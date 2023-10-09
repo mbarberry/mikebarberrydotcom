@@ -22,6 +22,10 @@ const initialState = {
   message: '',
   verified: false,
   loading: false,
+  alert: {
+    type: 'success',
+    text: 'Email sent to me!',
+  },
 };
 
 const reducer = (state, action) => {
@@ -64,6 +68,15 @@ const reducer = (state, action) => {
         loading: action.loading,
       };
     }
+    case 'alert': {
+      return {
+        ...state,
+        alert: {
+          type: action.alert.type,
+          text: action.alert.text,
+        },
+      };
+    }
   }
   throw new Error('Unknown action type.');
 };
@@ -92,16 +105,22 @@ export default function Contact() {
       const success = json.success;
       if (success) {
         dispatch({ type: 'verify', verfied: true });
+      } else {
+        dispatch({
+          type: 'alert',
+          alert: {
+            type: 'error',
+            text: 'Uh oh, hcaptcha failed. Mike would be happy if you let him know you encountered this error on the site.',
+          },
+        });
+        onOpen();
       }
-    } catch (err) {
-      console.log(err);
     } finally {
       dispatch({ type: 'loading', loading: false });
     }
   };
 
   const sendContactEmail = async (e) => {
-    dispatch({ type: 'loading', loading: true });
     if (!e.isTrusted) return;
     for (const [key, value] of Object.entries(state)) {
       if (['name', 'email', 'message'].includes(key)) {
@@ -109,6 +128,7 @@ export default function Contact() {
       }
     }
     try {
+      dispatch({ type: 'loading', loading: true });
       const response = await fetch(`${lambdaURL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -118,11 +138,25 @@ export default function Contact() {
           message: state.message,
         }),
       });
-      await response.json();
-      onOpen();
-      dispatch({ type: 'reset' });
-    } catch (err) {
-      console.log(err);
+      const json = await response.json();
+      const { success } = json;
+      if (success) {
+        dispatch({
+          type: 'alert',
+          alert: { type: 'success', text: 'Email sent to me!' },
+        });
+        onOpen();
+        dispatch({ type: 'reset' });
+      } else {
+        dispatch({
+          type: 'alert',
+          alert: {
+            type: 'error',
+            text: 'Uh oh, email failed to send. Mike would be happy if you let him know you encountered this error on the site.',
+          },
+        });
+        onOpen();
+      }
     } finally {
       dispatch({ type: 'loading', loading: false });
     }
@@ -136,7 +170,12 @@ export default function Contact() {
       flexDirection='column'
       alignItems='center'
       marginBottom='20px'>
-      {isOpen && <Message words='Email sent to me!' />}
+      {isOpen && (
+        <Message
+          type={state.alert.type}
+          words={state.alert.text}
+        />
+      )}
       <chakra.div
         width='50%'
         display='flex'

@@ -1,9 +1,9 @@
 import { Alert, AlertIcon } from '@chakra-ui/react';
 
-export default function Message({ words }) {
+export default function Message({ type, words }) {
   return (
     <Alert
-      status='success'
+      status={type}
       variant='left-accent'
       pos='absolute'
       top='7'

@@ -45,7 +45,7 @@ const logVisit = async (event) => {
       }),
     };
   } catch (err) {
-    console.log(`An error occurred: ${err}`);
+    console.log(`Error logging visit: ${err}`);
     return {
       statusCode: 500,
       headers: {
@@ -53,7 +53,7 @@ const logVisit = async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        err,
+        error: err,
       }),
     };
   }
@@ -118,11 +118,11 @@ const sendContactEmail = async (event) => {
       Body: {
         Html: {
           Charset: 'UTF-8',
-          Data: `<div><p>Contact name from: ${name}</p><p>Return email: ${email}</p><p>Message: ${message}</p></div>`,
+          Data: `<div><p>Contact name: ${name}</p><p>Return email: ${email}</p><p>Message: ${message}</p></div>`,
         },
         Text: {
           Charset: 'UTF-8',
-          Data: `Contact name from: ${name}\nReturn email: ${email}\nMessage: ${message}`,
+          Data: `Contact name: ${name}\nReturn email: ${email}\nMessage: ${message}`,
         },
       },
       Subject: {
@@ -135,8 +135,7 @@ const sendContactEmail = async (event) => {
 
   try {
     const sendEmailCommand = new SendEmailCommand(command);
-    const awsResponse = await sesClient.send(sendEmailCommand);
-    console.log('awsResponse', awsResponse);
+    await sesClient.send(sendEmailCommand);
     return {
       statusCode: 200,
       headers: {

@@ -186,7 +186,8 @@ export default function Contact() {
         gap='30px'>
         <chakra.h1
           paddingTop={mobile ? '20px' : '30px'}
-          fontSize={mobile ? '20px' : '24px'}>
+          fontSize={mobile ? '20px' : '24px'}
+          textAlign={mobile ? 'center' : undefined}>
           I&lsquo;d &#10084; to get to know you!
         </chakra.h1>
         <FormControl>

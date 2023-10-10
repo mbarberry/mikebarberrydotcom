@@ -41,7 +41,7 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
         }
       }}
       _hover={{
-        transform: mobile ? 'scale(1.05)' : 'rotate(0.01turn)',
+        transform: mobile ? undefined : 'rotate(0.01turn)',
         cursor: 'pointer',
       }}
       sx={{ transition: mobile ? undefined : 'margin 0.2s' }}

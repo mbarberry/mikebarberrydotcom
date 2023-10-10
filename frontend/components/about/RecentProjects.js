@@ -47,8 +47,9 @@ export default function RecentProjects() {
       <chakra.div
         zIndex='3'
         color={'black.500'}
-        fontWeight='lighter'
+        fontWeight={mobile ? 'normal' : 'lighter'}
         display='flex'
+        fontSize={mobile ? '18px' : '24px'}
         flexDir='column'
         gap='5px'>
         <h1>Recent</h1>

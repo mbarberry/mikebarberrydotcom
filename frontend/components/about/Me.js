@@ -18,6 +18,7 @@ export default function Me() {
       gap='20px'>
       <Image
         style={{
+          alignSelf: 'center',
           borderRadius: '200px',
           objectFit: 'contain',
         }}
@@ -26,7 +27,9 @@ export default function Me() {
         src='/Me.jpg'
         alt='A picture of me.'
       />
-      <chakra.p textAlign='center'>
+      <chakra.p
+        textAlign='center'
+        padding={mobile ? '0px 10px' : undefined}>
         Hi, I&lsquo;m a software engineer based out of Astoria, Oregon.
       </chakra.p>
     </chakra.div>

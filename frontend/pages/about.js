@@ -17,10 +17,19 @@ export default function About() {
       <CardsContainer>
         <Cards
           cards={cardData}
-          renderCard={({ color, desc, pic, proj, isLast, initialMargin }) => (
+          renderCard={({
+            color,
+            tech,
+            desc,
+            pic,
+            proj,
+            isLast,
+            initialMargin,
+          }) => (
             <Card
               key={proj}
               color={color}
+              tech={tech}
               desc={desc}
               pic={pic}
               proj={proj}

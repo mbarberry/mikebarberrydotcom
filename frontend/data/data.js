@@ -16,22 +16,22 @@ export const headerData = [
   {
     color: '#CAE7D4',
     route: '/Mike_Barberry_Resume.pdf',
-    text: 'Résumé',
+    text: 'Resume',
     anchor: true,
     id: 2,
-  },
-  {
-    color: '#E7CADE',
-    route: '/contact',
-    text: 'Contact',
-    anchor: false,
-    id: 3,
   },
   {
     color: '#E7D4CA',
     route: 'https://mikebarberry.medium.com/',
     text: 'Blog',
     anchor: true,
+    id: 3,
+  },
+  {
+    color: '#E7CADE',
+    route: '/contact',
+    text: 'Contact',
+    anchor: false,
     id: 4,
   },
 ];

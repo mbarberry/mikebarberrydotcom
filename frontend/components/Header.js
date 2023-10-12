@@ -33,7 +33,7 @@ function HeaderList({ renderItem }) {
     const pages = {
       '/': 0,
       '/about': 1,
-      '/contact': 3,
+      '/contact': 4,
     };
     setActive(pages[router.pathname]);
   }, []);

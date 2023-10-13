@@ -22,9 +22,9 @@ export const headerData = [
   },
   {
     color: '#E7D4CA',
-    route: 'https://mikebarberry.medium.com/',
+    route: '/blog',
     text: 'Blog',
-    anchor: true,
+    anchor: false,
     id: 3,
   },
   {

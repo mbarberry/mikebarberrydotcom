@@ -50,13 +50,10 @@ function HeaderList({ renderItem }) {
       {headerData.map((ele) => {
         const { color, route, text, anchor, id } = ele;
 
-        const handleClick = anchor
-          ? () => window.open(route, '_blank')
-          : () => {
-              router.push(route);
-              ['Home', 'About', 'Resume', 'Contact'].includes(text) &&
-                setActive(id);
-            };
+        const handleClick = () => {
+          router.push(route);
+          setActive(id);
+        };
 
         return renderItem({
           active: active === id,

@@ -175,6 +175,74 @@ const sendContactEmail = async (event) => {
   }
 };
 
+const getBlogPosts = async (event) => {
+  const body = JSON.parse(event.body);
+  const year = Number(body.year);
+
+  const db = client.db('main');
+  const collection = db.collection('blogs');
+
+  try {
+    const posts = await collection.find({ year }).toArray();
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        posts,
+      }),
+    };
+  } catch (e) {
+    console.error(`Failed to get blogs posts:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        error: 'Error getting blog posts.',
+      }),
+    };
+  }
+};
+
+const getPost = async (event) => {
+  const body = JSON.parse(event.body);
+  const post = body.post;
+
+  const db = client.db('main');
+  const collection = db.collection('blogs');
+
+  try {
+    const target = (await collection.find({ name: post }).toArray())[0];
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        html: target.html,
+      }),
+    };
+  } catch (e) {
+    console.error(`Failed to get post HTML:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        error: 'Error getting post HTML.',
+      }),
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -194,8 +262,18 @@ export async function handler(event) {
       case '/contact': {
         return sendContactEmail(event);
       }
+      case '/blog': {
+        return getBlogPosts(event);
+      }
+      case '/blog/post': {
+        return getPost(event);
+      }
     }
-  } else if (event.httpMethod === 'GET' && event.path === '/visitor') {
-    return logVisit(event);
+  } else if (event.httpMethod === 'GET') {
+    switch (event.path) {
+      case '/visitor': {
+        return logVisit(event);
+      }
+    }
   }
 }

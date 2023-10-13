@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Image from 'next/image';
 import { chakra } from '@chakra-ui/react';
 import { MobileContext } from '#/components/context/MobileContext';
 
@@ -16,27 +17,27 @@ export default function Resume() {
         display={'flex'}
         flexDirection={mobile ? 'column' : 'row'}
         gap='20px'>
-        <a
+        <chakra.a
           href='/Mike_Barberry_Resume.docx'
           alt='Docx icon'
           download>
-          <img
-            width={mobile ? '120px' : '200px'}
-            height={mobile ? '120px' : '200px'}
+          <Image
+            width={mobile ? 120 : 200}
+            height={mobile ? 120 : 200}
             src='/docx-icon.png'
             alt='Docx icon'
           />
-        </a>
-        <a
+        </chakra.a>
+        <chakra.a
           href='/Mike_Barberry_Resume.pdf'
           target='_blank'>
-          <img
-            width={mobile ? '120px' : '200px'}
-            height={mobile ? '120px' : '200px'}
+          <Image
+            width={mobile ? 120 : 200}
+            height={mobile ? 120 : 200}
             src='/pdf-icon.png'
             alt='Docx icon'
           />
-        </a>
+        </chakra.a>
       </chakra.div>
     </chakra.div>
   );

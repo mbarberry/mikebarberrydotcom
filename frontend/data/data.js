@@ -15,9 +15,9 @@ export const headerData = [
   },
   {
     color: '#CAE7D4',
-    route: '/Mike_Barberry_Resume.pdf',
+    route: '/resume',
     text: 'Resume',
-    anchor: true,
+    anchor: false,
     id: 2,
   },
   {

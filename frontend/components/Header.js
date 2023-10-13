@@ -33,6 +33,7 @@ function HeaderList({ renderItem }) {
     const pages = {
       '/': 0,
       '/about': 1,
+      '/resume': 2,
       '/contact': 4,
     };
     setActive(pages[router.pathname]);
@@ -53,7 +54,8 @@ function HeaderList({ renderItem }) {
           ? () => window.open(route, '_blank')
           : () => {
               router.push(route);
-              ['Home', 'About', 'Contact'].includes(text) && setActive(id);
+              ['Home', 'About', 'Resume', 'Contact'].includes(text) &&
+                setActive(id);
             };
 
         return renderItem({

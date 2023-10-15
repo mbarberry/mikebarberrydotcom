@@ -15,52 +15,20 @@ import { useRouter } from 'next/router';
 import { MobileContext } from '#/components/context/MobileContext';
 
 export function YearBreadcrumbs({ handleBreadcrumbClick }) {
-  <chakra.div
-    display='flex'
-    paddingTop='30px'>
-    <Breadcrumb
-      fontSize='30px'
-      fontWeight='bold'>
-      <BreadcrumbItem>
-        <BreadcrumbLink onClick={() => handleBreadcrumbClick(2019)}>
-          2019
-        </BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem />
-    </Breadcrumb>
-  </chakra.div>;
-}
-
-export function BlogPostsWrapper({ isLoaded, render }) {
-  return render(isLoaded);
-}
-
-export function XSkeletons({ x }) {
-  const mobile = useContext(MobileContext);
-
   return (
     <chakra.div
       display='flex'
-      flexDir={'column'}
-      gap={'50px'}
-      width={mobile ? '350px' : '350px'}>
-      {Array.from({ length: x }).map((idx) => {
-        return (
-          <Box
-            key={idx}
-            boxShadow='lg'
-            bg='white'>
-            <SkeletonCircle size='10' />
-            <SkeletonText
-              speed={0.5}
-              mt='4'
-              noOfLines={7}
-              spacing='6'
-              skeletonHeight='1'
-            />
-          </Box>
-        );
-      })}
+      paddingTop='30px'>
+      <Breadcrumb
+        fontSize='30px'
+        fontWeight='bold'>
+        <BreadcrumbItem>
+          <BreadcrumbLink onClick={() => handleBreadcrumbClick(2019)}>
+            2019
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem />
+      </Breadcrumb>
     </chakra.div>
   );
 }

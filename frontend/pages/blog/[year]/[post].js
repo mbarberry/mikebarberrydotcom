@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { chakra, Box, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
+import { chakra, Box, Skeleton } from '@chakra-ui/react';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 
@@ -8,7 +8,6 @@ import { lambdaURL } from '#/utils';
 
 export default function Post() {
   const [html, setHTML] = useState(null);
-  const [year, setYear] = useState(null);
 
   const router = useRouter();
   const mobile = useContext(MobileContext);
@@ -18,46 +17,24 @@ export default function Post() {
 
     if (subscribed) {
       const pathname = window.location.pathname;
-      const pathpost = pathname.slice(pathname.lastIndexOf('/') + 1);
-      const pathyear = pathname.slice(6, 10);
+      const post = pathname.slice(pathname.lastIndexOf('/') + 1);
 
       fetch(`${lambdaURL}/blog/post`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          post: pathpost,
+          post,
         }),
       })
         .then((res) => res.json())
         .then((json) => {
           setHTML(json.html);
-          setYear(pathyear);
         });
     }
     return () => {
       subscribed = false;
     };
   }, []);
-
-  const skeleton = (
-    <Box
-      boxShadow='lg'
-      padding='30px 60px'
-      bg='white'>
-      <SkeletonCircle size='10' />
-      <chakra.div
-        display='flex'
-        flexDir='column'
-        gap='40px'>
-        <SkeletonText
-          mt='4'
-          noOfLines={24}
-          spacing='8'
-          skeletonHeight='1'
-        />
-      </chakra.div>
-    </Box>
-  );
 
   return (
     <chakra.div
@@ -79,7 +56,9 @@ export default function Post() {
         borderRadius={'30px'}>
         <ArrowLeftIcon />
       </chakra.div>
-      {html ? (
+      <Skeleton
+        isLoaded={html !== null}
+        fadeDuration={0.7}>
         <Box
           sx={{
             '& div': {
@@ -138,9 +117,7 @@ export default function Post() {
             },
           }}
           dangerouslySetInnerHTML={{ __html: html }}></Box>
-      ) : (
-        skeleton
-      )}
+      </Skeleton>
     </chakra.div>
   );
 }

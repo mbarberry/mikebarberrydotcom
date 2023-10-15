@@ -15,20 +15,22 @@ import { useRouter } from 'next/router';
 import { MobileContext } from '#/components/context/MobileContext';
 
 export function YearBreadcrumbs({ handleBreadcrumbClick }) {
-  <chakra.div
-    display='flex'
-    paddingTop='30px'>
-    <Breadcrumb
-      fontSize='30px'
-      fontWeight='bold'>
-      <BreadcrumbItem>
-        <BreadcrumbLink onClick={() => handleBreadcrumbClick(2019)}>
-          2019
-        </BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem />
-    </Breadcrumb>
-  </chakra.div>;
+  return (
+    <chakra.div
+      display='flex'
+      paddingTop='30px'>
+      <Breadcrumb
+        fontSize='30px'
+        fontWeight='bold'>
+        <BreadcrumbItem>
+          <BreadcrumbLink onClick={() => handleBreadcrumbClick(2019)}>
+            2019
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem />
+      </Breadcrumb>
+    </chakra.div>
+  );
 }
 
 export function BlogPostsWrapper({ isLoaded, render }) {

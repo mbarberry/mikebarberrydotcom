@@ -44,7 +44,6 @@ export default function Post() {
       boxShadow='lg'
       padding='30px 60px'
       bg='white'>
-      <SkeletonCircle size='10' />
       <chakra.div
         display='flex'
         flexDir='column'

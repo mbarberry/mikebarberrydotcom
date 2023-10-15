@@ -51,19 +51,7 @@ export default function Post() {
         gap='40px'>
         <SkeletonText
           mt='4'
-          noOfLines={6}
-          spacing='8'
-          skeletonHeight='1'
-        />
-        <SkeletonText
-          mt='4'
-          noOfLines={6}
-          spacing='8'
-          skeletonHeight='1'
-        />
-        <SkeletonText
-          mt='4'
-          noOfLines={6}
+          noOfLines={24}
           spacing='8'
           skeletonHeight='1'
         />

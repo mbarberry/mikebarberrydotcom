@@ -5,23 +5,45 @@ import {
   BlogPosts,
   BlogPost,
   YearBreadcrumbs,
+  YearBreadcrumb,
   BlogPostsWrapper,
   XSkeletons,
 } from '#/components/blog/BlogPosts';
 import {
   BlogContainer,
   BlogPostsContainer,
+  BreadcrumbWrapper,
 } from '#/components/blog/Containers';
 
-export default function Year() {
+export async function getStaticProps() {
+  try {
+    const response = await fetch(`${lambdaURL}/blog/years`);
+    const json = await response.json();
+
+    return {
+      props: {
+        years: json.years,
+      },
+    };
+  } catch (e) {
+    console.log(`Error fetching all blog data:\n${e}`);
+    return {
+      props: {
+        years: [],
+      },
+    };
+  }
+}
+
+export default function Blog({ years }) {
   const [posts, setPosts] = useState([]);
-  const [year, setYear] = useState(2019);
+  const [year, setYear] = useState(years[0]);
 
   useEffect(() => {
     let subscribed = true;
 
     if (subscribed) {
-      fetch(`${lambdaURL}/blog`, {
+      fetch(`${lambdaURL}/blog/year`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -40,13 +62,22 @@ export default function Year() {
 
   return (
     <BlogContainer>
-      <YearBreadcrumbs
-        handleBreadcrumbClick={(selected) => {
-          if (selected !== year) {
-            setYear(selected);
-          }
-        }}
-      />
+      <BreadcrumbWrapper>
+        <YearBreadcrumbs
+          years={years}
+          selectedYear={year}
+          selectBreadcrumb={(year) => {
+            setYear(year);
+          }}
+          renderBreadcrumb={({ year, isSelected, handleClick }) => (
+            <YearBreadcrumb
+              year={year}
+              isSelected={isSelected}
+              handleClick={handleClick}
+            />
+          )}
+        />
+      </BreadcrumbWrapper>
       <BlogPostsWrapper
         isLoaded={posts.length > 0}
         render={(isLoaded) => {

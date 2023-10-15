@@ -6,35 +6,60 @@ import { useRouter } from 'next/router';
 import { MobileContext } from '#/components/context/MobileContext';
 import { lambdaURL } from '#/utils';
 
-export default function Post() {
-  const [html, setHTML] = useState(null);
+export async function getStaticPaths() {
+  try {
+    const response = await fetch(`${lambdaURL}/blog`);
+    const json = await response.json();
 
+    const paths = json.posts.map((post) => {
+      return { params: { year: `${post.year}`, post: post.name } };
+    });
+
+    return {
+      paths,
+      fallback: false,
+    };
+  } catch (e) {
+    console.log(`Error getting blog post static paths:\n${e}`);
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const { year, post } = params;
+
+  try {
+    const response = await fetch(`${lambdaURL}/blog/post`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        year: Number(year),
+        post,
+      }),
+    });
+    const json = await response.json();
+
+    return {
+      props: {
+        html: json.html,
+      },
+    };
+  } catch (e) {
+    console.log(`Error:\n${e}`);
+    return {
+      props: {
+        html: null,
+      },
+    };
+  }
+}
+
+export default function Post({ html }) {
   const router = useRouter();
   const mobile = useContext(MobileContext);
-
-  useEffect(() => {
-    let subscribed = true;
-
-    if (subscribed) {
-      const pathname = window.location.pathname;
-      const post = pathname.slice(pathname.lastIndexOf('/') + 1);
-
-      fetch(`${lambdaURL}/blog/post`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          post,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setHTML(json.html);
-        });
-    }
-    return () => {
-      subscribed = false;
-    };
-  }, []);
 
   const skeleton = (
     <Box

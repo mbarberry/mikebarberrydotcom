@@ -1,7 +1,20 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, Breadcrumb, BreadcrumbSeparator } from '@chakra-ui/react';
 import { useContext } from 'react';
 
 import { MobileContext } from '#/components/context/MobileContext';
+
+export function BreadcrumbWrapper({ children }) {
+  return (
+    <chakra.div paddingTop='30px'>
+      <Breadcrumb
+        fontSize='30px'
+        fontWeight='bold'>
+        {children}
+        <BreadcrumbSeparator />
+      </Breadcrumb>
+    </chakra.div>
+  );
+}
 
 export function BlogContainer({ children }) {
   const mobile = useContext(MobileContext);

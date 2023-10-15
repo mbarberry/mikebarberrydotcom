@@ -14,21 +14,35 @@ import { useRouter } from 'next/router';
 
 import { MobileContext } from '#/components/context/MobileContext';
 
-export function YearBreadcrumbs({ handleBreadcrumbClick }) {
+export function YearBreadcrumbs({
+  years,
+  selectedYear,
+  selectBreadcrumb,
+  renderBreadcrumb,
+}) {
+  return years.map((year) => {
+    const handleClick = () => {
+      if (year !== selectedYear) {
+        selectBreadcrumb(year);
+      }
+    };
+    const isSelected = year === selectedYear;
+    return renderBreadcrumb({ year, isSelected, handleClick });
+  });
+}
+
+export function YearBreadcrumb({ isSelected, year, handleClick }) {
   return (
     <chakra.div
       display='flex'
-      paddingTop='30px'>
-      <Breadcrumb
-        fontSize='30px'
-        fontWeight='bold'>
-        <BreadcrumbItem>
-          <BreadcrumbLink onClick={() => handleBreadcrumbClick(2019)}>
-            2019
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem />
-      </Breadcrumb>
+      flexDir='row'
+      gap='5px'>
+      <BreadcrumbItem
+        isCurrentPage={isSelected}
+        paddingLeft='15px'>
+        <BreadcrumbLink onClick={handleClick}>{year}</BreadcrumbLink>
+      </BreadcrumbItem>
+      <chakra.span>/</chakra.span>
     </chakra.div>
   );
 }

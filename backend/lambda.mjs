@@ -175,7 +175,7 @@ const sendContactEmail = async (event) => {
   }
 };
 
-const getBlogPosts = async (event) => {
+const getYearPosts = async (event) => {
   const body = JSON.parse(event.body);
   const year = Number(body.year);
 
@@ -195,7 +195,7 @@ const getBlogPosts = async (event) => {
       }),
     };
   } catch (e) {
-    console.error(`Failed to get blogs posts:\n${e}`);
+    console.error(`Failed to get year blogs posts:\n${e}`);
     return {
       statusCode: 500,
       headers: {
@@ -203,7 +203,7 @@ const getBlogPosts = async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        error: 'Error getting blog posts.',
+        error: 'Error getting year blog posts.',
       }),
     };
   }
@@ -211,13 +211,13 @@ const getBlogPosts = async (event) => {
 
 const getPost = async (event) => {
   const body = JSON.parse(event.body);
-  const post = body.post;
+  const { year, post } = body;
 
   const db = client.db('main');
   const collection = db.collection('blogs');
 
   try {
-    const target = (await collection.find({ name: post }).toArray())[0];
+    const target = (await collection.find({ year, name: post }).toArray())[0];
     return {
       statusCode: 200,
       headers: {
@@ -243,6 +243,71 @@ const getPost = async (event) => {
   }
 };
 
+const getAllBlogPosts = async (event) => {
+  const db = client.db('main');
+  const collection = db.collection('blogs');
+
+  try {
+    const posts = await collection.find({}).toArray();
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        posts,
+      }),
+    };
+  } catch (e) {
+    console.error(`Failed to get all blogs posts:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        error: 'Error getting all blog posts.',
+      }),
+    };
+  }
+};
+
+const getPostYears = async () => {
+  const db = client.db('main');
+  const collection = db.collection('blogs');
+
+  try {
+    const posts = await collection
+      .find({})
+      .project({ year: 1, _id: 0 })
+      .toArray();
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        years: [...new Set(posts.map((post) => post.year))].sort(),
+      }),
+    };
+  } catch (e) {
+    console.error(`Failed to get post years:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        error: 'Error getting post years.',
+      }),
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -254,6 +319,18 @@ export async function handler(event) {
         'access-control-allow-origin': '*',
       },
     };
+  } else if (event.httpMethod === 'GET') {
+    switch (event.path) {
+      case '/visitor': {
+        return logVisit(event);
+      }
+      case '/blog': {
+        return getAllBlogPosts(event);
+      }
+      case '/blog/years': {
+        return getPostYears(event);
+      }
+    }
   } else if (event.httpMethod === 'POST') {
     switch (event.path) {
       case '/verify': {
@@ -262,17 +339,11 @@ export async function handler(event) {
       case '/contact': {
         return sendContactEmail(event);
       }
-      case '/blog': {
-        return getBlogPosts(event);
+      case '/blog/year': {
+        return getYearPosts(event);
       }
       case '/blog/post': {
         return getPost(event);
-      }
-    }
-  } else if (event.httpMethod === 'GET') {
-    switch (event.path) {
-      case '/visitor': {
-        return logVisit(event);
       }
     }
   }

@@ -7,6 +7,7 @@
     "node": "^18"
   },
   "scripts": {
+    "testblog": "MONGO_URI=\"$MBCOM_MONGO_URI\" node test/blog.mjs",
     "buildprod": "CONFIG_ENV=prod npm run fullbuild",
     "fullbuild": "npm run docker:login && npm run docker:build && npm run docker:push && npm run sam",
     "docker:login": "set-env -e -- 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ECR_ID.dkr.ecr.us-west-2.amazonaws.com'",

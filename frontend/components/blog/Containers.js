@@ -5,13 +5,11 @@ import { MobileContext } from '#/components/context/MobileContext';
 
 export function BreadcrumbWrapper({ children }) {
   return (
-    <chakra.div paddingTop='30px'>
-      <Breadcrumb
-        fontSize='30px'
-        fontWeight='bold'>
-        {children}
-        <BreadcrumbSeparator />
-      </Breadcrumb>
+    <chakra.div
+      paddingTop='30px'
+      fontSize='30px'
+      fontWeight='bold'>
+      {children}
     </chakra.div>
   );
 }

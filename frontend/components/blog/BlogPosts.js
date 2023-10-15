@@ -20,28 +20,34 @@ export function YearBreadcrumbs({
   selectBreadcrumb,
   renderBreadcrumb,
 }) {
-  return years.map((year) => {
+  return years.map((year, idx) => {
     const handleClick = () => {
       if (year !== selectedYear) {
         selectBreadcrumb(year);
       }
     };
-    const isSelected = year === selectedYear;
-    return renderBreadcrumb({ year, isSelected, handleClick });
+    const isFirst = idx === 0;
+    return renderBreadcrumb({ year, handleClick, isFirst });
   });
 }
 
-export function YearBreadcrumb({ isSelected, year, handleClick }) {
+export function YearBreadcrumb({ year, handleClick, isFirst }) {
+  const divStyles = {};
+  if (!isFirst) {
+    divStyles.paddingLeft = '15px';
+  }
   return (
     <chakra.div
       display='flex'
       flexDir='row'
       gap='5px'>
-      <BreadcrumbItem
-        isCurrentPage={isSelected}
-        paddingLeft='15px'>
-        <BreadcrumbLink onClick={handleClick}>{year}</BreadcrumbLink>
-      </BreadcrumbItem>
+      <chakra.div {...divStyles}>
+        <chakra.span
+          onClick={handleClick}
+          _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+          {year}
+        </chakra.span>
+      </chakra.div>
       <chakra.span>/</chakra.span>
     </chakra.div>
   );
@@ -60,10 +66,10 @@ export function XSkeletons({ x }) {
       flexDir={'column'}
       gap={'50px'}
       width={mobile ? '350px' : '350px'}>
-      {Array.from({ length: x }).map((idx) => {
+      {Array.from({ length: x }).map((_, idx) => {
         return (
           <Box
-            key={idx}
+            key={`skeleton-${idx}`}
             boxShadow='lg'
             bg='white'>
             <SkeletonCircle size='10' />

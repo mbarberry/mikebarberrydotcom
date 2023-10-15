@@ -69,11 +69,12 @@ export default function Blog({ years }) {
           selectBreadcrumb={(year) => {
             setYear(year);
           }}
-          renderBreadcrumb={({ year, isSelected, handleClick }) => (
+          renderBreadcrumb={({ year, isFirst, handleClick }) => (
             <YearBreadcrumb
+              key={year}
               year={year}
-              isSelected={isSelected}
               handleClick={handleClick}
+              isFirst={isFirst}
             />
           )}
         />
@@ -97,6 +98,7 @@ export default function Blog({ years }) {
                     title,
                   }) => (
                     <BlogPost
+                      key={name}
                       year={year}
                       name={name}
                       chip={chip}

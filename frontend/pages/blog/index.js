@@ -4,9 +4,9 @@ import { lambdaURL } from '#/utils';
 import {
   BlogPosts,
   BlogPost,
-  XSkeletons,
   YearBreadcrumbs,
   BlogPostsWrapper,
+  XSkeletons,
 } from '#/components/blog/BlogPosts';
 import {
   BlogContainer,
@@ -16,12 +16,6 @@ import {
 export default function Year() {
   const [posts, setPosts] = useState([]);
   const [year, setYear] = useState(2019);
-
-  const handleBreadcrumbClick = (bcYear) => {
-    if (!bcYear === year) {
-      setYear(bcYear);
-    }
-  };
 
   useEffect(() => {
     let subscribed = true;
@@ -46,7 +40,13 @@ export default function Year() {
 
   return (
     <BlogContainer>
-      <YearBreadcrumbs handleBreadcrumbClick={handleBreadcrumbClick} />
+      <YearBreadcrumbs
+        handleBreadcrumbClick={(selected) => {
+          if (selected !== year) {
+            setYear(selected);
+          }
+        }}
+      />
       <BlogPostsWrapper
         isLoaded={posts.length > 0}
         render={(isLoaded) => {

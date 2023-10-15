@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { chakra, Box, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
+import { chakra, Box, Skeleton, SkeletonText } from '@chakra-ui/react';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 
@@ -8,7 +8,6 @@ import { lambdaURL } from '#/utils';
 
 export default function Post() {
   const [html, setHTML] = useState(null);
-  const [year, setYear] = useState(null);
 
   const router = useRouter();
   const mobile = useContext(MobileContext);
@@ -18,20 +17,18 @@ export default function Post() {
 
     if (subscribed) {
       const pathname = window.location.pathname;
-      const pathpost = pathname.slice(pathname.lastIndexOf('/') + 1);
-      const pathyear = pathname.slice(6, 10);
+      const post = pathname.slice(pathname.lastIndexOf('/') + 1);
 
       fetch(`${lambdaURL}/blog/post`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          post: pathpost,
+          post,
         }),
       })
         .then((res) => res.json())
         .then((json) => {
           setHTML(json.html);
-          setYear(pathyear);
         });
     }
     return () => {

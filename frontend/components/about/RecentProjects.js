@@ -52,8 +52,8 @@ export default function RecentProjects() {
         fontSize={mobile ? '18px' : '24px'}
         flexDir='column'
         gap='5px'>
-        <h1>Recent</h1>
-        <h1>Projects</h1>
+        <chakra.h1>Recent</chakra.h1>
+        <chakra.h1>Projects</chakra.h1>
       </chakra.div>
     </chakra.div>
   );

@@ -37,3 +37,4 @@ samconfig.toml
 
 venv/
 test/
+bloghtml/

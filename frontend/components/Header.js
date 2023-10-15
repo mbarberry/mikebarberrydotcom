@@ -24,20 +24,10 @@ function HeaderItem({ color, active, handleClick, children }) {
   );
 }
 
-function HeaderList({ renderItem }) {
+function HeaderList({ active, renderItem }) {
   const mobile = useContext(MobileContext);
   const router = useRouter();
-  const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    const pages = {
-      '/': 0,
-      '/about': 1,
-      '/resume': 2,
-      '/contact': 4,
-    };
-    setActive(pages[router.pathname]);
-  }, []);
   return (
     <chakra.ul
       sx={{
@@ -48,11 +38,10 @@ function HeaderList({ renderItem }) {
         listStyle: 'none',
       }}>
       {headerData.map((ele) => {
-        const { color, route, text, anchor, id } = ele;
+        const { color, route, text, id } = ele;
 
         const handleClick = () => {
           router.push(route);
-          setActive(id);
         };
 
         return renderItem({
@@ -66,7 +55,7 @@ function HeaderList({ renderItem }) {
   );
 }
 
-export default function Header() {
+export default function Header({ active }) {
   const mobile = useContext(MobileContext);
   return (
     <header>
@@ -104,6 +93,7 @@ export default function Header() {
         </chakra.div>
       </chakra.div>
       <HeaderList
+        active={active}
         renderItem={({ active, color, text, handleClick }) => (
           <HeaderItem
             key={text}

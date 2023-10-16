@@ -1,0 +1,147 @@
+<div>
+  <h1 class="title">Migrating a Project from PHP to Vue</h1>
+  <p id="caption">4 min read - Oct 11, 2019</p>
+  <p>
+    When I started in my coding journey, one of the first websites I built was a
+    simple CRUD application based on html forms. It worked, and was hosted on
+    AWS EC2. But as I learned more about coding, I decided to switch the
+    technology behind the scenes from HTML/PHP to Vue/Express. This post
+    describes that transition.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/0.png"
+      height="362"
+      width="700"
+      alt="php 0" />
+    <p id="caption">php file before the transition</p>
+  </div>
+  <h1>Before the Transition</h1>
+  <p>
+    The basic inital structure was an index.html page with a form section that
+    triggered a php file to process data and a button that linked to another php
+    file that displayed all of the data in the database.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/1.png"
+      height="254"
+      width="700"
+      alt="php 1" />
+    <p id="caption">form on index.html</p>
+  </div>
+  <p>
+    This structure was fundamentally changed after the shift to Vue and the
+    application became a SPA. In the first version, there were two php files
+    that just processed data (the action.php file shown above that added new
+    data and an update.php file that either edited or deleted data based on user
+    input) and one php file that was a combination of html and php to connect to
+    the database and display that data to the user.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/2.png"
+      height="429"
+      width="700"
+      alt="php 2" />
+    <p id="caption">example of data shown to user</p>
+  </div>
+  <p>
+    After the shift to Vue, this structure was completely changed. Index.html
+    became only a place to mount the Vue application to the DOM and page reloads
+    are gone — the entire frontend is now JavaScript.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/3.png"
+      height="660"
+      width="700"
+      alt="php 3" />
+    <p id="caption">vue home component</p>
+  </div>
+  <p>
+    The form element that was in index.html is now in a Vue component. Rather
+    than having and action attribute, clicking the button triggers a function
+    that submits the data. And instead of redirecting the user to another file,
+    Vue router is used to shift users over to the page to view the stored data.
+  </p>
+  <h1>Why Vue?</h1>
+  <p>
+    Why not React or vanilla JavaScript? Well the answer was simple really, the
+    structure of Vue components with template, script and style sections allowed
+    for a very smooth transition. Html was able to be pasted into the template
+    section with few modifications. Then in the style tag the CSS for each
+    specific component was neatly added directly into the file where it was
+    appropriate rather than having to have one long file. React would have also
+    been adequate, but Vue seemed like the more natural fit.
+  </p>
+  <h1>What About the Backend?</h1>
+  <p>
+    You might have asked yourself, “what about the backend?”. Since php is able
+    to process data for a database and Vue only handles the frontend of the
+    application. ExpressJS was selected as the new backend technology for this
+    application. Working with one language on both ends of an application is
+    welcome and Express is fast, reliable and easy to get up-and-running.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/4.png"
+      height="703"
+      width="700"
+      alt="php 4" />
+    <p id="caption">express routes that serve data from different endpoints</p>
+  </div>
+  <p>
+    Express is paired with Mongoose ODM and MongoDB to form the complete REST
+    API structure.
+  </p>
+  <h1>Deploying the Application</h1>
+  <p>
+    One of the more difficult aspects of getting this website fully up and
+    running was the deployment step. It is hosted on Heroku and available on the
+    world wide web at www.friendslist.link. Originally it was on Amazon EC2
+    running Amazon Linux 2, however this method required SSHing into the server
+    to set up a lot of configuration, like installing PHP, Let’s Encrypt for
+    https and getting the Apache server running. Heroku is a more
+    straightforward option as they perform the config for you. But this wasn’t
+    without it’s own challenges.
+  </p>
+  <p>
+    Building a Vue application is different than React applications. Create
+    React App (CRA) and Vue CLI each have their own implementations of Webpack
+    and Babel. React-scripts, the default build package with CRA is a
+    automatically listed as a frontend dependency and installed by Heroku.
+    Vue-cli-service, the default Vue build package, on the other hand, is not —
+    it is a globally installed package on my local machine. This caused some
+    issues for Heroku.
+  </p>
+  <p>
+    To get around this, the finished Vue application is built locally with
+    <strong>npm run build</strong> and this version is what is uploaded to
+    GitHub and then built with Heroku. Confusing? Yeah. The main takeaway
+    difference is that Heroku can build React applications from pure source
+    code; whereas with Vue code, at least in my implementation, Heroku required
+    the pre-complied and bundled version.
+  </p>
+  <h1>Summary</h1>
+  <p>
+    Working through this transition was a fun process. Vue is a great frontend
+    framework that is at the same time similar to and very different from React.
+    Each have their own strengths and weaknesses. PHP is a great language for
+    getting up and running quickly. Other choices might produce cleaner results.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/php/5.png"
+      height="365"
+      width="700"
+      alt="php 5" />
+    <p id="caption">homepage of new Vue version</p>
+  </div>
+  <div id="chips">
+    <p class="chip">Vue.js</p>
+    <p class="chip">Express.js</p>
+    <p class="chip">PHP</p>
+    <p class="chip">HTML</p>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div>
+  <h1 class="title">Coral Collector Flatiron Sinatra Project</h1>
+  <p id="caption">2 min read - April 5, 2019</p>
+  <h1>Intro</h1>
+  <p>
+    For this CRUD application I chose to create a website where users can upload
+    and modify additions to their coral collection.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/coralcollector/0.png"
+      height="575"
+      width="700"
+      alt="coralcollector 0" />
+    <p id="caption">Photo by Q.U.I on Unsplash</p>
+  </div>
+  <h1>Backend</h1>
+  <p>
+    The database facing portion of the application is administered using Active
+    Record and PostgreSQL as the database. I decided to use Postgres rather than
+    SQLite3 because Postgres.app for Mac and Postbird make visualizing the data
+    much easier than having to rely only on Tux.
+  </p>
+  <p>
+    My models consist of a User and a Post. Users can have many posts and Posts
+    belong to Users.
+  </p>
+  <p>
+    I have 3 controllers: Application Controller, Post Controller, and User
+    Controller. One of the more challenging aspects of this project was getting
+    all three to work together. I have application controller setting the views
+    for the others like this
+  </p>
+  <div class="image">
+    <img
+      src="/blog/coralcollector/1.png"
+      height="100"
+      width="700"
+      alt="coralcollector 1" />
+  </div>
+  <p>
+    so the other controllers can render erb files in directories named after
+    them. Both inherit from Application Controller rather than Sinatra::Base.
+  </p>
+  <p>
+    User Controller and Post Controller control, no pun intended, access to
+    their resources using a current_user helper method defined in Application
+    controller. Here are examples from each:
+  </p>
+  <p>User Controller:</p>
+  <div class="image">
+    <img
+      src="/blog/coralcollector/2.png"
+      height="350"
+      width="700"
+      alt="coralcollector 2" />
+  </div>
+  <p>Post Controller:</p>
+  <div class="image">
+    <img
+      src="/blog/coralcollector/3.png"
+      height="350"
+      width="700"
+      alt="coralcollector 3" />
+  </div>
+  <p>
+    These were probably the biggest challenges on the backend, as well as
+    figuring out to use a hidden input field when making patch requests.
+  </p>
+  <h1>Frontend</h1>
+  <p>
+    In general, CSS, I feel, is overlooked in terms of difficulty. Many people
+    don’t consider it “real” programming, but it can often take as much time as
+    writing logic. And if you don’t use it, well, your site doesn’t look good.
+  </p>
+  <p>
+    Now that I’m off of my soapbox, another big frontend challenge was
+    validating form input.
+  </p>
+  <p>
+    I was not previously aware of the powerful validation features HTML 5 comes
+    with out of the box. But learned a lot building this website. (Active Record
+    also includes some validation, such as the authenticate method and
+    validates_uniqueness_of.)
+  </p>
+  <h1>Conclusion</h1>
+  <p>This was a fun project to build and I’m happy with how it turned out.</p>
+  <div id="chips">
+    <p class="chip">Sinatra</p>
+    <p class="chip">Ruby</p>
+    <p class="chip">Flatiron School</p>
+    <p class="chip">Software Development</p>
+  </div>
+</div>

@@ -106,7 +106,7 @@ export default function Post({ html }) {
             '& div': {
               display: 'flex',
               flexDirection: 'column',
-              gap: '40px',
+              gap: mobile ? '25px' : '35px',
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
             },
@@ -156,6 +156,21 @@ export default function Post({ html }) {
               lineHeight: '20px',
               padding: '8px 16px',
               color: 'rgb(36, 36, 36)',
+            },
+            '& a': {
+              _hover: {
+                textDecor: 'underline',
+              },
+            },
+            '& ul': {
+              marginLeft: '20px',
+              textAlign: 'left',
+            },
+            '& li': {
+              padding: '5px 0px',
+              fontSize: mobile ? '18px' : '20px',
+              lineHeight: '32px',
+              letterSpacing: '-0.003em',
             },
           }}
           dangerouslySetInnerHTML={{ __html: html }}></Box>

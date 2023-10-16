@@ -1,0 +1,98 @@
+<div>
+  <h1 class="title">React/Redux Flatiron Project</h1>
+  <p id="caption">3 min read - April 14, 2019</p>
+  <p>It was the summer of 1969…</p>
+  <p>No, just kidding this is a blog post about software engineering.</p>
+  <p>
+    The application I built is made with React and Redux on the front end and
+    Rails in API mode on the back end.
+  </p>
+  <h1>About the app</h1>
+  <p>
+    The concept of the application is that users can create an account and keep
+    track of all of the items on their wishlist from a single location.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/redux/0.png"
+      height="200"
+      width="200"
+      alt="redux 0" />
+    <p id="caption">Wishlist logo</p>
+  </div>
+  <p>
+    Transitioning right into the technology, Redux was definitely the most
+    challenging aspect of creating this project. All of the boilerplate involved
+    in set up is daunting and at first, down right confusing.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/redux/1.png"
+      height="402"
+      width="578"
+      alt="redux 1" />
+    <p id="caption">Redux folder in the website code</p>
+  </div>
+  <h1>Redux</h1>
+  <p><i>Greatest Challenges</i></p>
+  <p>
+    The use case for Redux in my application is storing the current user logged
+    in and making that available for all of the components that need it.
+  </p>
+  <p>
+    My login page is not directly connected to the homepage so passing props
+    around would have not been ideal. Instead, when the user clicks the button
+    to authenticate their username and password, an action is called that
+    dispatches to a reducer.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/redux/2.png"
+      height="676"
+      width="700"
+      alt="redux 2" />
+    <p id="caption">userAction.js</p>
+  </div>
+  <p>
+    If log in is successful the server responds with a status code of 200 and
+    the current user is store in global state. Else, an error message is stored
+    in the Redux store that the Login page can access to display it on the DOM.
+  </p>
+  <h1>JWT</h1>
+  <p>
+    JWTs are generated in the server and sent to the browser to be stored in
+    local storage. After a user is authenticated, this becomes the basis for
+    further communication between the front and backend. Since they are
+    encrypted and decoded with a secret key stored as and ENV variable, it makes
+    the application more secure.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/redux/3.png"
+      height="194"
+      width="700"
+      alt="redux 3" />
+    <p id="caption">Verification method in the server that returns a user</p>
+  </div>
+  <p><i>Biggest Accomplishments</i></p>
+  <p>
+    Circling back to Redux, while it was quite difficult to grasp initially, it
+    is very powerful.
+  </p>
+  <p>
+    It makes development in React have much more potential since state sharing
+    can occur between essentially any components in the application.
+  </p>
+  <h1>Conclusion</h1>
+  <p>
+    I’m happy with how the app turned out and am humbled each time I work on
+    another project how difficult styling (CSS, SASS) is and have come to
+    appreciate it much more.
+  </p>
+  <div id="chips">
+    <p class="chip">React.js</p>
+    <p class="chip">Redux</p>
+    <p class="chip">Rails</p>
+    <p class="chip">Software Development</p>
+  </div>
+</div>

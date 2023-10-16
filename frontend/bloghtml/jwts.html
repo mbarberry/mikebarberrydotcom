@@ -1,0 +1,226 @@
+<div>
+  <h1 class="title">Using JWTs for Authentication & Security</h1>
+  <p id="caption">5 min read - Oct 12, 2019</p>
+  <p>
+    A lot of people have questions about this topic and there aren’t many good
+    answers available on the internet. This post will present one way to use
+    json web tokens (jwt).
+  </p>
+  <p>
+    Many options are available to authenticate users — alternate strategies
+    involves cookies and sessions. Local storage and axios will be the tools
+    used here.
+  </p>
+  <h1>What is a json web token?</h1>
+  <p>
+    Json web tokens are encrypted messages that take input and a secret to
+    output coded data. Three sections are included in the product are: header,
+    payload, and signature. Only the signature is private. Header and payload
+    can be easily decrypted using free tools like
+    <a
+      href="https://www.jstoolset.com/jwt"
+      target="_blank"
+      >https://www.jstoolset.com/jwt</a
+    >.
+  </p>
+  <p>
+    Signature verification is performed using the same secret that is used
+    during encoding.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/0.png"
+      height="369"
+      width="555"
+      alt="jwts 0" />
+    <p id="caption">jwt verification with the secret hidden</p>
+  </div>
+  <p>
+    Only people with this signature can verify a token. Verification normally
+    happens on the backend for this reason — all frontend code is public; making
+    this secret available there would be a security concern. Think of it like
+    API credentials.
+  </p>
+  <h1>Local Storage</h1>
+  <p>
+    After a jwt has been generated, it is common for it to be sent to the
+    frontend and stored in local storage. Local storage for a website is
+    available to all pages and between reloads. Data placed there will remain
+    until it is explicitly cleared. It’s not necessarily a risk to place a jwt
+    there because of the signature discussed above. Payloads should not contain
+    sensitive information because that part of the token can be easily decoded.
+    Hammering this point home:
+    <i
+      >the header and payload section of a jwt can be easily decoded; the
+      signature cannot be decoded without the secret used to create it. Do not
+      send the secret to the frontend.</i
+    >
+  </p>
+  <p>
+    Payloads can contain any data. Common properties include username, email
+    address, id number, and any other identifying information for the user who
+    logged in to the application.
+  </p>
+  <p>
+    It is common for local storage is formatted with keys and values. It is
+    common for jwts to include the word “Bearer” before the actual token.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/1.png"
+      alt="jwts 1"
+      height="555"
+      width="700" />
+    <p id="caption">actual jwt stored in local storage for a working website</p>
+  </div>
+  <p>
+    Notice the periods (.) in the jwt — these are the section breaks between the
+    three parts.
+  </p>
+  <h1>Axios</h1>
+  <p>
+    Axios is a package that makes working with the fetch api easier. One feature
+    is the ability to add headers to requests that stick until removed.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/2.png"
+      alt="jwts 2"
+      height="364"
+      width="700" />
+    <p id="caption">
+      setting axios headers to token if it exists, else removing token
+    </p>
+  </div>
+  <p>
+    <i
+      >What follows will show the life of a jwt from receiving it from the
+      backend to setting it as an axios header</i
+    >
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/3.png"
+      alt="jwts 3"
+      height="575"
+      width="700" />
+    <p id="caption">
+      api call to login route on backend — with the token: receives it, stores
+      in local storage, sets axios header, decodes it, and stores decoded data
+      in Redux
+    </p>
+  </div>
+  <p>
+    Magic behind the scenes from local storage and setting the axios header
+    (photos above) is exposed in this function.
+  </p>
+  <p>
+    Redux is used in this application. It isn’t necessary, but allows all
+    components to access data about the current user from the store. Both axios
+    and redux are time saving tools. Alternately, headers could be set and data
+    decoded with each request/response to/from the backend.
+  </p>
+  <h1>Redux</h1>
+  <p>
+    One downside to using Redux is the lack of data persistence between page
+    reloads. To get around this, app.js (the root component in React
+    applications) contains a conditional to look into local storage.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/4.png"
+      alt="jwts 4"
+      height="467"
+      width="700" />
+    <p id="caption">
+      checking local storage on each page reload to refresh redux store if user
+      is logged in
+    </p>
+  </div>
+  <p>
+    Many of the same functions are repeated here as a way for app.js to catch
+    whether the user logged out. If not, re-dispatch Redux action, unless the
+    jwt expired.
+  </p>
+  <p>
+    Jwts have expiration dates to further improve security. After expiration,
+    the application will automatically log the user out.
+  </p>
+  <h1>Summary</h1>
+  <p>
+    Jwts are sometimes misrepresented on the internet. Not without good reason
+    as using them, especially with local storage, can be confusing.
+    Authentication can be one of the most technical and complicated aspects of
+    an application and in the website discussed above, it certainly is.
+  </p>
+  <p>
+    Multiple moving parts are involved due to the nature of the feature spanning
+    across both ends of the application and involving a number of different
+    packages and pages.
+  </p>
+  <div>
+    <ul>
+      <li>User starts on unauthenticated page and logs in</li>
+      <li>Redux action is dispatched after log in button is clicked</li>
+      <li>
+        Backend looks up user, takes their data and encodes the information in a
+        jwt signed with a secret
+      </li>
+      <li>
+        Frontend receives the token — saves the raw encoded token in local
+        storage, decodes the token, and stores the decrypted data in Redux
+      </li>
+      <li>
+        Token is stored as an axios header for all subsequent requests to the
+        backend while the user is signed in
+      </li>
+    </ul>
+  </div>
+  <h1>*Extra Credit* Protected Route</h1>
+  <p>
+    React has an ability to use protected routes that require authentication to
+    view the components.
+  </p>
+  <p>
+    A protected route is essentially a wrapper component that checks if the user
+    is authenticated (from Redux; when they are logged in the user data is
+    passed in to the store along with a new property called isAuthenticated that
+    is a boolean). Users for whom this is true are shown the protected
+    component. Others are redirected to the login page.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/jwts/5.png"
+      alt="jwts 5"
+      height="624"
+      width="700" />
+    <p id="caption">
+      protected route checking isAuthenticated property and showing protected
+      component if true
+    </p>
+  </div>
+  <p>
+    Header, sider and footer components are added in with the protected
+    component to create a complete webpage with all of the features intended for
+    the logged in users to have.
+  </p>
+  <p>In app.js the protected routes look like this:</p>
+  <div class="image">
+    <img
+      src="/blog/jwts/6.png"
+      alt="jwts 6"
+      height="200"
+      width="432" />
+    <p id="caption">protected routes</p>
+  </div>
+  <p>
+    Every component where authentication is required uses a protected route.
+    Components that anyone can access use regular Route from react-router-dom.
+  </p>
+  <div id="chips">
+    <p class="chip">Json Web Token</p>
+    <p class="chip">React</p>
+    <p class="chip">Authentication</p>
+    <p class="chip">JavaScript</p>
+  </div>
+</div>

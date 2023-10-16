@@ -1,0 +1,140 @@
+<div>
+  <h1 class="title">Integrating Nanoid into a MERN app</h1>
+  <p id="caption">4 min read - Nov 24, 2019</p>
+  <p>
+    Our clients didn’t want to see the default 24 digit MongoDB ID on the
+    frontend. But still wanted to be able to identify patients by some
+    identifying number.
+  </p>
+  <h1>Researching the right solution</h1>
+  <p>
+    First, we had to determine what the correct approach to solve this problem
+    was. Shortid emerged initially simply due to the fact that the name is the
+    most obvious solution. Their npm page greets visitors with a warning in
+    large font…okay maybe this isn’t going to work? In the warning is a
+    reference to a similar package, nanoid.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/nanoid/main.png"
+      height="651"
+      width="700"
+      alt="nanoid" />
+    <p id="caption">nano id collision calculator</p>
+  </div>
+  <p>
+    About 149 billion years until a 1% probability of a collision? Yeah, that
+    should work. But at 21 characters that doesn’t really solve our user’s
+    concern about a long ID: we’re only shaving off 3 digits at that point.
+    Working with this calculator for a while we decided that 8 digits would be a
+    good compromise between convenience and security for our application.
+    “Referrals”, the main collection in our MongoDB database our users are
+    concerned with aren’t being added at an incredible rate; more like a few per
+    day.
+  </p>
+  <p>
+    Great! Now we have a package that we can integrate into the application.
+    Let’s actually do that.
+  </p>
+  <h1>Adding Nanoid to the Website</h1>
+  <div class="image">
+    <img
+      src="/blog/nanoid/add.png"
+      alt="add nanoid"
+      height="78"
+      width="346" />
+    <p id="caption">
+      function to automatically add nanoids to newly created “referrals”
+    </p>
+  </div>
+  <p>
+    MongoDB is used as the database for this application, as mentioned. We also
+    use Mongoose as the ODM. Referrals have a model on the backend that
+    describes the structure of documents in that collection. If a property isn’t
+    included in the model, it won’t be added. What we did is add a function that
+    automatically creates a nanoid when a new referral is added.
+  </p>
+  <p>
+    What about users that already exist in the system? Great question. Since
+    this function only runs when a referral is created, it will not add nanoids
+    to existing documents. So now what? For this I wrote a Node.js script that
+    connects to the database, creates a nano_id property and stores a nanoid as
+    the value.
+  </p>
+  <h1>Displaying the New Nanoid to Users</h1>
+  <p>
+    To briefly recap where we are right now, we have determined our approach to
+    solving this problem, added some code to automatically generate secondary
+    IDs when a new referral is created, and wrote a script to add IDs to
+    existing referrals. To this point, our changes only exist on the backend.
+    Users do not yet see the new IDs on the UI.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/nanoid/cnxrx.png"
+      alt="nanoid connexrx"
+      height="960"
+      width="564" />
+    <p id="caption">nanoids displayed on the user dashboard</p>
+  </div>
+  <div class="image">
+    <img
+      src="/blog/nanoid/table.png"
+      alt="nanoid code table"
+      height="190"
+      width="460" />
+    <p id="caption">part of the code that makes this table</p>
+  </div>
+  <p>
+    Ant Design is the component library employed on this site. What you see here
+    is code that generates table columns to go in the ant design table
+    component.
+  </p>
+  <p>
+    MongoDB’s default ID is still used behind the scenes. We’re just not showing
+    it to the users anymore.
+  </p>
+  <h1>Wrapping Up</h1>
+  <p>
+    Finally, the nano_id has to be sent with updates to the backend. When a user
+    edits a referral, we need to send the referral’s nanoid with the rest of the
+    data payload so that it doesn’t keep getting overwritten each time something
+    else changes: this ID is meant to be consistent.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/nanoid/backend.png"
+      alt="nanoid code backend"
+      height="36"
+      width="466" />
+    <p id="caption">
+      default id and nano id being sent to the backend when a referral is edited
+    </p>
+  </div>
+  <p>
+    Edit pages are form elements. When a user clicks to submit their changes, an
+    onFinish function runs to process the data before sending it to the
+    application server for eventual storage. Above, our React function performs
+    some operations before making a fetch request (we use Axios). Nanoids aren’t
+    coming from the form. They are coming directly from the server when the edit
+    page loads, and are stored in state. So we add them in with the rest of the
+    values. When the backend function receives the data, it stores this value as
+    it overwrites the existing data; thus preserving the nanoid between saves.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/nanoid/check.jpg"
+      alt="nanoid check mark"
+      height="190"
+      width="460" />
+    <p id="caption">well done!</p>
+  </div>
+  <p>This was a fun feature to add and was my first as a software engineer.</p>
+  <p>Stay tuned for more content about my adventures starting out as a SWE!</p>
+  <div id="chips">
+    <p class="chip">MongoDB</p>
+    <p class="chip">React.js</p>
+    <p class="chip">Node.js</p>
+    <p class="chip">Express.js</p>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div>
+  <h1 class="title">Flatiron CLI Project</h1>
+  <p id="caption">1 min read - March 28, 2019</p>
+  <p>This project is built in General Purpose Ruby</p>
+  <p>The Gems used are: curb, json, and require_all</p>
+  <h1>Biggest challenge</h1>
+  <p>
+    Figuring out how to connect to an external data source was one of the bigger
+    challenges in this project. I settled on using curb with json in order to
+    connect to an API
+    <a
+      href="https://docs.thecatapi.com/"
+      target="_blank"
+      >(https://docs.thecatapi.com/)</a
+    >and then have access to the properties.
+  </p>
+  <p>
+    Curb itself wraps the data as a string so I had to parse it in order to
+    perform the manipulations in my class instance methods.
+  </p>
+  <h1>Greatest accomplishment</h1>
+  <p>
+    Being an object oriented project at its core, all data processing and
+    presentation to the user is accomplished through instance methods on a class
+    that I initialize when the user indicates they’re interested in continuing.
+  </p>
+  <p>This is pretty cool, I think.</p>
+  <h1>Other notes</h1>
+  <p>
+    One file bin/program has access to the entire application code through
+    config/environment that then requires all of the lib folder through the gem;
+    giving the user a simple experience running the application.
+  </p>
+  <div id="chips">
+    <p class="chip">Programming</p>
+    <p class="chip">Ruby</p>
+    <p class="chip">Flatiron School</p>
+    <p class="chip">Command Line</p>
+  </div>
+</div>

@@ -1,0 +1,301 @@
+<div>
+  <h1 class="title">
+    Adding Document Upload Feature to React/Express Application
+  </h1>
+  <p id="caption">6 min read - Nov 12, 2019</p>
+  <p>
+    Our clients wanted to be able to attach documents to existing “referrals” in
+    the system. Creating this was one of the biggest tasks I took on as a
+    developer on ConnexRX.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/sharedcare.png"
+      height="367"
+      width="700"
+      alt="docupload finished" />
+    <p id="caption">finished documentation home page without any data</p>
+  </div>
+  <h1>Getting Started</h1>
+  <p>
+    I knew that the website was already set up using tabs. And the client did
+    not provide any instruction on exactly how this feature should be
+    implemented. They just knew what they wanted to see in a few weeks. My first
+    task was to brainstorms design ideas to implement the feature in a way that
+    would look as natural as possible. Hence, placing the main entry point into
+    the feature on a new tab was the route I chose.
+  </p>
+  <h1>Implementation</h1>
+  <p>
+    First things first, I had to create a new route in app.js to serve the new
+    component I was going to make.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/route.png"
+      alt="docupload protected route"
+      height="31"
+      width="700" />
+    <p id="caption">route for the documentation component</p>
+  </div>
+  <p>
+    Users find the Add Documentation button when editing a “referral”: it’s not
+    possible to attach a file to a referral that doesn’t exist yet. Routing for
+    the edit page is set up similarly; so I knew I was going to have access to
+    the ID. I store this in state when the component mounts, and then push a new
+    route onto history.props when the add button is clicked.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/step.png"
+      alt="docupload steps"
+      height="264"
+      width="700" />
+    <p id="caption">first step to upload a new document</p>
+  </div>
+  <p>
+    Whala! We’re now on the right page, ready to start uploading our file. Here
+    is when the fun begins…
+  </p>
+  <p>
+    In addition to simply uploading a file, the clients wanted to be able to
+    also associate some information with that document. You might recall talk
+    earlier about tabs; turns out in this site, they can be important since that
+    is how different types of treatment are split up. Additionally, there are
+    permissions attached to each of the tabs based on how much access the
+    administrators award. It is an important piece of information. So much so,
+    in fact, that users aren’t able to continue to actually upload their file
+    without entering information in these fields.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/next.png"
+      alt="docupload next"
+      height="201"
+      width="700" />
+    <p id="caption">
+      function to prevent users from continuing without adding a tab and
+      category
+    </p>
+  </div>
+  <p>OK, great. Now we can upload!</p>
+  <div class="image">
+    <img
+      src="/blog/docupload/upload.png"
+      alt="docupload upload"
+      height="304"
+      width="700" />
+    <p id="caption">step 2: upload a file</p>
+  </div>
+  <p>
+    Here is where the magic really happens. Clicking the icon or surrounding
+    area opens a prompt on the user’s machine to select a local file. What this
+    does is actually load an arrayBuffer into memory.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/filelist.png"
+      alt="docupload filelist"
+      height="363"
+      width="700" />
+    <p id="caption">
+      inspecting our React component reveals the selected file in memory
+    </p>
+  </div>
+  <p>
+    We will be uploading this to S3 directly from the front end. But not before
+    we make a request to the back end and received a pre-signed URL.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/puturl.png"
+      alt="docupload puturl"
+      height="295"
+      width="700" />
+    <p id="caption">
+      function in the Express backend that uses the aws-sdk to get a pre-signed
+      url for the frontend
+    </p>
+  </div>
+  <p>
+    Express receives a request from the React component, runs this function, and
+    then returns the URL if all goes well.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/axios.png"
+      alt="docupload axios"
+      height="444"
+      width="700" />
+    <p id="caption">chained requests to get the url and then upload</p>
+  </div>
+  <p>
+    React has to perform two operations in sequence: first it asks for the URL
+    from the back end, then it goes ahead and makes another request to that URL
+    to actually upload the file from memory and into S3.
+  </p>
+  <p>
+    (Note: the file isn’t actually uploaded until all of the steps are completed
+    and the user confirms their intent to complete the operation.) They have one
+    more choice to make before then.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/notif.png"
+      alt="docupload notif"
+      height="295"
+      width="700" />
+    <p id="caption">
+      where users can choose to send emails to other users to notify them of the
+      upload
+    </p>
+  </div>
+  <p>
+    Our clients wanted the ability to send an email notification to other users
+    they thought might be interested to know a patient just had a file uploaded
+    for them. But…they didn’t just want to be able to select any other user.
+    Only certain user groups have permission to access any given patients
+    information. It wouldn’t make sense to show a list of all of potential
+    recipients if only a subset had access to this patient’s data. Here is where
+    a bit of code comes to the rescue to search the database for relevant
+    potential recipients and filter them out.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/8.png"
+      alt="docupload 8"
+      height="446"
+      width="700" />
+    <p id="caption">
+      logic to find only users who have been given consent and have their
+      notifications turned on
+    </p>
+  </div>
+  <p>
+    With a bit of code-jitsu we are able to find only users who have access to
+    the data for the patient who a document is being added for, and who has
+    their notifications turned on (a separate feature allows users to decided
+    whether they want to receive emails from the application or not).
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/9.png"
+      alt="docupload 9"
+      height="138"
+      width="700" />
+    <p id="caption">
+      code finds only the right users to display as potential email recipients
+    </p>
+  </div>
+  <p>
+    If a user, or multiple users, are selected to receive an email, the back end
+    runs a function that uses SES to send.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/10.png"
+      alt="docupload 10"
+      height="279"
+      width="700" />
+    <p id="caption">
+      if recipients.length > 1 this function is executed in Express
+    </p>
+  </div>
+  <p>Finally, we can process the upload!</p>
+  <div class="image">
+    <img
+      src="/blog/docupload/11.png"
+      alt="docupload 11"
+      height="115"
+      width="432" />
+    <p id="caption">hooray!</p>
+  </div>
+  <p>Now we see our upload on the original page we started from.</p>
+  <div class="image">
+    <img
+      src="/blog/docupload/12.png"
+      alt="docupload 12"
+      height="348"
+      width="700" />
+    <p id="caption">uploaded document</p>
+  </div>
+  <p>
+    Some more code runs behind this because business logic dictated that users
+    who do not have consent (remember that idea from the notification filter?)
+    are not allowed to see uploads that have the category as anything other than
+    either “referral” or “demographics”.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/13.png"
+      alt="docupload 13"
+      height="380"
+      width="700" />
+    <p id="caption">business logic authorization code</p>
+  </div>
+  <p>
+    So this bit of code runs in the background to determine which list of docs
+    to show the current user.
+  </p>
+  <h1>Wrapping Up</h1>
+  <p>
+    By this point, we’ve covered most of it. Except, what happens if a user
+    wants to delete a document? I’m glad you asked.
+  </p>
+  <p>
+    Similar to how the process to upload a file required a multiple chained
+    asynchronous operations, deleting does too.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/14.png"
+      alt="docupload 14"
+      height="755"
+      width="700" />
+    <p id="caption">code to delete an upload</p>
+  </div>
+  <p>
+    Since we have metadata stored in MongoDB and the actual file stored in AWS,
+    I had to figure out a way to delete both entries.
+  </p>
+  <p>
+    Additionally, the data is structured so that the “referral” (i.e. patient)
+    holds a reference to the IDs of the Documents attached to it; and the
+    Document model contains a reference to the Referral it is associated with.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/docupload/15.png"
+      alt="docupload 15"
+      height="348"
+      width="700" />
+    <p id="caption">
+      document model with reference to the referral it belongs to; and a
+      Mongoose ‘pre’ middleware function
+    </p>
+  </div>
+  <p>
+    What it happening here is that when a document is deleted, this ‘pre’
+    middleware function automatically runs. When .deleteOne() is called, I pass
+    the ID of the document to be deleted, and also referralId and documentId to
+    the middleware. Which makes use of these values as it finds the referralId
+    that contains a reference to the file to be deleted, and removes it from its
+    own array of documents. In all, we are deleting the document metadata with
+    Document.deleteOne(), the reference to this document in the referral that it
+    used to belong to, and the file itself on S3.
+  </p>
+  <h1>Conclusion</h1>
+  <p>
+    One of the biggest features I’ve worked on so far in my engineering career,
+    it was fun, challenging and rewarding to develop this and I think the
+    clients were pleased with the results.
+  </p>
+  <p>Stay tuned for more exciting articles!</p>
+  <div id="chips">
+    <p class="chip">React.js</p>
+    <p class="chip">Express.js</p>
+    <p class="chip">Mongoose</p>
+    <p class="chip">MongoDB</p>
+    <p class="chip">AWS S3</p>
+  </div>
+</div>

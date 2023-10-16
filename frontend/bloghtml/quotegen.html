@@ -1,0 +1,74 @@
+<div>
+  <h1 class="title">Vanilla JS — Rails API Flatiron Project</h1>
+  <p id="caption">2 min read - April 8, 2019</p>
+  <h1>Intro</h1>
+  <p>
+    This project uses the fetch API to communicate asynchronously with Rails in
+    JSON.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/quotegen/0.png"
+      height="363"
+      width="700"
+      alt="quotegen 0" />
+    <p id="caption">MenuGenerator App</p>
+  </div>
+  <h1>Biggest Challenges</h1>
+  <p>
+    It’s probably not a surprise that getting the frontend and backend to
+    exchange data was the most difficult aspect of this project.
+  </p>
+  <p>
+    On the backend, a major hurdle was formatting the JSON response to the GET
+    request so each restaurant is passed as an object containing an array of its
+    own dishes.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/quotegen/1.png"
+      height="394"
+      width="700"
+      alt="quotegen 1" />
+    <p id="caption">Actual JSON from the server</p>
+  </div>
+  <p>
+    This data structure is what allows me to present it to the user on the
+    frontend in a way that makes sense.
+  </p>
+  <p>
+    Displaying the data received and attaching event listeners to the buttons
+    presented another series of challenges.
+  </p>
+  <p>
+    Adding event listeners to the dynamically generated buttons and attaching
+    fetch API methods to them were probably the biggest hurdles to overcome on
+    the frontend.
+  </p>
+  <p>
+    Essentially the entire UI is dynamically generated so I had to build POST
+    and DELETE requests in to certain elements after using
+  </p>
+  <div class="image">
+    <img
+      src="/blog/quotegen/2.png"
+      height="530"
+      width="700"
+      alt="quotegen 2" />
+    <p id="caption">
+      The add buttons being dynamically generated with event listeners that
+      perform POST requests
+    </p>
+  </div>
+  <h1>Conclusion</h1>
+  <p>
+    Deceptively simply in its appearance, this project required quite a bit of
+    craftsmanship in order to have what are essentially completely separate
+    front and back ends share information.
+  </p>
+  <div id="chips">
+    <p class="chip">JavaScript</p>
+    <p class="chip">HTML</p>
+    <p class="chip">CSS</p>
+  </div>
+</div>

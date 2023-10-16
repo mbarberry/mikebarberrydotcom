@@ -11,7 +11,7 @@ const theme = extendTheme({
   colors: {
     jaggedIce: {
       300: '#BFE3DD',
-      400: '0xbfe3dd',
+      500: '#4DA6A6',
     },
     blue: {
       400: '#2C4071',

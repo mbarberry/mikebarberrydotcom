@@ -226,6 +226,7 @@ const getPost = async (event) => {
       },
       body: JSON.stringify({
         html: target.html,
+        claps: target.claps,
       }),
     };
   } catch (e) {

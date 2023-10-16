@@ -1,6 +1,8 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import DOMPurify from 'isomorphic-dompurify';
+import isEmail from 'validator/lib/isEmail.js';
+
 import { getIpInfo } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
@@ -230,7 +232,7 @@ const getPost = async (event) => {
       }),
     };
   } catch (e) {
-    console.error(`Failed to get post HTML:\n${e}`);
+    console.error(`Failed to get post info:\n${e}`);
     return {
       statusCode: 500,
       headers: {
@@ -238,7 +240,118 @@ const getPost = async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        error: 'Error getting post HTML.',
+        error: 'Error getting post info.',
+      }),
+    };
+  }
+};
+
+const updatePostClaps = async (event) => {
+  const body = JSON.parse(event.body);
+  const { year, post, email } = body;
+
+  const db = client.db('main');
+  const collection = db.collection('blogs');
+
+  const validateEmail = () => {
+    return isEmail(email);
+  };
+
+  try {
+    // Exit if not valid email.
+    if (!validateEmail()) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Invalid email address.',
+        }),
+      };
+    }
+
+    const findPost = { year, name: post };
+    const target = (await collection.find(findPost).toArray())[0];
+
+    // Exit if post not found.
+    if (!target) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Post not found.',
+        }),
+      };
+    }
+
+    // Exit if email already clapped
+    // for this post.
+    if (target.clappers.includes(email)) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Email address already clapped for this post.',
+        }),
+      };
+      // Update post claps and clappers.
+    } else {
+      const updatePost = {
+        $inc: { claps: 1 },
+        $push: { clappers: email },
+      };
+      const result = await collection.updateOne(findPost, updatePost);
+
+      // Everything worked.
+      if (result.acknowledged) {
+        return {
+          statusCode: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            success: true,
+          }),
+        };
+        // An error updating the post.
+      } else {
+        return {
+          statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            success: false,
+            error: 'Error updating post claps.',
+          }),
+        };
+      }
+    }
+    // Server error in the try block.
+  } catch (e) {
+    console.error(`Failed to update post claps:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: false,
+        error: 'Server error updating post claps.',
       }),
     };
   }
@@ -345,6 +458,9 @@ export async function handler(event) {
       }
       case '/blog/post': {
         return getPost(event);
+      }
+      case '/blog/post/clap': {
+        return updatePostClaps(event);
       }
     }
   }

@@ -13,8 +13,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 import { MobileContext } from '#/components/context/MobileContext';
 import Message from '#/components/index/Message';
-
-import { lambdaURL } from '#/utils';
+import { lambdaURL, handleVerification } from '#/utils';
 
 const initialState = {
   name: '',
@@ -102,8 +101,7 @@ export default function Contact() {
         body: JSON.stringify({ token }),
       });
       const json = await response.json();
-      const success = json.success;
-      if (success) {
+      if (json.success) {
         dispatch({ type: 'verify', verfied: true });
       } else {
         dispatch({
@@ -139,8 +137,7 @@ export default function Contact() {
         }),
       });
       const json = await response.json();
-      const { success } = json;
-      if (success) {
+      if (json.success) {
         dispatch({
           type: 'alert',
           alert: { type: 'success', text: 'Email sent to me!' },

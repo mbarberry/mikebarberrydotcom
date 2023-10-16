@@ -1,11 +1,17 @@
-import { useContext, useState } from 'react';
-import { chakra, useTheme, Box, SkeletonText, Icon } from '@chakra-ui/react';
-import { ArrowLeftIcon } from '@chakra-ui/icons';
+import { useContext, useState, useEffect } from 'react';
+import {
+  chakra,
+  Box,
+  SkeletonText,
+  Icon,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowUpIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 import { PiHandsClappingFill } from 'react-icons/pi';
-import { BsChevronDoubleUp } from 'react-icons/bs';
 
 import { MobileContext } from '#/components/context/MobileContext';
+import ClapModal from '#/components/blog/ClapModal';
 import { lambdaURL } from '#/utils';
 
 export async function getStaticPaths() {
@@ -43,11 +49,11 @@ export async function getStaticProps({ params }) {
       }),
     });
     const json = await response.json();
-
     return {
       props: {
         html: json.html,
-        claps: json.claps,
+        name: post,
+        year: Number(year),
       },
     };
   } catch (e) {
@@ -55,23 +61,49 @@ export async function getStaticProps({ params }) {
     return {
       props: {
         html: null,
+        claps: null,
+        name: null,
+        year: null,
       },
     };
   }
 }
 
-export default function Post({ html, claps }) {
+export default function Post({ html, name, year }) {
   const router = useRouter();
   const mobile = useContext(MobileContext);
 
-  const [iconClicked, setIconClicked] = useState(false);
-  const [displayClaps, setDisplayClaps] = useState(claps);
+  const [clapsLoaded, setClapsLoaded] = useState(false);
+  const [clapSent, setClapSent] = useState(false);
+  const [displayClaps, setDisplayClaps] = useState(null);
 
-  const theme = useTheme();
-  const themeColorLight = theme.colors.jaggedIce[300];
-  const themeColorDark = theme.colors.jaggedIce[500];
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const iconColor = iconClicked ? themeColorDark : themeColorLight;
+  useEffect(() => {
+    let subscribed = true;
+    const fetchClaps = async () => {
+      try {
+        const response = await fetch(`${lambdaURL}/blog/post`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            post: name,
+            year,
+          }),
+        });
+        const json = await response.json();
+        setDisplayClaps(json.claps);
+      } finally {
+        setClapsLoaded(true);
+      }
+    };
+    if (subscribed) {
+      fetchClaps();
+    }
+    return () => {
+      subscribed = false;
+    };
+  }, []);
 
   const skeleton = (
     <Box
@@ -92,6 +124,17 @@ export default function Post({ html, claps }) {
     </Box>
   );
 
+  const clapCount = () => {
+    if (clapsLoaded) {
+      if (displayClaps > 0) {
+        return displayClaps;
+      }
+      return null;
+    } else {
+      return '--';
+    }
+  };
+
   return (
     <chakra.div
       padding={mobile ? '20px' : '50px 240px'}
@@ -100,6 +143,16 @@ export default function Post({ html, claps }) {
       width='100%'
       flexDir='column'
       gap={mobile ? '20px' : '50px'}>
+      <ClapModal
+        open={isOpen}
+        close={onClose}
+        post={name}
+        year={year}
+        updateClaps={setDisplayClaps}
+        clapSent={() => {
+          setClapSent(true);
+        }}
+      />
       <chakra.div
         display='flex'
         flexDir='row'
@@ -114,7 +167,7 @@ export default function Post({ html, claps }) {
           alignItems={'center'}
           border='solid'
           borderRadius={'30px'}>
-          <ArrowLeftIcon />
+          <ArrowBackIcon />
         </chakra.div>
         <Box
           display='flex'
@@ -125,19 +178,18 @@ export default function Post({ html, claps }) {
           gap='10px'>
           <Icon
             role={'img'}
-            color={iconColor}
+            color={clapSent ? 'jaggedIce.500' : undefined}
             onClick={() => {
-              setIconClicked(true);
+              if (clapSent) return;
+              onOpen();
             }}
             _hover={{
-              cursor: 'pointer',
+              cursor: clapSent ? 'auto' : 'pointer',
             }}
             boxSize={mobile ? 8 : 10}
             as={PiHandsClappingFill}
           />
-          <chakra.p fontSize={mobile ? '18px' : '24px'}>
-            {displayClaps > 0 && displayClaps}
-          </chakra.p>
+          <chakra.p fontSize={mobile ? '18px' : '24px'}>{clapCount()}</chakra.p>
         </Box>
       </chakra.div>
       {html ? (
@@ -230,7 +282,7 @@ export default function Post({ html, claps }) {
             alignItems={'center'}
             border='solid'
             borderRadius={'30px'}>
-            <Icon as={BsChevronDoubleUp} />
+            <ArrowUpIcon />
           </chakra.div>
         </chakra.div>
       ) : (

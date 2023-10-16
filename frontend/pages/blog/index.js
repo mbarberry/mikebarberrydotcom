@@ -46,7 +46,7 @@ export default function Blog({ years }) {
     return yearRef.current;
   };
   const didYearChange = (year) => {
-    return yearRef.current !== year;
+    return getYear() !== year;
   };
   const updateYear = (year) => {
     yearRef.current = year;
@@ -59,7 +59,6 @@ export default function Blog({ years }) {
 
   useEffect(() => {
     let subscribed = true;
-
     if (subscribed) {
       const changedYear = didYearChange(year);
       if (changedYear) {
@@ -80,7 +79,6 @@ export default function Blog({ years }) {
         setPosts(dataRef.current[year]);
       }
     }
-
     return () => {
       subscribed = false;
     };

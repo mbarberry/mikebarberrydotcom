@@ -9,7 +9,7 @@ function HeaderItem({ color, active, handleClick, children }) {
   const mobile = useContext(MobileContext);
   return (
     <chakra.li
-      _hover={{ cursor: 'pointer', bgColor: color }}
+      _hover={mobile ? {} : { cursor: 'pointer', bgColor: color }}
       bgColor={active ? color : undefined}
       borderRadius='10px'
       p='15px 30px 15px 30px'

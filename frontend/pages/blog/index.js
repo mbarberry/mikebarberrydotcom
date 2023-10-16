@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { lambdaURL } from '#/utils';
 import {
@@ -14,6 +14,7 @@ import {
   BlogPostsContainer,
   BreadcrumbWrapper,
 } from '#/components/blog/Containers';
+import { CacheContext } from '#/components/context/CacheContext';
 
 export async function getStaticProps() {
   try {
@@ -39,22 +40,47 @@ export default function Blog({ years }) {
   const [posts, setPosts] = useState([]);
   const [year, setYear] = useState(years[0]);
 
+  const { dataRef, yearRef } = useContext(CacheContext);
+
+  const getYear = () => {
+    return yearRef.current;
+  };
+  const didYearChange = (year) => {
+    return yearRef.current !== year;
+  };
+  const updateYear = (year) => {
+    yearRef.current = year;
+  };
+  const addYearToCache = (year, data) => {
+    const updatedCache = { ...dataRef.current };
+    updatedCache[year] = data;
+    dataRef.current = updatedCache;
+  };
+
   useEffect(() => {
     let subscribed = true;
 
     if (subscribed) {
-      fetch(`${lambdaURL}/blog/year`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          year,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setPosts(json.posts);
-        });
+      const changedYear = didYearChange(year);
+      if (changedYear) {
+        fetch(`${lambdaURL}/blog/year`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            year,
+          }),
+        })
+          .then((res) => res.json())
+          .then(({ posts }) => {
+            setPosts(posts);
+            addYearToCache(year, posts);
+            updateYear(year);
+          });
+      } else {
+        setPosts(dataRef.current[year]);
+      }
     }
+
     return () => {
       subscribed = false;
     };

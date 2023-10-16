@@ -5,6 +5,7 @@ import Head from 'next/head';
 import theme from '../styles/theme';
 import Layout from '../components/Layout';
 import { MobileContextProvider } from '#/components/context/MobileContext';
+import { CacheContextProvider } from '#/components/context/CacheContext';
 
 import '@fontsource/poppins/300.css';
 import '@fontsource/poppins/400.css';
@@ -27,7 +28,9 @@ export default function App({ Component, pageProps }) {
           <title>MikeBarberry.com</title>
         </Head>
         <Layout>
-          <Component {...pageProps} />
+          <CacheContextProvider>
+            <Component {...pageProps} />
+          </CacheContextProvider>
         </Layout>
       </MobileContextProvider>
     </ChakraProvider>

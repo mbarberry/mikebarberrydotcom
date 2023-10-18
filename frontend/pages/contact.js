@@ -174,7 +174,8 @@ export default function Contact() {
         />
       )}
       <chakra.div
-        width='50%'
+        width={mobile ? '100%' : '50%'}
+        paddingTop={mobile ? '45px' : '30px'}
         display='flex'
         alignItems='center'
         flexDirection='column'
@@ -182,9 +183,9 @@ export default function Contact() {
         fontFamily='Poppins'
         gap='30px'>
         <chakra.h1
-          paddingTop={mobile ? '20px' : '30px'}
           fontSize={mobile ? '20px' : '24px'}
-          textAlign={mobile ? 'center' : undefined}>
+          textAlign={mobile ? 'center' : undefined}
+          paddingBottom={mobile ? '10px' : undefined}>
           I&lsquo;d &#10084; to get to know you!
         </chakra.h1>
         <FormControl>

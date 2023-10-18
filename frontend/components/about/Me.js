@@ -24,7 +24,7 @@ export default function Me() {
         }}
         height={mobile ? 150 : 300}
         width={mobile ? 175 : 350}
-        src='/Meteal.png'
+        src='/Meli.jpg'
         alt='A picture of me.'
       />
       <chakra.p

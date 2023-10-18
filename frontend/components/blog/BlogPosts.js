@@ -4,9 +4,6 @@ import {
   SkeletonCircle,
   SkeletonText,
   Divider,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 import Image from 'next/image';

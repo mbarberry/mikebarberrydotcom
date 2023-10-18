@@ -15,7 +15,7 @@ export function Cards({ cards, renderCard }) {
 export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
   const mobile = useContext(MobileContext);
   const theme = useTheme();
-  const themeColor = theme.colors.blue[400];
+  const themeColor = theme.colors.themeBlue[400];
 
   const [margin, setMargin] = useState(initialMargin);
   const [showImg, setShowImg] = useState(true);

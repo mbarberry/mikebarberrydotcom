@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import Image from 'next/image';
-import { chakra } from '@chakra-ui/react';
+import { chakra, Icon } from '@chakra-ui/react';
+import { TbFileTypePdf, TbFileTypeDocx } from 'react-icons/tb';
 import { MobileContext } from '#/components/context/MobileContext';
 
 export default function Resume() {
@@ -21,21 +22,19 @@ export default function Resume() {
           href='/Mike_Barberry_Resume.docx'
           alt='Docx icon'
           download>
-          <Image
-            width={mobile ? 120 : 200}
-            height={mobile ? 120 : 200}
-            src='/docx-icon.png'
-            alt='Docx icon'
+          <Icon
+            color='themeBlue.400'
+            as={TbFileTypeDocx}
+            boxSize={mobile ? 100 : 150}
           />
         </chakra.a>
         <chakra.a
+          color='melanie.200'
           href='/Mike_Barberry_Resume.pdf'
           target='_blank'>
-          <Image
-            width={mobile ? 120 : 200}
-            height={mobile ? 120 : 200}
-            src='/pdf-icon.png'
-            alt='Docx icon'
+          <Icon
+            as={TbFileTypePdf}
+            boxSize={mobile ? 100 : 150}
           />
         </chakra.a>
       </chakra.div>

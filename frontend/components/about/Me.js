@@ -10,11 +10,12 @@ export default function Me() {
     <chakra.div
       flexShrink={0}
       display='flex'
-      padding={mobile ? '45px 10px 0px 0px' : 'undefined'}
+      padding={mobile ? '45px 0px 30px 0px' : 'undefined'}
       flexDirection='column'
       paddingRight={mobile ? undefined : '50px'}
       justifyContent={mobile ? 'center' : undefined}
       alignItems={mobile ? 'center' : undefined}
+      alignSelf={mobile ? undefined : 'end'}
       gap='20px'>
       <Image
         style={{

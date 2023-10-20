@@ -24,16 +24,15 @@ export default function RecentProjects() {
       }
       _before={{
         content: '""',
-        bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 76.05%)',
+        bg: 'linear-gradient(130deg, #5992b9, #afe1f8 41.07%,#f5c4a1 90.05%)',
         opacity: '0.6',
         position: 'absolute',
         top: mobile ? '20px' : '-5px',
         left: '-5px',
-        width: '100%',
-        height: mobile ? '100px' : 'calc(100% + 10px)',
+        height: mobile ? '130px' : 'calc(100% + 10px)',
         zIndex: '1',
         borderRadius: '12px',
-        maxWidth: '100%',
+        width: '100%',
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'
@@ -53,6 +52,7 @@ export default function RecentProjects() {
         flexDir='column'
         gap='5px'>
         <chakra.h1>Recent</chakra.h1>
+        <chakra.h1>Professional</chakra.h1>
         <chakra.h1>Projects</chakra.h1>
       </chakra.div>
     </chakra.div>

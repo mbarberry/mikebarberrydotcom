@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, Tag } from '@chakra-ui/react';
 
 import { MobileContext } from '#/components/context/MobileContext';
 
@@ -57,7 +57,17 @@ export function CardsContainer({ children }) {
       display={'flex'}
       justifySelf={'flex-start'}
       gap='2rem'
+      top={mobile ? '-20px' : undefined}
+      position={mobile ? 'relative' : undefined}
       paddingBottom={'35px'}>
+      {mobile && (
+        <Tag
+          size='lg'
+          colorScheme='twitter'
+          borderRadius='full'>
+          Click picture to view / hide details.
+        </Tag>
+      )}
       {children}
     </chakra.div>
   );

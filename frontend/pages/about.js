@@ -23,6 +23,7 @@ export default function About() {
             desc,
             pic,
             proj,
+            company,
             isLast,
             initialMargin,
           }) => (
@@ -30,6 +31,7 @@ export default function About() {
               key={proj}
               color={color}
               tech={tech}
+              company={company}
               desc={desc}
               pic={pic}
               proj={proj}

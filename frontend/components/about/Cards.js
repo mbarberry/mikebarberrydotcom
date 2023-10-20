@@ -5,14 +5,32 @@ import { MobileContext } from '#/components/context/MobileContext';
 
 export function Cards({ cards, renderCard }) {
   const mobile = useContext(MobileContext);
-  return cards.map(({ color, tech, desc, pic, proj }, idx) => {
+  return cards.map(({ color, tech, company, desc, pic, proj }, idx) => {
     const isLast = idx === cards.length - 1;
     const initialMargin = mobile || isLast ? 0 : -130;
-    return renderCard({ color, tech, desc, pic, proj, isLast, initialMargin });
+    return renderCard({
+      color,
+      tech,
+      company,
+      desc,
+      pic,
+      proj,
+      isLast,
+      initialMargin,
+    });
   });
 }
 
-export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
+export function Card({
+  color,
+  tech,
+  desc,
+  isLast,
+  company,
+  initialMargin,
+  pic,
+  proj,
+}) {
   const mobile = useContext(MobileContext);
   const theme = useTheme();
   const themeColor = theme.colors.themeBlue[400];
@@ -69,8 +87,8 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
           h={mobile ? '250px' : '225px'}
           maxH='400px'
           maxW='400px'
+          overflowY={'auto'}
           display='flex'
-          alignItems={'center'}
           justifyContent={'center'}>
           <chakra.p color={themeColor}>{desc}</chakra.p>
         </chakra.div>
@@ -79,6 +97,7 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
         pt='20px'
         maxW={mobile ? '250px' : '400px'}
         fontFamily='Poppins'
+        fontSize={'medium'}
         wordBreak={'break-all'}
         whiteSpace='normal'>
         {proj}
@@ -87,9 +106,17 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
         color={color}
         w={mobile ? '250px' : undefined}
         pt='20px'
-        fontSize='0.66rem'
+        fontSize='small'
         textTransform='uppercase'>
         {tech}
+      </chakra.p>
+      <chakra.p
+        color={'auto'}
+        w={mobile ? '250px' : undefined}
+        pt='20px'
+        fontSize='small'
+        textTransform='uppercase'>
+        {company}
       </chakra.p>
     </chakra.article>
   );
@@ -97,9 +124,10 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
     <chakra.div maxW={mobile ? '450px' : undefined}>
       {showTooltip ? (
         <Tooltip
-          openDelay={150}
+          openDelay={300}
           hasArrow={true}
-          label='Click to show/hide details.'
+          color='themeBlue.400'
+          label='Click to view / hide details.'
           closeOnClick={true}
           placement='top'>
           {article}

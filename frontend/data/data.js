@@ -73,14 +73,6 @@ export const cardData = [
     proj: 'Flu Hub',
   },
   {
-    color: 'purple.500',
-    tech: 'React.js, Node.js, Express.js, MySQL',
-    pic: '/peerrx.png',
-    company: 'Competitive Solutions',
-    desc: `Managed development of PeerRX, a software program and website used by emergency room health care providers to find 'peers' (behavorial health counselors) for patients in real time. It utilizes Twilio to send text messages and Node.js to select the best peer fit from the respondents. Front-end is built with React.js.`,
-    proj: 'PeerRX',
-  },
-  {
     color: 'green.500',
     tech: 'React.js, Node.js, Express.js, MongoDB',
     pic: '/connexrx.png',
@@ -95,5 +87,13 @@ export const cardData = [
     company: 'Competitive Solutions',
     desc: 'Led development of Network Engagement Tracker, a software product developed for Ellenville Regional Hospital in New York state to facilitate tracking patient engagement with various community behavioral health services.',
     proj: 'Network Engagement Tracker',
+  },
+  {
+    color: 'purple.500',
+    tech: 'React.js, Node.js, Express.js, MySQL',
+    pic: '/peerrx.png',
+    company: 'Competitive Solutions',
+    desc: `Managed development of PeerRX, a software program and website used by emergency room health care providers to find 'peers' (behavorial health counselors) for patients in real time. It utilizes Twilio to send text messages and Node.js to select the best peer fit from the respondents. Front-end is built with React.js.`,
+    proj: 'PeerRX',
   },
 ];

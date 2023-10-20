@@ -33,9 +33,25 @@ export const headerData = [
 
 export const cardData = [
   {
+    color: 'blue.500',
+    tech: 'React.js, Next.js, Node.js, AWS CloudFormation, AWS ECS, Docker, Strapi.js',
+    pic: '/fluhub.png',
+    proj: 'Flu Hub',
+    company: 'Digital Infuzion',
+    desc: 'Built and deployed a new National Institutes of Health (NIH) public website. Developed 8 pages with React.js / Next.js, full of content stored in Strapi.js, a headless CMS connected to a MySQL database. Some pages feature advanced interactive elements. Deployed to AWS Elastic Container Service based on AWS CloudFormation infrastructure-as-code templates, Dockerfiles, and Bash scripts. Can also be deployed from git triggers such as a tag or a merge. Created all deployment architecture and performed all deployments (while working at Digital Infuzion).',
+  },
+  {
+    color: 'red.500',
+    tech: 'Node.js, React.js, HiPlot, AWS S3',
+    proj: 'Data Visualization: Parallel Coordinates',
+    company: 'Digital Infuzion',
+    desc: 'Built a parallel coordinates website based on National Institutes of Health (NIH) data from various files to show the correlations between amount of money received and output. Utilized Node.js to sanitize and combine the data. Created an interactive, informative scatter plot using HiPlot, a Facebook research library, and React.js. Deployed the website to AWS S3.',
+    pic: '/parall-coords.png',
+  },
+  {
     color: 'pink.500',
     tech: 'Python, NLP, Plotly, HTML, JavaScript, AWS S3',
-    proj: 'Impact Analysis Scatter Plots',
+    proj: 'Data Visualization: Scatter Plots',
     pic: '/scatterplots.png',
     company: 'Digital Infuzion',
     desc: 'Performed natural language processing (NLP) on National Institutes of Health (NIH) text using Python to gain insight into relationships in the data. Created multiple versions of scatter plots with Plotly from different combinations of algorithms. Produced a lightweight JavaScript / HTML front-end website and deployed to AWS S3.',
@@ -43,35 +59,21 @@ export const cardData = [
   {
     color: 'teal.500',
     tech: 'Node.js, JavaScript, DOM APIs, Puppeteer, ANDI',
-    proj: 'ANDI Automation Tool',
+    proj: 'Automated Node.js Tool',
     pic: '/andi.png',
     company: 'Digital Infuzion',
     desc: 'Developed a custom automation tool that saved thousands of dollars in third party software fees. It collects and reports Section 508 alerts. (Federal law requires goverment software to be accessible to people with disabilities.) Built with Node.js, Puppeteer, a code-based version of Chrome, and ANDI, an open source Section 508 library from the Social Security Administration.',
   },
-  {
-    color: 'red.500',
-    tech: 'Node.js, React.js, HiPlot, AWS S3',
-    proj: 'Impact Analysis Parallel Coordinates',
-    company: 'Digital Infuzion',
-    desc: 'Built a parallel coordinates website based on National Institutes of Health (NIH) data from various files to show the correlations between amount of money received and output. Utilized Node.js to sanitize and combine the data. Created an interactive, informative scatter plot using HiPlot, a Facebook research library, and React.js. Deployed the website to AWS S3.',
-    pic: '/parall-coords.png',
-  },
+
   {
     color: 'yellow.500',
     tech: 'React.js, Next.js, Node.js',
-    proj: 'CEIRR Data Search',
+    proj: 'Data Search Page',
     company: 'Digital Infuzion',
     desc: '(Hidden because it is a private portal.) Engineered, from scratch, a new version of a Digital Infuzion (DIFZ) data search page where users can access over a million data records in 30+ categories. Created the entire front-end utilizing React.js / Next.js, MUI, and JavaScript. It features advanced filtering options, where all of the page data updates each time an option changes. Includes a search bar and a sophisticated AG Grid data table.',
     pic: '/ceirr.png',
   },
-  {
-    color: 'blue.500',
-    tech: 'React.js, Next.js, Node.js, AWS CloudFormation, AWS ECS, Docker, Strapi.js',
-    pic: '/fluhub.png',
-    company: 'Digital Infuzion',
-    desc: 'Built and deployed a new National Institutes of Health (NIH) public website. Developed 8 pages with React.js / Next.js, full of content stored in Strapi.js, a headless CMS connected to a MySQL database. Some pages feature advanced interactive elements. Deployed to AWS Elastic Container Service based on AWS CloudFormation infrastructure-as-code templates, Dockerfiles, and Bash scripts. Can also be deployed from git triggers such as a tag or a merge. Created all deployment architecture and performed all deployments (while working at Digital Infuzion).',
-    proj: 'Flu Hub',
-  },
+
   {
     color: 'green.500',
     tech: 'React.js, Node.js, Express.js, MongoDB',

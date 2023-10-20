@@ -97,6 +97,8 @@ export function Card({ color, tech, desc, isLast, initialMargin, pic, proj }) {
     <chakra.div maxW={mobile ? '450px' : undefined}>
       {showTooltip ? (
         <Tooltip
+          openDelay={150}
+          hasArrow={true}
           label='Click to show/hide details.'
           closeOnClick={true}
           placement='top'>

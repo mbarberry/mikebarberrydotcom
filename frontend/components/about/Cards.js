@@ -84,8 +84,8 @@ export function Card({
         />
       ) : (
         <chakra.div
-          w={mobile ? '270px' : '400px'}
-          height={mobile ? '300px' : '370px'}
+          w={mobile ? '300px' : '400px'}
+          height={mobile ? '340px' : '370px'}
           maxH='400px'
           maxW='400px'
           overflowY={'auto'}

@@ -90,6 +90,7 @@ export function Card({
           maxW='400px'
           overflowY={'auto'}
           display='flex'
+          alignItems={mobile ? undefined : 'center'}
           justifyContent={'center'}>
           <chakra.p color={themeColor}>{desc}</chakra.p>
         </chakra.div>

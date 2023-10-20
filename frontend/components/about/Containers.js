@@ -56,7 +56,8 @@ export function CardsContainer({ children }) {
       overflowX={mobile ? 'hidden' : 'scroll'}
       display={'flex'}
       justifySelf={'flex-start'}
-      gap='1rem'>
+      gap='2rem'
+      paddingBottom={'35px'}>
       {children}
     </chakra.div>
   );

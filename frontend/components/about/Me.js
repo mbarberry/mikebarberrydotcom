@@ -10,9 +10,8 @@ export default function Me() {
     <chakra.div
       flexShrink={0}
       display='flex'
-      padding={mobile ? '45px 0px 30px 0px' : 'undefined'}
+      padding={mobile ? '45px 0px 25px 0px' : '0px 50px 0px 0px'}
       flexDirection='column'
-      paddingRight={mobile ? undefined : '50px'}
       justifyContent={mobile ? 'center' : undefined}
       alignItems={mobile ? 'center' : undefined}
       alignSelf={mobile ? undefined : 'end'}

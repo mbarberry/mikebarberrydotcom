@@ -77,8 +77,8 @@ export function Card({
         <chakra.img
           src={pic}
           display='block'
-          w={mobile ? '270px' : '400px'}
-          height={mobile ? '300px' : '370px'}
+          w={mobile ? '300px' : '400px'}
+          height={mobile ? '340px' : '370px'}
           maxH={'370px'}
           maxW='400px'
         />

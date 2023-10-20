@@ -28,7 +28,7 @@ export default function RecentProjects() {
         opacity: '0.6',
         position: 'absolute',
         top: mobile ? '20px' : '-5px',
-        left: '-5px',
+        left: mobile ? '0px' : '-5px',
         height: mobile ? '130px' : 'calc(100% + 10px)',
         zIndex: '1',
         borderRadius: '12px',
@@ -36,6 +36,7 @@ export default function RecentProjects() {
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'
+      textAlign={'center'}
       flex={mobile ? '0 1 0px' : '0 0 200px'}
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}

@@ -100,7 +100,7 @@ export function Card({
         maxW={mobile ? '250px' : '400px'}
         fontFamily='Poppins'
         fontSize={'medium'}
-        wordBreak={'break-all'}
+        overflowWrap={'break-word'}
         whiteSpace='normal'>
         {proj}
       </chakra.p>

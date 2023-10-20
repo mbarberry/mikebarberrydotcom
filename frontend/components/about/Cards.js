@@ -70,21 +70,22 @@ export function Card({
       flexDir='column'
       mr={mobile ? 0 : margin}
       minW='300px'
+      height={mobile ? undefined : '550px'}
       minH='350px'
       shadow='-2rem 0 3rem -2rem #000'>
       {showImg ? (
         <chakra.img
           src={pic}
           display='block'
-          w={mobile ? '250px' : '400px'}
-          h={mobile ? '250px' : '225px'}
-          maxH='400px'
+          w={mobile ? '270px' : '400px'}
+          height={mobile ? '300px' : '370px'}
+          maxH={'370px'}
           maxW='400px'
         />
       ) : (
         <chakra.div
-          w={mobile ? '250px' : '400px'}
-          h={mobile ? '250px' : '225px'}
+          w={mobile ? '270px' : '400px'}
+          height={mobile ? '300px' : '370px'}
           maxH='400px'
           maxW='400px'
           overflowY={'auto'}

@@ -15,7 +15,7 @@ function DotBackground() {
         _after={{
           content: '""',
           display: 'block',
-          h: '195px',
+          h: '150px',
           w: '1px',
           pos: 'relative',
           top: '15px',
@@ -32,7 +32,7 @@ export function AboutPageContainer({ children }) {
     <chakra.div
       display='flex'
       flexDir='column'
-      m='0 0 1rem'
+      m={mobile ? undefined : '0 0 1rem'}
       pl={mobile ? undefined : '30px'}>
       {!mobile && <DotBackground />}
       <chakra.div
@@ -59,7 +59,7 @@ export function CardsContainer({ children }) {
       gap='2rem'
       top={mobile ? '-20px' : undefined}
       position={mobile ? 'relative' : undefined}
-      paddingBottom={'35px'}>
+      paddingBottom={mobile ? '20px' : '35px'}>
       {mobile && (
         <Tag
           size='lg'

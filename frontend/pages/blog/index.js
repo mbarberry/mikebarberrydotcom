@@ -65,7 +65,7 @@ export default function Blog({ years }) {
       const isLoading =
         scrollRef.current > document.querySelector('main').scrollHeight;
       if (!isLoading) {
-        window.scrollTo({ top: scrollRef.current, behavior: 'instant' });
+        window.scrollTo({ top: scrollRef.current, behavior: 'smooth' });
         clearInterval(id);
       }
     }, 10);

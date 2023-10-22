@@ -225,7 +225,7 @@ export default function Contact() {
               <FormLabel>How can we work together?</FormLabel>
               <Textarea
                 rows='10'
-                resize='none'
+                resize={mobile ? 'none' : 'vertical'}
                 autoCorrect='on'
                 isRequired={true}
                 value={state.message}

@@ -36,7 +36,7 @@ export default function RecentProjects() {
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'
-      textAlign={'center'}
+      textAlign={mobile ? 'center' : 'start'}
       flex={mobile ? '0 1 0px' : '0 0 200px'}
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}

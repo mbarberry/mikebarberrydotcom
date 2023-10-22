@@ -10,13 +10,15 @@ export default function Resume() {
   return (
     <chakra.div
       w='100%'
-      h={mobile ? '300px' : '500px'}
+      h={mobile ? undefined : '400px'}
       justifyContent={'center'}
+      paddingTop={'30px'}
       alignItems={'center'}
       display={'flex'}>
       <chakra.div
         display={'flex'}
         flexDirection={mobile ? 'column' : 'row'}
+        paddingBottom={'50px'}
         gap='20px'>
         <chakra.a
           href='/Mike_Barberry_Resume.docx'
@@ -24,17 +26,19 @@ export default function Resume() {
           download>
           <Icon
             color='themeBlue.400'
+            strokeWidth={1}
             as={TbFileTypeDocx}
-            boxSize={mobile ? 100 : 150}
+            boxSize={mobile ? '75px' : '120px'}
           />
         </chakra.a>
         <chakra.a
-          color='melanie.200'
           href='/Mike_Barberry_Resume.pdf'
           target='_blank'>
           <Icon
+            color='melanie.200'
             as={TbFileTypePdf}
-            boxSize={mobile ? 100 : 150}
+            strokeWidth={1}
+            boxSize={mobile ? '75px' : '120px'}
           />
         </chakra.a>
       </chakra.div>

@@ -140,7 +140,6 @@ export default function Blog({ years }) {
                       key={name}
                       name={name}
                       handleClick={() => {
-                        console.log(window.scrollY);
                         scrollRef.current = window.scrollY;
                         router.push(`/blog/${year}/${name}`);
                       }}

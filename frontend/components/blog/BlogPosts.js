@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 import { MobileContext } from '#/components/context/MobileContext';
 
@@ -110,10 +109,10 @@ export function BlogPosts({ posts, renderBlogPost }) {
 }
 
 export function BlogPost({
-  year,
   name,
   chip,
   min,
+  handleClick,
   date,
   renderedPreview,
   aboveDivider,
@@ -121,7 +120,6 @@ export function BlogPost({
   title,
 }) {
   const mobile = useContext(MobileContext);
-  const router = useRouter();
 
   return (
     <chakra.div
@@ -131,9 +129,7 @@ export function BlogPost({
       gap={mobile ? '30px' : '50px'}>
       {aboveDivider}
       <chakra.div
-        onClick={() => {
-          router.push(`/blog/${year}/${name}`);
-        }}
+        onClick={handleClick}
         display={'flex'}
         paddingLeft={mobile ? '50px' : undefined}
         gap={'20px'}

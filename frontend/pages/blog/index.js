@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { lambdaURL } from '#/utils';
 import {
@@ -40,7 +41,9 @@ export default function Blog({ years }) {
   const [posts, setPosts] = useState([]);
   const [year, setYear] = useState(years[0]);
 
-  const { dataRef, yearRef } = useContext(CacheContext);
+  const router = useRouter();
+
+  const { dataRef, yearRef, scrollRef } = useContext(CacheContext);
 
   const getYear = () => {
     return yearRef.current;
@@ -57,9 +60,21 @@ export default function Blog({ years }) {
     dataRef.current = updatedCache;
   };
 
+  const scrollOnDelay = () => {
+    const id = setInterval(() => {
+      const isLoading =
+        scrollRef.current > document.querySelector('main').scrollHeight;
+      if (!isLoading) {
+        window.scrollTo({ top: scrollRef.current, behavior: 'instant' });
+        clearInterval(id);
+      }
+    }, 10);
+  };
+
   useEffect(() => {
     let subscribed = true;
     if (subscribed) {
+      scrollOnDelay();
       const changedYear = didYearChange(year);
       if (changedYear) {
         fetch(`${lambdaURL}/blog/year`, {
@@ -123,8 +138,12 @@ export default function Blog({ years }) {
                   }) => (
                     <BlogPost
                       key={name}
-                      year={year}
                       name={name}
+                      handleClick={() => {
+                        console.log(window.scrollY);
+                        scrollRef.current = window.scrollY;
+                        router.push(`/blog/${year}/${name}`);
+                      }}
                       chip={chip}
                       min={min}
                       date={date}

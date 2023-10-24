@@ -4,6 +4,7 @@
   "version": "2.0",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "cd frontend && npm run full"
+    "build": "cd frontend && npm run full",
+    "gitbuild": "git push && npm run build"
   }
 }

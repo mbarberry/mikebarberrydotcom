@@ -88,6 +88,8 @@ export function Card({
           height={mobile ? '340px' : '370px'}
           maxH='400px'
           maxW='400px'
+          padding='10px'
+          border={'2px solid white'}
           overflowY={'auto'}
           display='flex'
           alignItems={mobile ? undefined : 'center'}

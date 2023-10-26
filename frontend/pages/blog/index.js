@@ -38,22 +38,13 @@ export async function getStaticProps() {
 }
 
 export default function Blog({ years }) {
-  const [posts, setPosts] = useState([]);
-  const [year, setYear] = useState(years[0]);
-
   const router = useRouter();
 
   const { dataRef, yearRef, scrollRef } = useContext(CacheContext);
 
-  const getYear = () => {
-    return yearRef.current;
-  };
-  const didYearChange = (year) => {
-    return getYear() !== year;
-  };
-  const updateYear = (year) => {
-    yearRef.current = year;
-  };
+  const [posts, setPosts] = useState([]);
+  const [year, setYear] = useState(yearRef.current || years[0].year);
+
   const addYearToCache = (year, data) => {
     const updatedCache = { ...dataRef.current };
     updatedCache[year] = data;
@@ -75,8 +66,7 @@ export default function Blog({ years }) {
     let subscribed = true;
     if (subscribed) {
       scrollOnDelay();
-      const changedYear = didYearChange(year);
-      if (changedYear) {
+      if (!(year in dataRef.current)) {
         fetch(`${lambdaURL}/blog/year`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
@@ -88,7 +78,6 @@ export default function Blog({ years }) {
           .then(({ posts }) => {
             setPosts(posts);
             addYearToCache(year, posts);
-            updateYear(year);
           });
       } else {
         setPosts(dataRef.current[year]);
@@ -103,17 +92,22 @@ export default function Blog({ years }) {
     <BlogContainer>
       <BreadcrumbWrapper>
         <YearBreadcrumbs
-          years={years}
+          years={years.map(({ year }) => year)}
           selectedYear={year}
           selectBreadcrumb={(year) => {
+            // Remember last viewed year.
+            yearRef.current = year;
+            // Reset position to
+            // top when year changes.
+            scrollRef.current = 0;
             setYear(year);
           }}
-          renderBreadcrumb={({ year, isFirst, handleClick }) => (
+          renderBreadcrumb={({ year, isSelectedYear, handleClick }) => (
             <YearBreadcrumb
               key={year}
               year={year}
               handleClick={handleClick}
-              isFirst={isFirst}
+              isSelectedYear={isSelectedYear}
             />
           )}
         />
@@ -156,7 +150,13 @@ export default function Blog({ years }) {
               </BlogPostsContainer>
             );
           } else {
-            return <XSkeletons x={5} />;
+            // Show many skeletons as
+            // blog posts.
+            return (
+              <XSkeletons
+                x={years.filter((element) => element.year === year)[0].count}
+              />
+            );
           }
         }}
       />

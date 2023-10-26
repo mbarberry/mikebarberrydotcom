@@ -4,11 +4,17 @@ import { useContext } from 'react';
 import { MobileContext } from '#/components/context/MobileContext';
 
 export function BreadcrumbWrapper({ children }) {
+  const mobile = useContext(MobileContext);
+
   return (
     <chakra.div
       paddingTop='30px'
-      fontSize='30px'
-      fontWeight='bold'>
+      fontSize={mobile ? '26px' : '30px'}
+      fontWeight='bold'
+      display={'flex'}
+      flexDir={'row'}
+      flexWrap={'wrap'}
+      gap={'5px'}>
       {children}
     </chakra.div>
   );

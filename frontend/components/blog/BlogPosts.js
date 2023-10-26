@@ -16,31 +16,30 @@ export function YearBreadcrumbs({
   selectBreadcrumb,
   renderBreadcrumb,
 }) {
-  return years.map((year, idx) => {
+  return years.map((year) => {
     const handleClick = () => {
       if (year !== selectedYear) {
         selectBreadcrumb(year);
       }
     };
-    const isFirst = idx === 0;
-    return renderBreadcrumb({ year, handleClick, isFirst });
+    const isSelectedYear = year === selectedYear;
+    return renderBreadcrumb({ year, isSelectedYear, handleClick });
   });
 }
 
-export function YearBreadcrumb({ year, handleClick, isFirst }) {
-  const divStyles = {};
-  if (!isFirst) {
-    divStyles.paddingLeft = '15px';
-  }
+export function YearBreadcrumb({ year, isSelectedYear, handleClick }) {
   return (
     <chakra.div
       display='flex'
       flexDir='row'
       gap='5px'>
-      <chakra.div {...divStyles}>
+      <chakra.div>
         <chakra.span
           onClick={handleClick}
-          _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+          _hover={{
+            cursor: 'pointer',
+          }}
+          textDecoration={isSelectedYear ? 'underline' : 'none'}>
           {year}
         </chakra.span>
       </chakra.div>
@@ -156,6 +155,11 @@ export function BlogPost({
         <Image
           width={mobile ? 120 : 200}
           height={mobile ? 120 : 200}
+          style={{
+            width: mobile ? '120px' : '200px',
+            height: mobile ? '120px' : '200px',
+            objectFit: 'fill',
+          }}
           src={`/blog/${name}/thumbnail.png`}
           alt={`${name} blog thumbnail`}
         />

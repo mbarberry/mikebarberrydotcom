@@ -393,10 +393,20 @@ const getPostYears = async () => {
   const collection = db.collection('blogs');
 
   try {
+    // Return post years sorted
+    // in desc. order as { year,
+    // count: # of posts }.
     const posts = await collection
       .find({})
       .project({ year: 1, _id: 0 })
       .toArray();
+    const uniqueYears = [...new Set(posts.map((post) => post.year))];
+    const uniqueYearsWCount = uniqueYears.map((year) => {
+      return {
+        year,
+        count: posts.filter((post) => post.year === year).length,
+      };
+    });
     return {
       statusCode: 200,
       headers: {
@@ -404,7 +414,7 @@ const getPostYears = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        years: [...new Set(posts.map((post) => post.year))].sort(),
+        years: uniqueYearsWCount.sort((a, b) => b.year - a.year),
       }),
     };
   } catch (e) {

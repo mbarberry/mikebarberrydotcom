@@ -5,6 +5,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "cd frontend && npm run full",
-    "gitbuild": "git push && npm run build"
+    "gitbuild": "git push && npm run build",
+    "fedev": "npm run dev --prefix frontend"
   }
 }

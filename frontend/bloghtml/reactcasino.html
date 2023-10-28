@@ -1,0 +1,258 @@
+<div>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/0.png"
+      height="460"
+      width="720"
+      alt="reactcasino 0" />
+    <p id="caption">
+      <a href="https://reactcasino.netlify.app/">Website page🔗</a>
+    </p>
+  </div>
+  <h1 class="title">One Way To Architect React Applications</h1>
+  <p id="caption">6 min read - Oct 2, 2023</p>
+  <p>
+    I came up with this idea after building a very complicated private data
+    search portal from scratch at Digital Infuzion. And then building a very
+    similar page again for another site. Essentially, the issue that I ran into
+    is that I was struggling to pass state around a page where elements that all
+    cared about the same state were located on multiple levels of the component
+    tree. For example, there were filters on one side of the page that used the
+    same state as chips located on another side, under a different div in a flex
+    container. So it was the HTML that made my components messy and complicated
+    to reason about since I had HTML, CSS, and JavaScript logic all bundled
+    together.
+  </p>
+  <p>
+    I already had heard about "lifting state up" and tried to do that as much as
+    possible, but it only started to click when I realized I could utilize the
+    children prop to extract my HTML/CSS into "Container" components, i. e.
+    components that strictly add shape and style to the page, but only consume
+    state and never create their own state.
+  </p>
+  <p>
+    It was at around this point I started rewriting a lot of my most complicated
+    React logic utilizing the style that I will outline in this post.
+  </p>
+  <p>
+    I made an example project that represents the ideas of this pattern called
+    either card-deck or ReactCasino on
+    <a href="https://github.com/MikeBarberry/carddeck">GitHub</a>.
+  </p>
+  <p>
+    And it is deployed on the Internet with
+    <a href="https://reactcasino.netlify.app/">Netlify</a>.
+  </p>
+  <h1>The Main Players</h1>
+  <p>
+    Okay grab a coffee, (and read this 7 times). There is a lot of information
+    coming. If implemented, it can radically transform your approach to building
+    complex front-ends with React. However, I realize that it can be a bit hard
+    to grasp.
+  </p>
+  <p>
+    We will be using renderProps, "lifting state up" the children prop, Context,
+    wrapper components, a primary component, and container components.
+  </p>
+  <p>
+    First, take a look again at the cover photo and take a minute or two to
+    consider how you would implement this in React. (I use hooks and will only
+    cover hooks in this article.)
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/0.png"
+      height="460"
+      width="720"
+      alt="reactcasino 0" />
+    <p id="caption">Main Page</p>
+  </div>
+  <p>
+    (For those curious, there are more cards on the page beneath the 5 visible
+    cards. A total of 10 have been drawn.)
+  </p>
+  <p>
+    Prior to discovering this method, which doesn't really have a proper name,
+    but could be called "moving state out" as an homage to "lifting state up"
+    (although more than just state is moved out; it more literally alters the
+    structural organization of state and HTML on a React webpage), I would have
+    probably wrote a Casino component that renders a div with left and right
+    side component children. So something maybe called "Deck" for the left and
+    "Cards" for the right. I would probably define Casino in Casino.js and have
+    Deck.js and Cards.js files. The left and right side components would
+    probably do something similar to the root component, and so on...
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/1.png"
+      height="85"
+      width="432"
+      alt="reactcasino 1" />
+    <p id="caption">Organization Pseudo-code</p>
+  </div>
+  <p>The Cards component might look something like:</p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/2.png"
+      height="260"
+      width="720"
+      alt="reactcasino 2" />
+    <p id="caption">Example Cards Component</p>
+  </div>
+  <p>
+    What we will do is dramatically different. To me, the above is difficult to
+    read. Yet this pattern is common in React code. And for a while, I wrote my
+    React code this way.
+  </p>
+  <p>
+    I'm not aware of any other blog posts or articles on the Internet that
+    describe this as a development pattern. Although I do know that parts of it
+    are used all of the time.
+  </p>
+  <p>
+    What follows is a structural approach to designing the architecture of React
+    webpages. "Webpages" is significant here. These are the basic until of
+    fundamental organizational structure on the front-end. Routers that are used
+    with React typically render a single component as a representation of a
+    page. SPA React typically uses react-router-dom that conditionally renders a
+    specific component based on the route in the browser URL. NextJS SSR React
+    builds single HTML files per page (more like traditional web servers
+    pre-SPA). In both cases the page is the fundamental unit of organization.
+    This is where our story starts. What we are trying to do is create a webpage
+    where the code is legible and can be easily digested. We are trying to be
+    able to keep a clear mental picture of what is happening so we can handle
+    complex situations.
+  </p>
+  <p>
+    Instead of writing our Cards logic like that, we are going to write it like
+    this:
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/3.png"
+      height="765"
+      width="432"
+      alt="reactcasino 3" />
+    <p id="caption">
+      Various components that collectively render cards with conditional logic
+    </p>
+  </div>
+  <p>And it is returned from a single component like this:</p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/4.png"
+      height="385"
+      width="432"
+      alt="reactcasino 4" />
+    <p id="caption">Root component rendering the Cards components</p>
+  </div>
+  <p>
+    One component we haven't seen the code for yet is the CardsContainer. It
+    looks like:
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/5.png"
+      height="325"
+      width="432"
+      alt="reactcasino 5" />
+    <p id="caption">
+      Component containing the HTML logic for the Cards (right) side of the page
+    </p>
+  </div>
+  <p>These are the main principles of this architectural philosophy.</p>
+  <p>The deck side looks like:</p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/6.png"
+      height="337"
+      width="432"
+      alt="reactcasino 6" />
+    <p id="caption">Deck side (left) rendered in the root component</p>
+  </div>
+  <p>
+    The Deck side of the page follows the same principles as the Cards side
+    does. They are both wrapped in a single page level container that provides a
+    flex div with various settings.
+  </p>
+  <p>
+    Importantly, this approach allows all of the components that will be used on
+    a page to be rendered in a single component. No more chasing import
+    statements in multiple files to figure out where a piece of state comes
+    from, for example. There is no need for prop-drilling because the entire
+    structure is rendered in a single tree that mirrors the DOM tree.
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/7.png"
+      height="64"
+      width="369"
+      alt="reactcasino 7" />
+    <p id="caption">Rendered DOM of Casino (root) component</p>
+  </div>
+  <p>
+    There is also no need for a global store like Redux to manage page state.
+    Redux is often reached to to handle complex state management, even on a
+    single page, to remove the logic from the main components and put them into
+    a store with actions, reducers, etc. However, that adds additional tech debt
+    and cognitive load, as these are entire additional structures that must be
+    maintained and extended by developers.
+  </p>
+  <p>
+    The approach outlined here completely alleviates the need for Redux, and
+    prop-drilling, while scaling well up to extremely complex front-ends with
+    many interconnected, distant components. To pass state from one "side" to
+    another lift it up to the nearest parent.
+  </p>
+  <p>
+    RenderProps are simply functions that allow all of our components to be
+    declared in a single place. They are invoked from the calling component,
+    with their definitions coming from the root component. Their logic can
+    include if conditions, switches, and other complex logic because the outer
+    scope is a regular JavaScript function. We use the return statements to
+    strictly render HTML. To reiterate, in renderProp functions, our outer scope
+    is not a return statement, like it would be in the second pseudo-code
+    example above. It is common for React code to contain ternary and other
+    operators in curly braces in return statements. This pattern avoids this.
+  </p>
+  <p>
+    Children props allow us to wrap JavaScript components (children) in HTML,
+    moving the HTML/CSS mostly out of the JavaScript logic. The basis of this
+    idea comes from reading
+    <a href="https://justjavascript.com/">Just JavaScript</a> by Dan Abramov,
+    where he emphasizes the distinction between "code" and "data". This approach
+    wants a hard separation between HTML/CSS, and the various steps included in
+    rendering conditional components. By breaking the tangle apart, engineers
+    can more easily work with our data by clearly seeing the separation between
+    code that controls how a page looks (HTML/CSS), and the the logic that
+    controls the flow of data around the page.
+  </p>
+  <p>
+    Context is also useful, and I mostly use it for state that doesn't change
+    very much but is accessed by a large number of components. For example,
+    whether a page is mobile or not, i.e. is being viewed in mobile, tablet or
+    desktop dimensions.
+  </p>
+  <p>
+    Our example project uses it to store the API URL and deckID. Here's the
+    entire root component:
+  </p>
+  <div class="image">
+    <img
+      src="/blog/reactcasino/8.png"
+      height="1230"
+      width="720"
+      alt="reactcasino 8" />
+    <p id="caption">Root Casino component</p>
+  </div>
+  <p>
+    This approach means we can dive deeper into any single component to change
+    HTML, CSS or JavaScript logic. And, importantly, we can see the entire
+    structure of the page in one place.
+  </p>
+  <p>Feel free to have fun with the code and website! 🤩</p>
+  <div id="chips">
+    <p class="chip">React</p>
+    <p class="chip">JavaScript</p>
+  </div>
+</div>

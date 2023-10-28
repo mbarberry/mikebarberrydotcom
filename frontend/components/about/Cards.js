@@ -1,7 +1,10 @@
 import { useState, useContext } from 'react';
-import { chakra, useTheme, Tooltip } from '@chakra-ui/react';
+import { createPortal } from 'react-dom';
+import { chakra, useTheme, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
 
 import { MobileContext } from '#/components/context/MobileContext';
+import ImgModal from './ImgModal';
 
 export function Cards({ cards, renderCard }) {
   const mobile = useContext(MobileContext);
@@ -35,6 +38,8 @@ export function Card({
   const theme = useTheme();
   const themeColor = theme.colors.themeBlue[400];
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [margin, setMargin] = useState(initialMargin);
   const [showImg, setShowImg] = useState(true);
   const [showTooltip, setShowTooltip] = useState(true);
@@ -48,16 +53,17 @@ export function Card({
     setMargin(margin - 135);
   };
 
+  const handleImgClick = () => {
+    setShowImg(!showImg);
+    if (showTooltip) {
+      setShowTooltip(false);
+    }
+  };
+
   const article = (
     <chakra.article
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={() => {
-        setShowImg(!showImg);
-        if (showTooltip) {
-          setShowTooltip(false);
-        }
-      }}
       _hover={{
         transform: mobile ? undefined : 'rotate(0.01turn)',
         cursor: 'pointer',
@@ -68,13 +74,33 @@ export function Card({
       background='linear-gradient(85deg, #ffffff, #d6d6d6)'
       display='flex'
       flexDir='column'
+      gap='20px'
       mr={mobile ? 0 : margin}
       minW='300px'
       height={mobile ? undefined : '550px'}
       minH='350px'
       shadow='-2rem 0 3rem -2rem #000'>
-      {showImg ? (
+      {showImg && showTooltip ? (
+        <Tooltip
+          openDelay={300}
+          hasArrow={true}
+          color='themeBlue.400'
+          label='Click to view / hide details.'
+          closeOnClick={true}
+          placement='top'>
+          <chakra.img
+            onClick={handleImgClick}
+            src={pic}
+            display='block'
+            w={mobile ? '300px' : '400px'}
+            height={mobile ? '340px' : '370px'}
+            maxH={'370px'}
+            maxW='400px'
+          />
+        </Tooltip>
+      ) : showImg ? (
         <chakra.img
+          onClick={handleImgClick}
           src={pic}
           display='block'
           w={mobile ? '300px' : '400px'}
@@ -88,6 +114,7 @@ export function Card({
           height={mobile ? '340px' : '370px'}
           maxH='400px'
           maxW='400px'
+          onClick={handleImgClick}
           padding='10px'
           border={'2px solid white'}
           overflowY={'auto'}
@@ -97,19 +124,34 @@ export function Card({
           <chakra.p color={themeColor}>{desc}</chakra.p>
         </chakra.div>
       )}
-      <chakra.p
-        pt='20px'
-        maxW={mobile ? '250px' : '400px'}
-        fontFamily='Poppins'
-        fontSize={'medium'}
-        overflowWrap={'break-word'}
-        whiteSpace='normal'>
-        {proj}
-      </chakra.p>
+      <chakra.div
+        display='flex'
+        flexDir='row'
+        gap='15px'>
+        <chakra.p
+          maxW={mobile ? '250px' : '400px'}
+          fontFamily='Poppins'
+          fontSize={'medium'}
+          overflowWrap={'break-word'}
+          whiteSpace='normal'>
+          {proj}
+        </chakra.p>
+        {!mobile && (
+          <PlusSquareIcon
+            alignSelf='center'
+            onClick={() => {
+              if (!showImg) {
+                setShowImg(true);
+              }
+              onOpen();
+            }}
+          />
+        )}
+      </chakra.div>
+
       <chakra.p
         color={color}
         w={mobile ? '250px' : undefined}
-        pt='20px'
         fontSize='small'
         textTransform='uppercase'>
         {tech}
@@ -117,7 +159,6 @@ export function Card({
       <chakra.p
         color={'auto'}
         w={mobile ? '250px' : undefined}
-        pt='20px'
         fontSize='small'
         textTransform='uppercase'>
         {company}
@@ -125,20 +166,13 @@ export function Card({
     </chakra.article>
   );
   return (
-    <chakra.div maxW={mobile ? '450px' : undefined}>
-      {showTooltip ? (
-        <Tooltip
-          openDelay={300}
-          hasArrow={true}
-          color='themeBlue.400'
-          label='Click to view / hide details.'
-          closeOnClick={true}
-          placement='top'>
-          {article}
-        </Tooltip>
-      ) : (
-        article
-      )}
+    <chakra.div>
+      <ImgModal
+        open={isOpen}
+        close={onClose}
+        pic={pic}
+      />
+      <chakra.div maxW={mobile ? '450px' : undefined}>{article}</chakra.div>
     </chakra.div>
   );
 }

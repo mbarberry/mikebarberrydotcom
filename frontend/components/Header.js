@@ -67,7 +67,7 @@ export default function Header({ active }) {
         display='flex'
         mt='5px'>
         <chakra.h1
-          pl={mobile ? undefined : '30px'}
+          pl={mobile ? undefined : '60px'}
           fontSize='30px'>
           Mike Barberry
         </chakra.h1>

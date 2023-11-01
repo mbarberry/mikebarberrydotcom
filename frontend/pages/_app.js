@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ChakraProvider, useMediaQuery } from '@chakra-ui/react';
+import { chakra, ChakraProvider, useMediaQuery } from '@chakra-ui/react';
 import Head from 'next/head';
 
 import theme from '../styles/theme';
@@ -24,14 +24,18 @@ export default function App({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <MobileContextProvider mobile={mobile}>
-        <Head>
-          <title>MikeBarberry.com</title>
-        </Head>
-        <Layout>
-          <CacheContextProvider>
-            <Component {...pageProps} />
-          </CacheContextProvider>
-        </Layout>
+        <chakra.div
+          display='flex'
+          flexDirection='column'>
+          <Head>
+            <title>MikeBarberry.com</title>
+          </Head>
+          <Layout>
+            <CacheContextProvider>
+              <Component {...pageProps} />
+            </CacheContextProvider>
+          </Layout>
+        </chakra.div>
       </MobileContextProvider>
     </ChakraProvider>
   );

@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import { createPortal } from 'react-dom';
 import { chakra, useTheme, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 
@@ -136,17 +135,16 @@ export function Card({
           whiteSpace='normal'>
           {proj}
         </chakra.p>
-        {!mobile && (
-          <PlusSquareIcon
-            alignSelf='center'
-            onClick={() => {
-              if (!showImg) {
-                setShowImg(true);
-              }
-              onOpen();
-            }}
-          />
-        )}
+        <PlusSquareIcon
+          color={'themeBlue.400'}
+          alignSelf='center'
+          onClick={() => {
+            if (!showImg) {
+              setShowImg(true);
+            }
+            onOpen();
+          }}
+        />
       </chakra.div>
 
       <chakra.p

@@ -1,5 +1,6 @@
 import {
   AboutPageContainer,
+  ProjectsContainer,
   CardsContainer,
 } from '#/components/about/Containers';
 import RecentProjects from '#/components/about/RecentProjects';
@@ -13,34 +14,36 @@ export default function About() {
   return (
     <AboutPageContainer>
       <Me />
-      <RecentProjects />
-      <CardsContainer>
-        <Cards
-          cards={cardData}
-          renderCard={({
-            color,
-            tech,
-            desc,
-            pic,
-            proj,
-            company,
-            isLast,
-            initialMargin,
-          }) => (
-            <Card
-              key={proj}
-              color={color}
-              tech={tech}
-              company={company}
-              desc={desc}
-              pic={pic}
-              proj={proj}
-              initialMargin={initialMargin}
-              isLast={isLast}
-            />
-          )}
-        />
-      </CardsContainer>
+      <ProjectsContainer>
+        <RecentProjects />
+        <CardsContainer>
+          <Cards
+            cards={cardData}
+            renderCard={({
+              color,
+              tech,
+              desc,
+              pic,
+              proj,
+              company,
+              isLast,
+              initialMargin,
+            }) => (
+              <Card
+                key={proj}
+                color={color}
+                tech={tech}
+                company={company}
+                desc={desc}
+                pic={pic}
+                proj={proj}
+                initialMargin={initialMargin}
+                isLast={isLast}
+              />
+            )}
+          />
+        </CardsContainer>
+      </ProjectsContainer>
     </AboutPageContainer>
   );
 }

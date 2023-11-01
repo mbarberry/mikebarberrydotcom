@@ -16,7 +16,7 @@ export default function RecentProjects() {
               position: 'absolute',
               top: '0',
               left: '0',
-              width: '95%',
+              width: '100%',
               height: '100%',
               zIndex: '2',
               borderRadius: '8px',
@@ -32,7 +32,7 @@ export default function RecentProjects() {
         height: mobile ? '130px' : 'calc(100% + 10px)',
         zIndex: '1',
         borderRadius: '12px',
-        width: '100%',
+        width: '105%',
       }}
       alignItems={mobile ? 'center' : undefined}
       display='flex'

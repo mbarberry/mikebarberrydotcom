@@ -1,16 +1,19 @@
+import { useContext } from 'react';
 import {
   chakra,
   Modal,
   Button,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
 
+import { MobileContext } from '#/components/context/MobileContext';
+
 export default function ImgModal({ open, close, pic }) {
+  const mobile = useContext(MobileContext);
   return (
     <Modal
       size={'full'}
@@ -26,7 +29,8 @@ export default function ImgModal({ open, close, pic }) {
             alignItems={'center'}>
             <chakra.img
               src={pic}
-              w={'50%'}
+              width={mobile ? '100%' : '60%'}
+              height={mobile ? '100%' : '60%'}
             />
           </chakra.div>
         </ModalBody>

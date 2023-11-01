@@ -60,7 +60,7 @@ export function CardsContainer({ children }) {
               position: 'absolute',
               right: 0,
               top: '33rem',
-              bottom: '10rem',
+              bottom: '12.8rem',
               width: '10px',
               borderRadius: '5px',
               background:

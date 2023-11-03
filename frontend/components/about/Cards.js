@@ -7,6 +7,10 @@ import ImgModal from './ImgModal';
 
 export function Cards({ cards, renderCard }) {
   const mobile = useContext(MobileContext);
+  const [showTooltip, setShowTooltip] = useState(true);
+  const stopShowingTooltips = () => {
+    setShowTooltip(false);
+  };
   return cards.map(({ color, tech, company, desc, pic, proj }, idx) => {
     const isLast = idx === cards.length - 1;
     const initialMargin = mobile || isLast ? 0 : -130;
@@ -14,6 +18,8 @@ export function Cards({ cards, renderCard }) {
       color,
       tech,
       company,
+      showTooltip,
+      stopShowingTooltips,
       desc,
       pic,
       proj,
@@ -29,6 +35,8 @@ export function Card({
   desc,
   isLast,
   company,
+  showTooltip,
+  stopShowingTooltips,
   initialMargin,
   pic,
   proj,
@@ -41,7 +49,6 @@ export function Card({
 
   const [margin, setMargin] = useState(initialMargin);
   const [showImg, setShowImg] = useState(true);
-  const [showTooltip, setShowTooltip] = useState(true);
 
   const handleMouseEnter = () => {
     if (mobile) return;
@@ -55,7 +62,7 @@ export function Card({
   const handleImgClick = () => {
     setShowImg(!showImg);
     if (showTooltip) {
-      setShowTooltip(false);
+      stopShowingTooltips();
     }
   };
 

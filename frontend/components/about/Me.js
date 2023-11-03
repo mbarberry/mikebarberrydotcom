@@ -34,7 +34,7 @@ export default function Me() {
         <chakra.p
           textAlign='center'
           fontSize={mobile ? undefined : '18px'}
-          padding={mobile ? '0px 10px' : undefined}>
+          padding={mobile ? '0px 10px' : '0px 0px 20px 0px'}>
           Hi 🙂! I&lsquo;m a software engineer based out of Astoria, Oregon.
         </chakra.p>
       </chakra.div>

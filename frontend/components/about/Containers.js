@@ -59,8 +59,8 @@ export function CardsContainer({ children }) {
               content: '""',
               position: 'absolute',
               right: 0,
-              top: '33rem',
-              bottom: '12.8rem',
+              top: '34rem',
+              bottom: '10rem',
               width: '10px',
               borderRadius: '5px',
               background:

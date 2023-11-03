@@ -24,6 +24,8 @@ export default function About() {
               tech,
               desc,
               pic,
+              showTooltip,
+              stopShowingTooltips,
               proj,
               company,
               isLast,
@@ -33,6 +35,8 @@ export default function About() {
                 key={proj}
                 color={color}
                 tech={tech}
+                showTooltip={showTooltip}
+                stopShowingTooltips={stopShowingTooltips}
                 company={company}
                 desc={desc}
                 pic={pic}

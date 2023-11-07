@@ -432,6 +432,37 @@ const getPostYears = async () => {
   }
 };
 
+const addExclude = async (event) => {
+  const db = client.db('main');
+  const collection = db.collection('emails');
+
+  const { name, website, email } = event.queryStringParameters;
+
+  try {
+    const result = await collection.insertOne({ name, website, email });
+    if (result.acknowledged) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'text/plain',
+        },
+        body: 'Successfully opted out.',
+      };
+    }
+  } catch (e) {
+    console.log(`Error opting out:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'A server error occurred while opting out. Operation failed.',
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -453,6 +484,9 @@ export async function handler(event) {
       }
       case '/blog/years': {
         return getPostYears(event);
+      }
+      case '/outreach/exclude': {
+        return addExclude(event);
       }
     }
   } else if (event.httpMethod === 'POST') {

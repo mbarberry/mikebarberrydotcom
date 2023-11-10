@@ -17,6 +17,7 @@
     "sam": "sam build && sam deploy --config-env=prod"
   },
   "dependencies": {
+    "googleapis": "^128.0.0",
     "isomorphic-dompurify": "^1.9.0",
     "mongodb": "^5.3.0",
     "validator": "^13.11.0"

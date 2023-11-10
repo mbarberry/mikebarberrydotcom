@@ -13,7 +13,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 import { MobileContext } from '#/components/context/MobileContext';
 import Message from '#/components/index/Message';
-import { lambdaURL, handleVerification } from '#/utils';
+import { lambdaURL } from '#/utils';
 
 const initialState = {
   name: '',

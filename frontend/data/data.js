@@ -29,6 +29,12 @@ export const headerData = [
     text: 'Contact',
     id: 4,
   },
+  {
+    color: '#CACACA',
+    route: '/portal',
+    text: 'Client Portal',
+    id: 5,
+  },
 ];
 
 export const cardData = [

@@ -18,6 +18,7 @@ export default function Layout({ children }) {
       '/resume': 2,
       '/blog': 3,
       '/contact': 4,
+      '/portal': 5,
     };
     if (router.pathname in pages) {
       setActive(pages[router.pathname]);

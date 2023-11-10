@@ -30,11 +30,17 @@ export default function App({ Component, pageProps }) {
           <Head>
             <title>MikeBarberry.com</title>
           </Head>
-          <Layout>
-            <CacheContextProvider>
-              <Component {...pageProps} />
-            </CacheContextProvider>
-          </Layout>
+          {Component.name === 'Authorize' ? (
+            // Don't wrap authorization page
+            // with header and footer.
+            <Component {...pageProps} />
+          ) : (
+            <Layout>
+              <CacheContextProvider>
+                <Component {...pageProps} />
+              </CacheContextProvider>
+            </Layout>
+          )}
         </chakra.div>
       </MobileContextProvider>
     </ChakraProvider>

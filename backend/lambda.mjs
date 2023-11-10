@@ -2,6 +2,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import DOMPurify from 'isomorphic-dompurify';
 import isEmail from 'validator/lib/isEmail.js';
+import { google } from 'googleapis';
 
 import { getIpInfo } from './utils.mjs';
 
@@ -463,6 +464,107 @@ const addExclude = async (event) => {
   }
 };
 
+const getGoogleAuthURL = (event) => {
+  const oauth2Client = new google.auth.OAuth2({
+    clientId: process.env['GOOGLE_CLIENT_ID'],
+    clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
+    redirectUri: `http://localhost:3000/portal/auth`,
+  });
+
+  try {
+    const url = oauth2Client.generateAuthUrl({
+      // 'online' (default) or 'offline' (gets refresh_token)
+      access_type: 'online',
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ],
+    });
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: url,
+    };
+  } catch (e) {
+    console.log(`Error getting Google auth URL:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'Error getting Google auth URL.',
+    };
+  }
+};
+
+const getGoogleAuthToken = async (event) => {
+  const oauth2Client = new google.auth.OAuth2({
+    clientId: process.env['GOOGLE_CLIENT_ID'],
+    clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
+    redirectUri: `http://localhost:3000/portal/auth`,
+  });
+
+  const { code } = JSON.parse(event.body);
+
+  try {
+    const token = await oauth2Client.getToken(code);
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: token.tokens.access_token,
+    };
+  } catch (e) {
+    console.log(`Error getting Google auth token:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'Error getting Google auth token.',
+    };
+  }
+};
+
+const getGoogleAuthInfo = async (event) => {
+  const { accessToken } = JSON.parse(event.body);
+
+  try {
+    const client = new google.auth.OAuth2();
+    client.setCredentials({ access_token: accessToken });
+    const command = google.oauth2({
+      auth: client,
+      version: 'v2',
+    });
+    const { data } = await command.userinfo.get();
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ clientInfo: data }),
+    };
+  } catch (e) {
+    console.log(`Error getting Google auth info:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'Error getting Google auth info.',
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -488,6 +590,9 @@ export async function handler(event) {
       case '/outreach/exclude': {
         return addExclude(event);
       }
+      case '/auth/google/url': {
+        return getGoogleAuthURL(event);
+      }
     }
   } else if (event.httpMethod === 'POST') {
     switch (event.path) {
@@ -506,6 +611,21 @@ export async function handler(event) {
       case '/blog/post/clap': {
         return updatePostClaps(event);
       }
+      case '/auth/google/token': {
+        return getGoogleAuthToken(event);
+      }
+      case '/auth/google/info': {
+        return getGoogleAuthInfo(event);
+      }
     }
+  } else {
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'File not found.',
+    };
   }
 }

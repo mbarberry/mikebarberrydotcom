@@ -468,7 +468,7 @@ const getGoogleAuthURL = (event) => {
   const oauth2Client = new google.auth.OAuth2({
     clientId: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    redirectUri: `http://localhost:3000/portal/auth`,
+    redirectUri: `https://mikebarberry.com/portal/auth`,
   });
 
   try {

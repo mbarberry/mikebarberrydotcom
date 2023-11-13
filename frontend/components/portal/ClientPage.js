@@ -22,7 +22,9 @@ export default function ClientPage({ client, signOut }) {
             display='flex'
             justifyContent={mobile ? 'center' : 'flex-end'}>
             <Flex gap='10px'>
-              <Button color={'jaggedIce.300'}>
+              <Button
+                onClick={signOut}
+                color={'jaggedIce.300'}>
                 <LuLogOut />
                 &nbsp;&nbsp;Log Out
               </Button>
@@ -31,10 +33,10 @@ export default function ClientPage({ client, signOut }) {
           <chakra.div
             display='flex'
             flexDir='column'
+            padding='35px 50px'
             gap='15px'>
-            <h1>{client.name}</h1>
-            <h1>{client.email}</h1>
-            <h1>{client.id}</h1>
+            <h1>Hi, {client.name}👋. Welcome to the client portal! </h1>
+            <p>Features are on the way. 🔨</p>
           </chakra.div>
         </chakra.div>
       </Flex>

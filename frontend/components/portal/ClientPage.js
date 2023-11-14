@@ -12,7 +12,7 @@ export default function ClientPage({ signOut }) {
   return (
     <chakra.div
       w={'100%'}
-      padding={mobile ? '0px 50px' : '0px 30%'}>
+      padding={mobile ? '0px 50px 30px' : '0px 30%'}>
       <Flex
         direction='column'
         paddingTop={mobile ? '50px' : '30px'}>

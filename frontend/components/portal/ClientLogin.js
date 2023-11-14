@@ -9,18 +9,22 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { FcGoogle, FcCustomerSupport } from 'react-icons/fc';
 
 import { lambdaURL } from '#/utils';
 
 export default function ClientLogin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     const response = await fetch(
       `${lambdaURL}/auth/google/url?env=${process.env.ENVIRONMENT}`
     );
     const url = await response.text();
+    setLoading(false);
     const windowFeatures = 'left=500,top=500,width=800,height=800';
     window.open(url, '_blank', windowFeatures);
   };
@@ -74,6 +78,7 @@ export default function ClientLogin() {
                 flexDir='column'
                 gap='20px'>
                 <Button
+                  isLoading={loading}
                   onClick={handleGoogleSignIn}
                   colorScheme='messenger'
                   size='md'>

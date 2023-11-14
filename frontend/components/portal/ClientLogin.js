@@ -18,9 +18,7 @@ export default function ClientLogin() {
 
   const handleGoogleSignIn = async () => {
     const response = await fetch(
-      `${lambdaURL}/auth/google/url?env=${
-        process.env.NODE_ENV === 'development' ? 'dev' : 'prod'
-      }`
+      `${lambdaURL}/auth/google/url?env=${process.env.ENVIRONMENT}`
     );
     const url = await response.text();
     const windowFeatures = 'left=500,top=500,width=800,height=800';

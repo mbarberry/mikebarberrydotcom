@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  env: {
+    ENVIRONMENT: process.env.NODE_ENV === 'development' ? 'dev' : 'prod',
+  },
 };
 
 module.exports = nextConfig;

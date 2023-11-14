@@ -143,7 +143,7 @@ const sendContactEmail = async (event) => {
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: `**MikeBarberry.com Contact**`,
+        Data: `Mike Barberry Dot Com Contact Form`,
       },
     },
     Source: fromAddress,

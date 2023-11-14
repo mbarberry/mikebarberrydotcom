@@ -13,7 +13,10 @@ export default function Authorize() {
         const response = await fetch(`${lambdaURL}/auth/google/token`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({
+            code,
+            env: process.env.NODE_ENV === 'development' ? 'dev' : 'prod',
+          }),
         });
         const accessToken = await response.text();
         const infoResponse = await fetch(`${lambdaURL}/auth/google/info`, {

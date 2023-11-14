@@ -10,14 +10,14 @@ export default function ClientPage({ client, signOut }) {
   return (
     <chakra.div
       w={'100%'}
-      padding={'0px 30%'}>
+      padding={mobile ? '0px 50px' : '0px 30%'}>
       <Flex
         direction='column'
-        paddingTop='30px'>
+        paddingTop={mobile ? '50px' : '30px'}>
         <chakra.div
           display='flex'
           flexDir='column'
-          gap={mobile ? '40px' : '10px'}>
+          gap={mobile ? '40px' : '40px'}>
           <chakra.div
             display='flex'
             justifyContent={mobile ? 'center' : 'flex-end'}>
@@ -33,7 +33,6 @@ export default function ClientPage({ client, signOut }) {
           <chakra.div
             display='flex'
             flexDir='column'
-            padding='35px 50px'
             gap='15px'>
             <h1>Hi, {client.name}👋. Welcome to the client portal! </h1>
             <p>Features are on the way. 🔨</p>

@@ -17,7 +17,11 @@ export default function ClientLogin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleGoogleSignIn = async () => {
-    const response = await fetch(`${lambdaURL}/auth/google/url`);
+    const response = await fetch(
+      `${lambdaURL}/auth/google/url?env=${
+        process.env.NODE_ENV === 'development' ? 'dev' : 'prod'
+      }`
+    );
     const url = await response.text();
     const windowFeatures = 'left=500,top=500,width=800,height=800';
     window.open(url, '_blank', windowFeatures);

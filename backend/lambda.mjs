@@ -465,10 +465,15 @@ const addExclude = async (event) => {
 };
 
 const getGoogleAuthURL = (event) => {
+  const { env } = event.queryStringParameters;
+
   const oauth2Client = new google.auth.OAuth2({
     clientId: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    redirectUri: `https://mikebarberry.com/portal/auth`,
+    redirectUri:
+      env === 'prod'
+        ? `https://mikebarberry.com/portal/auth`
+        : 'http://localhost:3000/portal/auth',
   });
 
   try {
@@ -502,13 +507,16 @@ const getGoogleAuthURL = (event) => {
 };
 
 const getGoogleAuthToken = async (event) => {
+  const { code, env } = JSON.parse(event.body);
+
   const oauth2Client = new google.auth.OAuth2({
     clientId: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    redirectUri: `http://localhost:3000/portal/auth`,
+    redirectUri:
+      env === 'prod'
+        ? `https://mikebarberry.com/portal/auth`
+        : 'http://localhost:3000/portal/auth',
   });
-
-  const { code } = JSON.parse(event.body);
 
   try {
     const token = await oauth2Client.getToken(code);

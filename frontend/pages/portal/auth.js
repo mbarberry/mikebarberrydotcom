@@ -9,6 +9,8 @@ export default function Authorize() {
       const params = url.searchParams;
       const code = params.get('code');
 
+      if (!code) return;
+
       const fetchTokenAndInfo = async () => {
         const response = await fetch(`${lambdaURL}/auth/google/token`, {
           method: 'POST',

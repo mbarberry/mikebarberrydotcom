@@ -3,9 +3,11 @@ import { chakra, Button, Flex } from '@chakra-ui/react';
 import { LuLogOut } from 'react-icons/lu';
 
 import { MobileContext } from '../context/MobileContext';
+import { PortalContext } from '../context/PortalContext';
 
-export default function ClientPage({ client, signOut }) {
+export default function ClientPage({ signOut }) {
   const mobile = useContext(MobileContext);
+  const client = useContext(PortalContext);
 
   return (
     <chakra.div

@@ -25,8 +25,7 @@ export default function ClientLogin() {
     );
     const url = await response.text();
     setLoading(false);
-    const windowFeatures = 'left=500,top=500,width=800,height=800';
-    window.open(url, '_blank', windowFeatures);
+    window.open(url, '_self');
   };
 
   return (

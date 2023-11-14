@@ -8,6 +8,9 @@ import { getIpInfo } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
 
+const PORTAL_PROD_URL = 'https://mikebarberry.com/portal';
+const PORTAL_DEV_URL = 'http://localhost:3000/portal';
+
 const client = new MongoClient(process.env.MONGO_URI, {
   tlsCertificateKeyFile: credentials,
   serverApi: ServerApiVersion.v1,
@@ -470,10 +473,7 @@ const getGoogleAuthURL = (event) => {
   const oauth2Client = new google.auth.OAuth2({
     clientId: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    redirectUri:
-      env === 'prod'
-        ? `https://mikebarberry.com/portal/auth`
-        : 'http://localhost:3000/portal/auth',
+    redirectUri: env === 'prod' ? PORTAL_PROD_URL : PORTAL_DEV_URL,
   });
 
   try {
@@ -512,10 +512,7 @@ const getGoogleAuthToken = async (event) => {
   const oauth2Client = new google.auth.OAuth2({
     clientId: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    redirectUri:
-      env === 'prod'
-        ? `https://mikebarberry.com/portal/auth`
-        : 'http://localhost:3000/portal/auth',
+    redirectUri: env === 'prod' ? PORTAL_PROD_URL : PORTAL_DEV_URL,
   });
 
   try {

@@ -21,7 +21,7 @@ export default function Resume() {
         paddingBottom={'50px'}
         gap='20px'>
         <chakra.a
-          href='/Mike_Barberry_Resume.docx'
+          href='/Barberry_Resume_Current.docx'
           alt='Docx icon'
           download>
           <Icon
@@ -32,7 +32,7 @@ export default function Resume() {
           />
         </chakra.a>
         <chakra.a
-          href='/Mike_Barberry_Resume.pdf'
+          href='/Barberry_Resume_Current.pdf'
           target='_blank'>
           <Icon
             color='melanie.200'

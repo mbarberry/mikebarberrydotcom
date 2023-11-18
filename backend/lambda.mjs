@@ -4,7 +4,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import isEmail from 'validator/lib/isEmail.js';
 import { google } from 'googleapis';
 
-import { getIpInfo } from './utils.mjs';
+import { getIpInfo, getZoomAuthToken, makeZoomMeetingReq } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
 
@@ -570,6 +570,70 @@ const getGoogleAuthInfo = async (event) => {
   }
 };
 
+const createZoomMeeting = async (event) => {
+  const {
+    clientName,
+    clientEmail,
+    meetingYear,
+    meetingMonth,
+    meetingHour,
+    meetingMinute,
+    meetingDuration,
+  } = JSON.parse(event.body);
+
+  const meetingTopic = `${clientName} & Mike Meeting`;
+
+  const requestData = JSON.stringify({
+    agenda: meetingTopic,
+    topic: meetingTopic,
+    type: 2,
+    duration: meetingDuration,
+    settings: {
+      email_notification: true,
+      join_before_host: true,
+      meeting_authentication: false,
+      meeting_invitees: [{ email: clientEmail }],
+    },
+    timezone: 'America/Los_Angeles',
+    start_time: `${meetingYear}-${meetingMonth}-${meetingDay}T${meetingHour}:${meetingMinute}:00`,
+  });
+
+  try {
+    const token = await getZoomAuthToken();
+    const request = {
+      hostname: 'api.zoom.us',
+      path: `/v2/users/me/meetings`,
+      method: 'post',
+      headers: {
+        Authorization: `Bearer  ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const { start_url, join_url, password } = await makeZoomMeetingReq(
+      request,
+      requestData
+    );
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ start_url, join_url, password }),
+    };
+  } catch (e) {
+    console.log(`Error getting Zoom auth token and creating meeting:\n${e}`);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'Error making Zoom meeting.',
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -621,6 +685,9 @@ export async function handler(event) {
       }
       case '/auth/google/info': {
         return getGoogleAuthInfo(event);
+      }
+      case '/auth/zoom/meeting': {
+        return createZoomMeeting(event);
       }
     }
   } else {

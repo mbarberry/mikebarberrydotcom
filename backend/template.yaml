@@ -5,7 +5,7 @@ Description: MikeBarberryDotCom SAM Template
 Globals:
   Function:
     Timeout: 15
-    MemorySize: 128
+    MemorySize: 230
 
 Parameters:
   CertificateARN:
@@ -25,6 +25,12 @@ Parameters:
   GoogleClientID:
     Type: String
   GoogleClientSecret:
+    Type: String
+  ZoomAccountID:
+    Type: String
+  ZoomClientID:
+    Type: String
+  ZoomClientSecret:
     Type: String
 
 Resources:
@@ -67,6 +73,13 @@ Resources:
             Ref: GoogleClientID
           GOOGLE_CLIENT_SECRET:
             Ref: GoogleClientSecret
+          ZOOM_CLIENT_ID:
+            Ref: ZoomClientID
+          ZOOM_ACCOUNT_ID:
+            Ref: ZoomAccountID
+          ZOOM_CLIENT_SECRET:
+            Ref: ZoomClientSecret
+
       PackageType: Image
       Architectures:
         - x86_64

@@ -1,10 +1,12 @@
+import https from 'node:https';
+
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import DOMPurify from 'isomorphic-dompurify';
 import isEmail from 'validator/lib/isEmail.js';
 import { google } from 'googleapis';
 
-import { getIpInfo, getZoomAuthToken, makeZoomMeetingReq } from './utils.mjs';
+import { getIpInfo } from './utils.mjs';
 
 const credentials = './mikebarberrycomdb.pem';
 
@@ -571,67 +573,206 @@ const getGoogleAuthInfo = async (event) => {
 };
 
 const createZoomMeeting = async (event) => {
-  const {
-    clientName,
-    clientEmail,
-    meetingYear,
-    meetingMonth,
-    meetingHour,
-    meetingMinute,
-    meetingDuration,
-  } = JSON.parse(event.body);
-
-  const meetingTopic = `${clientName} & Mike Meeting`;
-
-  const requestData = JSON.stringify({
-    agenda: meetingTopic,
-    topic: meetingTopic,
-    type: 2,
-    duration: meetingDuration,
-    settings: {
-      email_notification: true,
-      join_before_host: true,
-      meeting_authentication: false,
-      meeting_invitees: [{ email: clientEmail }],
-    },
-    timezone: 'America/Los_Angeles',
-    start_time: `${meetingYear}-${meetingMonth}-${meetingDay}T${meetingHour}:${meetingMinute}:00`,
-  });
-
-  try {
-    const token = await getZoomAuthToken();
-    const request = {
-      hostname: 'api.zoom.us',
-      path: `/v2/users/me/meetings`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer  ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-    const { start_url, join_url, password } = await makeZoomMeetingReq(
-      request,
-      requestData
-    );
+  const { Authorization } = event.headers;
+  if (!Authorization.split(' ')[1] === process.env.SECRET_PASSWORD) {
     return {
-      statusCode: 200,
+      statusCode: 401,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
-      body: JSON.stringify({ start_url, join_url, password }),
+      body: 'Not authorized.',
     };
-  } catch (e) {
-    console.log(`Error getting Zoom auth token and creating meeting:\n${e}`);
+  }
+  const getZoomToken = async () => {
+    const creds = {
+      actid: process.env.ZOOM_ACCOUNT_ID,
+      cliid: process.env.ZOOM_CLIENT_ID,
+      clisec: process.env.ZOOM_CLIENT_SECRET,
+    };
+
+    const formData = new URLSearchParams([
+      ['grant_type', 'account_credentials'],
+      ['account_id', creds.actid],
+    ]);
+
+    const request = {
+      hostname: 'zoom.us',
+      path: '/oauth/token'.concat(`?${formData.toString()}`),
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          `${creds.cliid}:${creds.clisec}`
+        ).toString('base64')}`,
+      },
+    };
+
+    const makeRequest = () => {
+      return new Promise((resolve, reject) => {
+        const req = https.request(request, (res) => {
+          let data = '';
+
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          res.on('end', () => {
+            const { access_token } = JSON.parse(data);
+            resolve(access_token);
+          });
+
+          res.on('error', (e) => {
+            reject(e.message);
+          });
+        });
+
+        req.on('error', (e) => {
+          reject(e.message);
+        });
+
+        req.end();
+      });
+    };
+
+    let accessToken = null;
+    try {
+      accessToken = await makeRequest();
+      return accessToken;
+    } catch (e) {
+      console.log(`Error getting Zoom access token: ${e}`);
+    } finally {
+      return accessToken;
+    }
+  };
+
+  const accessToken = await getZoomToken();
+  if (!accessToken) {
     return {
       statusCode: 500,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'text/plain',
       },
-      body: 'Error making Zoom meeting.',
+      body: `Error getting Zoom access token`,
     };
   }
+
+  const makeMeeting = async () => {
+    let client, meeting;
+    try {
+      const body = JSON.parse(event.body);
+      client = body.client;
+      meeting = body.meeting;
+    } catch (e) {
+      console.log(`Error parsing JSON body: ${e}`);
+      return null;
+    }
+
+    const topic = `${client.name} & Mike Meeting`;
+
+    const createStartTime = () => {
+      for (const [key, value] of Object.entries(meeting)) {
+        if (value < 10) {
+          meeting[key] = '0'.concat(value);
+        }
+      }
+      return `${meeting.year}-${meeting.month}-${meeting.day}T${meeting.hour}:${meeting.minute}:00`;
+    };
+
+    const requestData = JSON.stringify({
+      agenda: topic,
+      topic,
+      type: 2,
+      duration: 30,
+      settings: {
+        waiting_room: false,
+        email_notification: true,
+        join_before_host: true,
+        meeting_authentication: false,
+        meeting_invitees: [
+          {
+            email: client.email,
+          },
+        ],
+      },
+      timezone: 'America/Los_Angeles',
+      start_time: createStartTime(),
+    });
+
+    const request = {
+      hostname: 'api.zoom.us',
+      path: `/v2/users/me/meetings`,
+      method: 'post',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const makeRequest = () => {
+      return new Promise((resolve, reject) => {
+        const req = https.request(request, (res) => {
+          let data = '';
+
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          res.on('end', () => {
+            resolve(JSON.parse(data));
+          });
+
+          res.on('error', (e) => {
+            reject(e.message);
+          });
+        });
+
+        req.on('error', (e) => {
+          reject(e.message);
+        });
+
+        req.write(requestData);
+
+        req.end();
+      });
+    };
+
+    let meetingInfo = null;
+    try {
+      meetingInfo = await makeRequest();
+    } catch (e) {
+      console.log(`Error making Zoom meeting request: ${e}`);
+    } finally {
+      return meetingInfo;
+    }
+  };
+
+  const meetingInfo = await makeMeeting();
+  if (!meetingInfo) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: `Error making Zoom meeting`,
+    };
+  }
+
+  return {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      startURL: meetingInfo.start_url,
+      topic: meetingInfo.topic,
+      joinURL: meetingInfo.join_url,
+      startTime: meetingInfo.startTime,
+      password: meetingInfo.password,
+    }),
+  };
 };
 
 export async function handler(event) {

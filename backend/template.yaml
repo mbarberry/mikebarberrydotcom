@@ -32,6 +32,8 @@ Parameters:
     Type: String
   ZoomClientSecret:
     Type: String
+  SecretPassword:
+    Type: String
 
 Resources:
   MikeBarberryDotComAPI:
@@ -79,6 +81,8 @@ Resources:
             Ref: ZoomAccountID
           ZOOM_CLIENT_SECRET:
             Ref: ZoomClientSecret
+          SECRET_PASSWORD:
+            Ref: SecretPassword
 
       PackageType: Image
       Architectures:

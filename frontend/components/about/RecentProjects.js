@@ -40,7 +40,7 @@ export default function RecentProjects() {
       flex={mobile ? '0 1 0px' : '0 0 200px'}
       flexDir='column'
       justifyContent={mobile ? 'center' : 'flex-end'}
-      mt={mobile ? '2rem' : '1rem'}
+      mt={mobile ? '1.3rem' : '1.5rem'}
       mr={mobile ? undefined : '.5rem'}
       p={mobile ? '40px' : '1.5rem'}
       transform={mobile ? 'translateY(-40px)' : 'translateY(-10px)'}>

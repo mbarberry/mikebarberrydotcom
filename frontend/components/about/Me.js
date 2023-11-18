@@ -8,7 +8,7 @@ export default function Me() {
   const mobile = useContext(MobileContext);
   return (
     <chakra.div
-      bg={`center / cover no-repeat url('/dots.svg')`}
+      bg={`center / cover no-repeat url('/astoria.jpg')`}
       display={'inline-block'}>
       <chakra.div
         flexShrink={0}
@@ -33,6 +33,7 @@ export default function Me() {
         />
         <chakra.p
           textAlign='center'
+          textShadow='-1px -1px 0 #000, 2px -1px 0 #000, -1px 2px 0 #000, 1px 1px 0 #000;'
           fontSize={mobile ? undefined : '18px'}
           padding={mobile ? '0px 10px' : '0px 0px 20px 0px'}>
           Hi 🙂! I&lsquo;m a software engineer based out of Astoria, Oregon.

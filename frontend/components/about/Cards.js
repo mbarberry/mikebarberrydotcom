@@ -80,10 +80,10 @@ export function Card({
       background='linear-gradient(85deg, #ffffff, #d6d6d6)'
       display='flex'
       flexDir='column'
-      gap='20px'
+      gap='10px'
       mr={mobile ? 0 : margin}
       minW='300px'
-      height={mobile ? undefined : '550px'}
+      height={mobile ? undefined : '600px'}
       minH='350px'
       shadow='-2rem 0 3rem -2rem #000'>
       {showImg && showTooltip ? (
@@ -133,6 +133,8 @@ export function Card({
       <chakra.div
         display='flex'
         flexDir='row'
+        alignItems={'center'}
+        h='75px'
         gap='15px'>
         <chakra.p
           maxW={mobile ? '250px' : '400px'}

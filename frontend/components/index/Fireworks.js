@@ -26,7 +26,7 @@ export default function Fireworks({ ready }) {
     isOpen && (
       <Message
         type='success'
-        words={`Hi, I'm available for hire!`}
+        words={`Hi, I'm currently accepting new clients!`}
       />
     )
   );

@@ -58,6 +58,8 @@ export default function App({ Component, pageProps }) {
     );
   }, []);
 
+  // Code handles edge cases of Component.name timing errors and 404 / 500 pages.
+
   return (
     <ChakraProvider theme={theme}>
       <MobileContextProvider mobile={mobile}>
@@ -84,20 +86,21 @@ export default function App({ Component, pageProps }) {
             <meta
               property='og:title'
               content={
-                seoPageInfo[Component.name].title ?? 'Mike Barberry LLC Webpage'
+                seoPageInfo[Component.name]?.title ??
+                'Mike Barberry LLC Webpage'
               }
             />
             <meta
               property='og:description'
               content={
-                seoPageInfo[Component.name].description ??
+                seoPageInfo[Component.name]?.description ??
                 'Mike Barberry LLC Webpage'
               }
             />
             <meta
               name='description'
               content={
-                seoPageInfo[Component.name].description ??
+                seoPageInfo[Component.name]?.description ??
                 'Mike Barberry LLC Webpage'
               }
             />

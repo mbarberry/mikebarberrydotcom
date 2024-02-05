@@ -6,6 +6,10 @@ import { PortalContextProvider } from '#/components/context/PortalContext';
 import { PortalWrapper } from '#/components/portal/Wrappers';
 import { lambdaURL } from '#/utils';
 
+// There's a bug where logging into the portal in
+// development redirects from Google to the
+// production URL.
+
 export default function Portal() {
   const [client, setClient] = useState(null);
 

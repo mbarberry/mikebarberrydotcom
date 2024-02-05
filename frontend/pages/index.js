@@ -6,7 +6,7 @@ import Loading from '#/components/index/Loading';
 import Fireworks from '#/components/index/Fireworks';
 import { getRects } from '#/utils';
 
-export default function Index() {
+export default function Home() {
   const ref = useRef(null);
   const [loading, setLoading] = useState(true);
 

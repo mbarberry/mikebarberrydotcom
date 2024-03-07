@@ -775,6 +775,43 @@ const createZoomMeeting = async (event) => {
   };
 };
 
+const addClientReview = async (event) => {
+  try {
+    const db = client.db('main');
+    const collection = db.collection('reviews');
+
+    const { review, company, firstName, lastName } = JSON.parse(event.body);
+
+    const result = await collection.insertOne({
+      review,
+      company,
+      firstName,
+      lastName,
+    });
+
+    if (result.acknowledged) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: 'Review added!',
+      };
+    }
+    throw new Error('Problem inserting into MongoDB collection.');
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: `Error adding client review.`,
+    };
+  }
+};
+
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -829,6 +866,9 @@ export async function handler(event) {
       }
       case '/auth/zoom/meeting': {
         return createZoomMeeting(event);
+      }
+      case '/review': {
+        return addClientReview(event);
       }
     }
   } else {

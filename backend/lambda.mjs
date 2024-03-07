@@ -778,15 +778,32 @@ const createZoomMeeting = async (event) => {
 const addClientReview = async (event) => {
   try {
     const db = client.db('main');
-    const collection = db.collection('reviews');
+    const reviews = db.collection('reviews');
+    const clients = db.collection('clients');
 
-    const { review, company, firstName, lastName } = JSON.parse(event.body);
+    const { firstName, lastName, company, review } = JSON.parse(event.body);
 
-    const result = await collection.insertOne({
-      review,
-      company,
+    // Check if the company from the form matches
+    // a name from the official clients collection.
+    const isLegit =
+      (await clients.find({ organizationName: company }).toArray()).length > 0;
+
+    if (!isLegit) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'text/plain',
+        },
+        body: `Unknown organization.`,
+      };
+    }
+
+    const result = await reviews.insertOne({
       firstName,
       lastName,
+      company,
+      review,
     });
 
     if (result.acknowledged) {
@@ -794,7 +811,7 @@ const addClientReview = async (event) => {
         statusCode: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain',
         },
         body: 'Review added!',
       };

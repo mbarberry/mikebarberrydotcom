@@ -775,12 +775,41 @@ const createZoomMeeting = async (event) => {
   };
 };
 
+const testFormDataWithImage = async (event) => {
+  console.log('Incoming event body:', event.body);
+  return {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'text/plain',
+    },
+    body: `Received body: ${JSON.stringify(event.body)}`,
+  };
+};
+
 const addClientReview = async (event) => {
   try {
     const db = client.db('main');
     const reviews = db.collection('reviews');
     const clients = db.collection('clients');
+    /*
+    Idea: Add an image to S3 that is uploaded
+    with the rest of the review.
+    
+    const addToS3 = async () => {
+      const s3Client = new S3Client({});
 
+      const response = await s3Client.send(
+        new PutObjectCommand({
+          Bucket: 'mbdotcom-reviews',
+          Key: 'file-name',
+          Body: 'Hello JavaScript SDK!',
+        })
+      );
+
+      console.log('AWS Put Object response:', response);
+    }
+    */
     const { firstName, lastName, company, review } = JSON.parse(event.body);
 
     // Check if the company from the form matches
@@ -886,6 +915,9 @@ export async function handler(event) {
       }
       case '/review': {
         return addClientReview(event);
+      }
+      case '/test': {
+        return testFormDataWithImage(event);
       }
     }
   } else {

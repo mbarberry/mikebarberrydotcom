@@ -1,5 +1,6 @@
 import https from 'node:https';
 
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import DOMPurify from 'isomorphic-dompurify';
@@ -19,6 +20,7 @@ const client = new MongoClient(process.env.MONGO_URI, {
 });
 
 const sesClient = new SESClient({ region: 'us-west-2' });
+const s3Client = new S3Client({ region: 'us-west-2' });
 
 const logVisit = async (event) => {
   const ipAddress = event.requestContext.identity.sourceIp;
@@ -776,15 +778,52 @@ const createZoomMeeting = async (event) => {
 };
 
 const testFormDataWithImage = async (event) => {
-  console.log('Incoming event body:', event.body);
-  return {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'text/plain',
-    },
-    body: `Received body: ${JSON.stringify(event.body)}`,
-  };
+  const { company, filename, img, contenttype } = JSON.parse(event.body);
+  console.log(
+    'Company:',
+    company,
+    'Filename:',
+    filename,
+    'Content Type:',
+    contenttype
+  );
+  try {
+    const s3Response = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: 'mbdotcom-reviews',
+        Key: `${company}-${filename}`,
+        Body: Buffer.from(img, 'base64'),
+        ContentType: contenttype,
+      })
+    );
+
+    const s3ResponseStatus = s3Response.$metadata?.httpStatusCode;
+
+    console.log(
+      `S3 Response:\nType:${typeof s3ResponseStatus}\nValue:${s3ResponseStatus}`
+    );
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: `S3 response results: Type: ${typeof s3ResponseStatus} Value: ${s3ResponseStatus}\nImage upload result: ${JSON.stringify(
+        s3Response
+      )}\nReceived body: ${JSON.stringify(event.body)}`,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      },
+      body: 'Internal server error.',
+    };
+  }
 };
 
 const addClientReview = async (event) => {
@@ -810,7 +849,8 @@ const addClientReview = async (event) => {
       console.log('AWS Put Object response:', response);
     }
     */
-    const { firstName, lastName, company, review } = JSON.parse(event.body);
+    const { firstName, lastName, company, review, filename, img, contenttype } =
+      JSON.parse(event.body);
 
     // Check if the company from the form matches
     // a name from the official clients collection.
@@ -826,6 +866,26 @@ const addClientReview = async (event) => {
         },
         body: `Unknown organization.`,
       };
+    }
+
+    // Upload image to S3.
+    const s3Response = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: 'mbdotcom-reviews',
+        Key: `${company}-${filename}`,
+        Body: Buffer.from(img, 'base64'),
+        ContentType: contenttype,
+      })
+    );
+
+    console.log(`S3 Response:\n${s3Response}`);
+
+    const s3StatusCode = s3Response.$metadata.httpStatusCode;
+
+    if (!s3StatusCode === 200) {
+      throw new Error(
+        'Internal server error occurred while interacting with S3.'
+      );
     }
 
     const result = await reviews.insertOne({
@@ -845,7 +905,10 @@ const addClientReview = async (event) => {
         body: 'Review added!',
       };
     }
-    throw new Error('Problem inserting into MongoDB collection.');
+
+    throw new Error(
+      'Internal server error occurred while interacting with MongoDB.'
+    );
   } catch (e) {
     return {
       statusCode: 500,

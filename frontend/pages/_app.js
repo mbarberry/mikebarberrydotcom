@@ -19,32 +19,32 @@ const shouldIndex = () => {
 
 const seoPageInfo = {
   Resume: {
-    title: `Mike Barberry's Resume: an experienced full stack software engineer open to new clients.`,
-    description: `A highlight of Mike's impressive professional software engineering accomplishments.`,
+    title: `Mike's Resume`,
+    description: `Mike's Resume`,
   },
   Home: {
-    title: `Mike Barberry's Website Homepage: an experienced full stack software engineer open to new clients.`,
-    description: `Mike's homepage that features an advanced 3D graphic, demonstrating his strong engineering skills.`,
+    title: `Mike Barberry LLC Homepage`,
+    description: `Mike Barberry LLC Homepage`,
   },
   Contact: {
-    title: `Mike Barberry's Contact Page: an experienced full stack software engineer open to new clients.`,
-    description: `Mike built this form so prospective clients and/or partners can easily send him an email.`,
+    title: `Mike Barberry LLC Contact Page`,
+    description: `Mike Barberry LLC Contact Page`,
   },
   Portal: {
-    title: `Mike Barberry, an experienced software engineer, Client Portal page.`,
-    description: `Mike's clients can use this portal to access useful features.`,
+    title: `Mike Barberry LLC Client Portal`,
+    description: `Mike Barberry LLC Client Portal.`,
   },
   Blog: {
-    title: `Mike Barberry, a software engineer, Blog page`,
-    description: `Software engineering blog posts written by the experienced software engineer, Mike Barberry.`,
+    title: `Mike Barberry LLC Blog`,
+    description: `Mike Barberry LLC Blog`,
   },
   About: {
-    title: `Mike Barberry's About page that highlights his recent software engineering professional accomplishments.`,
-    description: `Learn more about the software Mike Barberry has built during his successful career.`,
+    title: `Mike Barberry LLC About Page`,
+    description: `Mike Barberry LLC About`,
   },
   Post: {
-    title: `Mike Barberry, a software engineer, Blog Post page`,
-    description: `An insightful software engineering blog post written by Mike Barberry.`,
+    title: `Mike Barberry LLC Blog Post`,
+    description: `Mike Barberry LLC Blog Post`,
   },
 };
 
@@ -67,7 +67,10 @@ export default function App({ Component, pageProps }) {
           display='flex'
           flexDirection='column'>
           <Head>
-            <title>{`Mike Barberry SWE ${Component.name}`}</title>
+            <title>{`${
+              seoPageInfo[Component.name]?.title ||
+              `Mike Barberry LLC ${Component.name}`
+            }`}</title>
             <link
               rel='canonical'
               href={

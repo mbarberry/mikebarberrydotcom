@@ -28,9 +28,10 @@ export default function ImgModal({ open, close, pic }) {
             justifyContent={'center'}
             alignItems={'center'}>
             <chakra.img
+              objectFit='fill'
               src={pic}
-              width={mobile ? '100%' : '60%'}
-              height={mobile ? '100%' : '60%'}
+              width={mobile ? '100vw' : '60%'}
+              height={mobile ? '70vh' : '60%'}
             />
           </chakra.div>
         </ModalBody>

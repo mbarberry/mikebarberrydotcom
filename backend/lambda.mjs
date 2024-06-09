@@ -30,6 +30,7 @@ const logVisit = async (event) => {
     const visitorInfo = await getIpInfo(ipAddress);
     const { state, city, time } = visitorInfo;
     if (
+      // Old Warrenton IP addresses.
       ![
         '71.94.251.208',
         '47.36.143.4',

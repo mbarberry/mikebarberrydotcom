@@ -77,7 +77,7 @@ export default function Header({ active }) {
           alignItems='center'
           justifyContent='center'>
           <chakra.a
-            href='https://github.com/MikeBarberry'
+            href='https://github.com/mbarberry'
             target='_blank'
             rel='noreferrer'>
             <chakra.svg

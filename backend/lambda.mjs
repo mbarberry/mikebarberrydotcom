@@ -132,7 +132,7 @@ const sendContactEmail = async (event) => {
   const { name, email, message } = body;
 
   const toAddress = 'mbarberry15@gmail.com';
-  const fromAddress = 'mail@mikebarberry.com';
+  const fromAddress = 'contact@mikebarberry.com';
 
   const command = {
     Destination: {

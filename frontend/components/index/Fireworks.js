@@ -23,11 +23,12 @@ export default function Fireworks({ ready }) {
   }, [ready]);
 
   return (
-    isOpen && (
-      <Message
+    isOpen &&
+    {
+      /* <Message
         type='success'
         words={`Hi, I'm open to new work!`}
-      />
-    )
+      /> */
+    }
   );
 }

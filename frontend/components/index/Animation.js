@@ -50,8 +50,8 @@ const Animation = forwardRef(function Animation(
       controls.enablePan = false;
       controls.enableDamping = true;
       controls.enableZoom = false;
-      controls.minPolarAngle = 0.5;
-      controls.maxPolarAngle = 1.5;
+      controls.minPolarAngle = -10.5;
+      controls.maxPolarAngle = 12.5;
       controls.update();
 
       const dracoLoader = new DRACOLoader().setDecoderPath(

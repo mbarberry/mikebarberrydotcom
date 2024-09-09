@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <chakra.div h='100vh'>
-      {/*  <Fireworks ready={!loading} /> */}
+      <Fireworks ready={!loading} />
       <Animation
         ref={ref}
         setLoading={setLoading}

@@ -17,34 +17,36 @@ const shouldIndex = () => {
   return process.env.ENVIRONMENT === 'prod' ? 'index,follow' : 'noindex,follow';
 };
 
+const PREFIX = 'MB SWE';
+
 const seoPageInfo = {
   Resume: {
-    title: `Mike's Resume`,
-    description: `Mike's Resume`,
+    title: `${PREFIX} Resume`,
+    description: `${PREFIX} Resume`,
   },
   Home: {
-    title: `Mike Barberry LLC Homepage`,
-    description: `Mike Barberry LLC Homepage`,
+    title: `${PREFIX} Home`,
+    description: `${PREFIX} Home`,
   },
   Contact: {
-    title: `Mike Barberry LLC Contact Page`,
-    description: `Mike Barberry LLC Contact Page`,
+    title: `${PREFIX} Contact`,
+    description: `${PREFIX} Contact`,
   },
   Portal: {
-    title: `Mike Barberry LLC Client Portal`,
-    description: `Mike Barberry LLC Client Portal.`,
+    title: `${PREFIX} Client Portal`,
+    description: `${PREFIX} Client Portal`,
   },
   Blog: {
-    title: `Mike Barberry LLC Blog`,
-    description: `Mike Barberry LLC Blog`,
+    title: `${PREFIX} Blog`,
+    description: `${PREFIX} Blog`,
   },
   About: {
-    title: `Mike Barberry LLC About Page`,
-    description: `Mike Barberry LLC About`,
+    title: `${PREFIX} About`,
+    description: `${PREFIX} About`,
   },
   Post: {
-    title: `Mike Barberry LLC Blog Post`,
-    description: `Mike Barberry LLC Blog Post`,
+    title: `${PREFIX} Blog Post`,
+    description: `${PREFIX} Blog Post`,
   },
 };
 
@@ -69,13 +71,13 @@ export default function App({ Component, pageProps }) {
           <Head>
             <title>{`${
               seoPageInfo[Component.name]?.title ||
-              `Mike Barberry LLC ${Component.name}`
+              `${PREFIX} ${Component.name}`
             }`}</title>
             <link
               rel='canonical'
               href={
-                `https://mikebarberry.com${router.pathname}` ??
-                'https://mikebarberry.com'
+                `https://www.mikebarberry.com${router.pathname}` ??
+                'https://www.mikebarberry.com'
               }
             />
             <meta
@@ -89,22 +91,19 @@ export default function App({ Component, pageProps }) {
             <meta
               property='og:title'
               content={
-                seoPageInfo[Component.name]?.title ??
-                'Mike Barberry LLC Webpage'
+                seoPageInfo[Component.name]?.title ?? 'Mike Barberry SWE'
               }
             />
             <meta
               property='og:description'
               content={
-                seoPageInfo[Component.name]?.description ??
-                'Mike Barberry LLC Webpage'
+                seoPageInfo[Component.name]?.description ?? 'Mike Barberry SWE'
               }
             />
             <meta
               name='description'
               content={
-                seoPageInfo[Component.name]?.description ??
-                'Mike Barberry LLC Webpage'
+                seoPageInfo[Component.name]?.description ?? 'Mike Barberry SWE'
               }
             />
           </Head>

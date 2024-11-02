@@ -1,3 +1,12 @@
+/*
+  {
+    color: '#CACACA',
+    route: '/portal',
+    text: 'Client Portal',
+    id: 4,
+  }
+*/
+
 export const headerData = [
   {
     color: '#E7E2CA',
@@ -22,12 +31,6 @@ export const headerData = [
     route: '/blog',
     text: 'Blog',
     id: 3,
-  },
-  {
-    color: '#CACACA',
-    route: '/portal',
-    text: 'Client Portal',
-    id: 4,
   },
   {
     color: '#E7CADE',

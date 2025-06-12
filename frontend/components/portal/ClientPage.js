@@ -37,7 +37,7 @@ export default function ClientPage({ signOut }) {
             flexDir='column'
             gap='15px'>
             <h1>Hi, {client.name}👋. Welcome to the client portal! </h1>
-            <p>Features are on the way. 🔨</p>
+            <p>Start a project to gain full feature access. 🔨</p>
           </chakra.div>
         </chakra.div>
       </Flex>

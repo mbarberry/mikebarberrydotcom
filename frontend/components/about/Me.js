@@ -28,7 +28,7 @@ export default function Me() {
           }}
           height={mobile ? 150 : 300}
           width={mobile ? 175 : 350}
-          src='/Nightcall.jpg'
+          src='/pic.png'
           alt='A picture of me.'
         />
         <chakra.p
@@ -36,7 +36,7 @@ export default function Me() {
           textShadow='-1px -1px 0 #000, 2px -1px 0 #000, -1px 2px 0 #000, 1px 1px 0 #000;'
           fontSize={mobile ? undefined : '18px'}
           padding={mobile ? '0px 10px' : '0px 0px 20px 0px'}>
-          Hi 🙂! I&lsquo;m a software engineer based out of Westbrook, CT.
+          Hi 🙂! I&lsquo;m a software engineer based on the East Coast.
         </chakra.p>
       </chakra.div>
     </chakra.div>

@@ -41,7 +41,11 @@ function HeaderList({ active, renderItem }) {
         const { color, route, text, id } = ele;
 
         const handleClick = () => {
-          router.push(route);
+          if (route.includes('.pdf')) {
+            window.open(route);
+          } else {
+            router.push(route);
+          }
         };
 
         return renderItem({

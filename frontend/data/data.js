@@ -17,7 +17,7 @@ export const headerData = [
     text: 'Resume',
     id: 2,
   },
-  /*   {
+  {
     color: '#E7D4CA',
     route: '/blog',
     text: 'Blog',
@@ -28,7 +28,7 @@ export const headerData = [
     route: '/portal',
     text: 'Client Portal',
     id: 4,
-  }, */
+  },
   {
     color: '#E7CADE',
     route: '/contact',
@@ -71,14 +71,14 @@ export const cardData = [
     desc: `Utilized Puppeteer and ANDI, a Social Security Administration open source tool, to automate generating Section 508 (website accessibility) compliance reports.`,
   },
 
-  /* {
+  {
     color: 'yellow.500',
     tech: 'React.js, Next.js, MUI, Node.js, OpenSearch, AWS',
     proj: 'Data Search Page',
     company: 'Digital Infuzion',
     desc: 'Note: Digital Infuzion requested I obscure this photo. Built a very complicated private data search portal page that queries OpenSearch for over a million records in 30+ project categories. Each time a user changes a filter, all of the page data is updated.',
     pic: '/ceirr.png',
-  }, */
+  },
 
   {
     color: 'green.500',

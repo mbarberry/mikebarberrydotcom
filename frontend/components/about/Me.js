@@ -36,7 +36,7 @@ export default function Me() {
           textShadow='-1px -1px 0 #000, 2px -1px 0 #000, -1px 2px 0 #000, 1px 1px 0 #000;'
           fontSize={mobile ? undefined : '18px'}
           padding={mobile ? '0px 10px' : '0px 0px 20px 0px'}>
-          Hi 🙂! I&lsquo;m a software engineer based out of DC
+          Hi 🙂! I&lsquo;m a software engineer based in NoVA
         </chakra.p>
       </chakra.div>
     </chakra.div>

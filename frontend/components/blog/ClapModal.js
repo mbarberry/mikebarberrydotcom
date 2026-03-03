@@ -100,7 +100,7 @@ export default function ClapModal({
           type: 'error',
           isError: true,
           message:
-            'Uh oh, hcaptcha failed. Mike would be happy if you let him know you encountered this error on the site.',
+            'Uh oh, hcaptcha failed. Cain would be happy if you let him know you encountered this error on the site.',
         });
         openMess();
       }

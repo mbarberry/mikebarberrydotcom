@@ -108,7 +108,7 @@ export default function Contact() {
           type: 'alert',
           alert: {
             type: 'error',
-            text: 'Uh oh, hcaptcha failed. Mike would be happy if you let him know you encountered this error on the site.',
+            text: 'Uh oh, hcaptcha failed. Cain would be happy if you let him know you encountered this error on the site.',
           },
         });
         onOpen();
@@ -149,7 +149,7 @@ export default function Contact() {
           type: 'alert',
           alert: {
             type: 'error',
-            text: 'Uh oh, email failed to send. Mike would be happy if you let him know you encountered this error on the site.',
+            text: 'Uh oh, email failed to send. Cain would be happy if you let him know you encountered this error on the site.',
           },
         });
         onOpen();

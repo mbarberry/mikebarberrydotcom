@@ -17,7 +17,7 @@ const shouldIndex = () => {
   return process.env.ENVIRONMENT === 'prod' ? 'index,follow' : 'noindex,follow';
 };
 
-const PREFIX = 'MB SWE';
+const PREFIX = 'CB SWE';
 
 const seoPageInfo = {
   Resume: {
@@ -91,19 +91,19 @@ export default function App({ Component, pageProps }) {
             <meta
               property='og:title'
               content={
-                seoPageInfo[Component.name]?.title ?? 'Mike Barberry SWE'
+                seoPageInfo[Component.name]?.title ?? 'Cain Barberry SWE'
               }
             />
             <meta
               property='og:description'
               content={
-                seoPageInfo[Component.name]?.description ?? 'Mike Barberry SWE'
+                seoPageInfo[Component.name]?.description ?? 'Cain Barberry SWE'
               }
             />
             <meta
               name='description'
               content={
-                seoPageInfo[Component.name]?.description ?? 'Mike Barberry SWE'
+                seoPageInfo[Component.name]?.description ?? 'Cain Barberry SWE'
               }
             />
           </Head>

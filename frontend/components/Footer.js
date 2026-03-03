@@ -33,8 +33,8 @@ export default function Footer() {
         fontWeight='500'
         letterSpacing='0.1rem'
         p={mobile ? undefined : '10px 30px 0px 0px'}>
-        <chakra.p>2025</chakra.p>
-        <chakra.p pl='10px'>mikebarberry.com</chakra.p>
+        <chakra.p>2026</chakra.p>
+        <chakra.p pl='10px'>cainbarberry.com</chakra.p>
       </chakra.div>
     </chakra.footer>
   );

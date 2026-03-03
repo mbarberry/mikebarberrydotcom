@@ -73,7 +73,7 @@ export default function Header({ active }) {
         <chakra.h1
           pl={mobile ? undefined : '60px'}
           fontSize='30px'>
-          Mike Barberry
+          Cain Barberry
         </chakra.h1>
         <chakra.div
           pl={mobile ? undefined : '30px'}

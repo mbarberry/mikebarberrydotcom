@@ -1,4 +1,4 @@
-# Mike Barberry – Software Engineering Brand Website
+# Cain Barberry – Software Engineering Brand Website
 
 ## Overview
 
@@ -15,4 +15,4 @@ My software engineering brand website features a client portal, project highligh
 
 ## Website
 
-Visit my site: [www.mikebarberry.com](https://www.mikebarberry.com)
+Visit my site: [www.cainbarberry.com](https://www.cainbarberry.com)

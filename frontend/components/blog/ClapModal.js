@@ -102,7 +102,6 @@ export default function ClapModal({
           message:
             'Uh oh, hcaptcha failed. Cain would be happy if you let him know you encountered this error on the site.',
         });
-        openMess();
       }
     } finally {
       dispatch({ type: 'loading', loading: false });
